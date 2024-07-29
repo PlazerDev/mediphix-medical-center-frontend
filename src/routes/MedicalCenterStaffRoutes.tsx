@@ -1,10 +1,28 @@
 import { Button } from "antd";
+import { Route, Routes } from "react-router-dom";
+import MedicalCenterStaffHomePage from "../pages/medical-center-staff/MedicalCenterStaffHomePage";
 
 function MedicalCenterStaffRoutes() {
   return (
-    <div className="bg-red-400">
-      <Button type="primary">asdasd</Button>MedicalCenterStaffRoutes
-    </div>
+    <Routes>
+      <Route path="/" element={<MedicalCenterStaffHomePage />} />
+      {/* <Route
+        path="/onGoingSessions"
+        element={<MedicalCenterStaffOnGoingSessionsListPage />}
+      />
+      <Route
+        path="/onGoingSessions/:sessionId"
+        element={<MedicalCenterStaffOngoingSessionPage />}
+      />
+      <Route
+        path="/onGoingSessions/:sessionId/startNextPatientConfirm"
+        element={<MedicalCenterStaffStartNextSessionPage />}
+      />
+      <Route
+        path="/upcomingSessions"
+        element={<MedicalCenterStaffUpcomingSessionPage />}
+      /> */}
+    </Routes>
   );
 }
 
