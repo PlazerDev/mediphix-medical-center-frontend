@@ -4,10 +4,10 @@ import { FaCalendarDays } from "react-icons/fa6";
 import { FaHandHoldingMedical } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Loading from "../../components/Loading";
 import MCSNavBar from "../../components/mcs/MCSNavBar";
 import MCSCustomButton from "../../components/mcs/MCSCustomButton";
 import MCSMainGreeting from "../../components/mcs/MCSMainGreeting";
+import Loading from "../../components/Loading";
 
 interface MCSMemeberData {
   first_name: string;
