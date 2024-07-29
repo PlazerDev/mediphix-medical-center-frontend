@@ -2,11 +2,11 @@ import Footer from "./../../components/Footer";
 import { Divider, Pagination } from "antd";
 import doctorImg from "./../../assets/images/patient/appoinment/doctorImage.jpeg";
 import swal from "sweetalert";
-import MCSEmptyCard from "../../components/medical-center-staff/MCSEmptyCard";
 import MCSNavBar from "../../components/mcs/MCSNavBar";
 import MCSMainGreeting from "../../components/mcs/MCSMainGreeting";
 import MCSDateTimeTitle from "../../components/mcs/MCSDateTimeTitle";
 import MCSOnGoingSessionDetailsCard from "../../components/mcs/MCSOnGoingSessionDetailsCard";
+import MCSEmptyCard from "../../components/mcs/MCSEmptyCard";
 
 function MedicalCenterStaffOnGoingSessionsListPage() {
   var noOfSessions: number = 2;
@@ -30,7 +30,7 @@ function MedicalCenterStaffOnGoingSessionsListPage() {
       <MCSNavBar />
       {/* Body */}
       <div className="flex-grow px-8">
-        <MCSMainGreeting />
+        <MCSMainGreeting memberName="Vishwa" medicalCenterName="Nawaloka" />
         {/* Main Body div from here*/}
         {noOfSessions === 0 && <MCSEmptyCard />}
         {noOfSessions > 0 && (
