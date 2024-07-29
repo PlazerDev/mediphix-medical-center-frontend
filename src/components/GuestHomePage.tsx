@@ -1,5 +1,4 @@
 import { useAuthContext } from "@asgardeo/auth-react";
-import CustomButton from "./mcs/CustomButton.tsx";
 
 function GuestHomePage() {
   const { signIn } = useAuthContext();
@@ -14,7 +13,7 @@ function GuestHomePage() {
           alignItems: "center",
         }}
       >
-        <CustomButton onClick={() => signIn()} label={"Log In"} />
+        <button onClick={() => signIn()}>Log In</button>
       </div>
     </>
   );
