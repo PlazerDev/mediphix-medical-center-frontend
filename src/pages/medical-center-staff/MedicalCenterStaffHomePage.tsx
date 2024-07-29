@@ -1,13 +1,13 @@
 import Footer from "./../../components/Footer";
-import MCSNavBar from "../../components/medical-center-staff/MCSNavBar";
-import bodyImg from "./../../assets/images/patient/appoinment/manageAppoinments.png";
-import MCSCustomButton from "../../components/medical-center-staff/MCSCustomButton";
+import bodyImg from "./../../assets/images/mcs/manageAppoinments.png";
 import { FaCalendarDays } from "react-icons/fa6";
 import { FaHandHoldingMedical } from "react-icons/fa";
-import MCSMainGreeting from "../../components/medical-center-staff/MCSMainGreeting";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Loading from "../../components/Loading";
+import MCSNavBar from "../../components/mcs/MCSNavBar";
+import MCSCustomButton from "../../components/mcs/MCSCustomButton";
+import MCSMainGreeting from "../../components/mcs/MCSMainGreeting";
 
 interface MCSMemeberData {
   first_name: string;
