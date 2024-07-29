@@ -1,13 +1,12 @@
 import Footer from "./../../components/Footer";
-
-import MCSDateTimeTitle from "../../components/medical-center-staff/MCSDateTimeTitle";
-import MCSOnGoingSessionDetailsCard from "../../components/medical-center-staff/MCSOnGoingSessionDetailsCard";
 import { Divider, Pagination } from "antd";
 import doctorImg from "./../../assets/images/patient/appoinment/doctorImage.jpeg";
 import swal from "sweetalert";
 import MCSEmptyCard from "../../components/medical-center-staff/MCSEmptyCard";
 import MCSNavBar from "../../components/mcs/MCSNavBar";
 import MCSMainGreeting from "../../components/mcs/MCSMainGreeting";
+import MCSDateTimeTitle from "../../components/mcs/MCSDateTimeTitle";
+import MCSOnGoingSessionDetailsCard from "../../components/mcs/MCSOnGoingSessionDetailsCard";
 
 function MedicalCenterStaffOnGoingSessionsListPage() {
   var noOfSessions: number = 2;
