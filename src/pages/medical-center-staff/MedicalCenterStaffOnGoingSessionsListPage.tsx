@@ -1,6 +1,6 @@
 import Footer from "./../../components/Footer";
 import { Divider, Pagination } from "antd";
-import doctorImg from "./../../assets/images/patient/appoinment/doctorImage.jpeg";
+import doctorImg from "./../../assets/images/mcs/doctorImage.jpeg";
 import swal from "sweetalert";
 import MCSNavBar from "../../components/mcs/MCSNavBar";
 import MCSMainGreeting from "../../components/mcs/MCSMainGreeting";
@@ -14,7 +14,7 @@ function MedicalCenterStaffOnGoingSessionsListPage() {
   if (noOfSessions > 0) {
     swal({
       title: "Alert",
-      text: "You have" + noOfSessions + " ongoing clinic sessions",
+      text: "You have " + noOfSessions + " ongoing clinic sessions",
       icon: "info",
       buttons: {
         confirm: {

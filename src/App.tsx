@@ -39,7 +39,10 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               {/* Medical Center Staff Routes  */}
-              <Route path="/mcs/*" element={<MedicalCenterStaffRoutes />} />
+              <Route
+                path="/medicalCenterStaff/*"
+                element={<MedicalCenterStaffRoutes />}
+              />
             </Routes>
           </Router>
         </ConfigProvider>

@@ -1,5 +1,5 @@
 import { Button } from "antd";
-import emptyImg from "./../../assets/images/patient/home/ongoing_appointment.png";
+import emptyImg from "./../../assets/images/mcs/ongoing_appointment.png";
 
 function MCSEmptyCard() {
   return (
