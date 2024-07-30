@@ -1,12 +1,12 @@
 import { useAuthContext } from "@asgardeo/auth-react";
-import logo from "./../../assets/images/mediphix_logo_white.png";
+import logo from "./../../assets/images/mediphix_logo.png";
 import BtnWithBorder from "./BtnWithBorder";
 import BtnWithoutBorder from "./BtnWithoutBorder";
 import DropDown from "./DropDown";
 function Navigation() {
   const { signIn } = useAuthContext();
   return (
-    <div className="bg-mediphix_accent px-24 py-4 flex flex-row justify-between items-center ">
+    <div className="bg-mediphix_text_a px-24 py-4 flex flex-row justify-between items-center ">
       <img src={logo} alt="logo" className="object-contain h-8" />
       <div className="flex gap-4 text-[#ededed] ">
         <DropDown />

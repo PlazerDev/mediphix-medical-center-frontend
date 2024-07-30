@@ -28,7 +28,7 @@ function LandingPage() {
     <div className="min-h-screen bg-white">
       <Navigation />
       {/* First Section */}
-      <div className="px-24 bg-mediphix_accent">
+      <div className="px-24 bg-mediphix_text_a">
         <FirstSectionTitle />
         <FirstSectionImg />
       </div>
@@ -39,20 +39,20 @@ function LandingPage() {
       <div className="px-24 bg-mediphix_card_background">
         <Feature
           isReverse={false}
-          title="Easy appointment booking"
-          description="Book your appointments with ease and convenience. Our system allows you to search for doctors and medical centers across the island, view their availability, and schedule your visits at a time that suits you best."
+          title="For Medical Center Admins"
+          description="Manage doctor schedules effortlessly by adding, editing, and organizing them to ensure optimal utilization of your medical staff. Streamline your operations with efficient staff management by assigning roles, monitoring performance, and improving workflow. Oversee patient appointments to minimize overlaps and ensure a smooth patient flow, enhancing the overall experience for your patients."
           img={featureImg1}
         />
         <Feature
           isReverse={true}
-          title="Reduced risk of misdiagnosis"
-          description="Ensure accurate diagnoses by providing doctors with your complete medical history. Our secure system stores your medical data, allowing doctors to access past records and make well-informed decisions about your health."
+          title="For Medical Center Staff"
+          description="Efficient queue management and patient handling are critical for enhancing patient satisfaction. Keep track of patient queues to minimize waiting times, and monitor patient progress through different stages of their visit for a seamless experience. Ensure resources are allocated effectively, so they are available where and when needed for maximum efficiency."
           img={featureImg2}
         />
         <Feature
           isReverse={false}
-          title="Get Important Reminders"
-          description="Never miss an appointment or important health update. Our notification system sends you timely reminders about your upcoming appointments, medication schedules, and other essential health alerts to keep you on track."
+          title="For Medical Center Receptionists"
+          description="Hassle-free appointment booking and management streamline the entire process. Book, reschedule, and cancel appointments with ease, while quickly accessing patient records to provide personalized service. Enhance communication by sending notifications and reminders to patients, reducing no-shows, and improving appointment adherence."
           img={featureImg3}
         />
       </div>

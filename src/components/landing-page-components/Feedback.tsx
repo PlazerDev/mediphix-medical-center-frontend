@@ -10,18 +10,18 @@ function Feedback() {
       <Carousel infinite={true} autoplay={true}>
         <FeedbackItem
           img={feedbackImg01}
-          feedback="Booking appointments has never been easier! The system is user-friendly and allows me to find the best doctors without any hassle. I feel more in control of my health now."
-          name="Nuwan Perera"
+          feedback="The queue management system has transformed our waiting areas. Patients are happier, and our operations run smoother."
+          name="Nurse Nirmala Perera, Staff at Lanka Hospitals."
         />
         <FeedbackItem
           img={feedbackImg02}
-          feedback="I appreciate the reminders and notifications about my appointments. It helps me stay organized and ensures I never miss a doctor's visit. Excellent service!"
-          name="Anjali Fernando"
+          feedback="I love how easy it is to book appointments now. Our patients appreciate the efficiency, and our no-show rate has dropped."
+          name="Receptionist Malini Silva, Receptionist at Hemas Hospital"
         />
         <FeedbackItem
           img={feedbackImg03}
-          feedback="Being able to see all the available doctors and medical centers in one place is a game-changer. The platform's comprehensive nature makes it my go-to for all healthcare needs."
-          name="Ruwantha Karunaratne"
+          feedback="Since implementing the Medical Center Management Portal, our patient wait times have decreased significantly, and our staff is more organized than ever."
+          name="Dr. Sunil Fernando, Admin at Asiri Medical Center."
         />
       </Carousel>
     </div>
