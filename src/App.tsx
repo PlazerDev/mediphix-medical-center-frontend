@@ -1,8 +1,8 @@
 import { AuthProvider } from "@asgardeo/auth-react";
-import Home from "./components/Home.tsx";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import MedicalCenterStaffRoutes from "./routes/MedicalCenterStaffRoutes.tsx";
 import { ConfigProvider } from "antd";
+import LandingPage from "./pages/LandingPage.tsx";
 
 function App() {
   const asgardioConfig = {
@@ -37,7 +37,7 @@ function App() {
         >
           <Router>
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<LandingPage />} />
               {/* Medical Center Staff Routes  */}
               <Route
                 path="/medicalCenterStaff/*"
