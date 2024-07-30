@@ -40,19 +40,19 @@ function LandingPage() {
         <Feature
           isReverse={false}
           title="For Medical Center Admins"
-          description="Manage doctor schedules effortlessly by adding, editing, and organizing them to ensure optimal utilization of your medical staff. Streamline your operations with efficient staff management by assigning roles, monitoring performance, and improving workflow. Oversee patient appointments to minimize overlaps and ensure a smooth patient flow, enhancing the overall experience for your patients."
+          description="Effortlessly manage doctor schedules by adding, editing, and organizing to ensure optimal staff utilization. Streamline operations with efficient staff management: assign roles, monitor performance, and enhance workflow. Oversee patient appointments to minimize overlaps and ensure smooth patient flow, enhancing the overall patient experience."
           img={featureImg1}
         />
         <Feature
           isReverse={true}
           title="For Medical Center Staff"
-          description="Efficient queue management and patient handling are critical for enhancing patient satisfaction. Keep track of patient queues to minimize waiting times, and monitor patient progress through different stages of their visit for a seamless experience. Ensure resources are allocated effectively, so they are available where and when needed for maximum efficiency."
+          description="Efficient queue management and patient handling are critical for patient satisfaction. Keep track of patient queues to minimize waiting times. Monitor patient progress through different stages of their visit for a seamless experience. Ensure resources are effectively allocated to be available where and when needed for maximum efficiency."
           img={featureImg2}
         />
         <Feature
           isReverse={false}
           title="For Medical Center Receptionists"
-          description="Hassle-free appointment booking and management streamline the entire process. Book, reschedule, and cancel appointments with ease, while quickly accessing patient records to provide personalized service. Enhance communication by sending notifications and reminders to patients, reducing no-shows, and improving appointment adherence."
+          description="Hassle-free appointment booking and management streamline the entire process. Easily book, reschedule, and cancel appointments while quickly accessing patient records for personalized service. Enhance communication by sending notifications and reminders to patients, reducing no-shows, and improving appointment adherence."
           img={featureImg3}
         />
       </div>
