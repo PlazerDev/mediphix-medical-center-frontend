@@ -11,6 +11,7 @@ import Footer from "../components/landing-page-components/Footer";
 import featureImg1 from "./../assets/images/landing-page/feature_01.png";
 import featureImg2 from "./../assets/images/landing-page/feature_02.png";
 import featureImg3 from "./../assets/images/landing-page/feature_03.png";
+import featureImg4 from "./../assets/images/landing-page/feature_04.png";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useEffect } from "react";
@@ -54,6 +55,12 @@ function LandingPage() {
           title="For Medical Center Receptionists"
           description="Hassle-free appointment booking and management streamline the entire process. Easily book, reschedule, and cancel appointments while quickly accessing patient records for personalized service. Enhance communication by sending notifications and reminders to patients, reducing no-shows, and improving appointment adherence."
           img={featureImg3}
+        />
+        <Feature
+          isReverse={true}
+          title="For Labaratory Staff"
+          description="Laboratory staff play a crucial role in the MediPhix system by managing lab-related tasks efficiently. They have the ability to accept or reject prescriptions based on the availability of tests, ensuring timely and accurate diagnostics. Lab staff can update the progress status of lab reports, add completed lab reports to the system, and include any necessary notes for further clarification. Additionally, they can view prescriptions to stay informed about the required tests, ultimately contributing to seamless patient care and effective communication between healthcare providers."
+          img={featureImg4}
         />
       </div>
       <div className="bg-mediphix_card_background px-24 py-8">
