@@ -6,8 +6,8 @@ import LandingPage from "./pages/LandingPage.tsx";
 
 function App() {
   const asgardioConfig = {
-    signInRedirectURL: "http://localhost:5173",
-    signOutRedirectURL: "http://localhost:5173",
+    signInRedirectURL: "http://localhost:5175",
+    signOutRedirectURL: "http://localhost:5175",
     clientID: import.meta.env.VITE_PATIENT_ASGARDEO_CLIENT_ID,
     baseUrl: import.meta.env.VITE_PATIENT_ASGARDEO_BASE_URL,
     scope: [
