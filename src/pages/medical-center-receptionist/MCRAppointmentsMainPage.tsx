@@ -1,15 +1,20 @@
 import { useState } from "react";
-import MCSNavBar from "../../components/mcs/MCSNavBar";
-import MCSMainGreeting from "../../components/mcs/MCSMainGreeting";
-import Loading from "../../components/Loading";
 import Footer from "../../components/Footer";
+import Loading from "../../components/Loading";
 import MCSCustomButton from "../../components/mcs/MCSCustomButton";
-import { FaCalendarDays } from "react-icons/fa6";
+import MCSMainGreeting from "../../components/mcs/MCSMainGreeting";
+import MCSNavBar from "../../components/mcs/MCSNavBar";
 import bodyImg from "./../../assets/images/mcs/manageAppoinments.png";
 import { HiUserAdd } from "react-icons/hi";
+import {
+  FaCalendarDays,
+  FaCalendarPlus,
+  FaHandHoldingDollar,
+} from "react-icons/fa6";
 import { FaClinicMedical } from "react-icons/fa";
+import { GrUpdate } from "react-icons/gr";
 
-function MCRHomePage() {
+function MCRAppointmentsMainPage() {
   // setting loading
   const [loading, setLoading] = useState(false);
 
@@ -18,6 +23,10 @@ function MCRHomePage() {
     {
       title: "Home",
       link: "/medicalCenterReceptionist",
+    },
+    {
+      title: "Appointments",
+      link: "",
     },
   ];
 
@@ -29,8 +38,8 @@ function MCRHomePage() {
       {!loading && (
         <div className="flex-grow px-8">
           <MCSMainGreeting
-            title="Good Evening"
-            titleMemberName="Vishwa"
+            title="Appointments"
+            titleMemberName=""
             breadcrumbItems={breadcrumbItems}
             role="Medical Center Receptionist"
             medicalCenterName="Nawaloka Hospital"
@@ -41,7 +50,7 @@ function MCRHomePage() {
               <p className="text-xl md:text-2xl font-bold">
                 Welocome,
                 <br />
-                Here is your control center
+                Manage appointments here
               </p>
               <img
                 src={bodyImg}
@@ -52,21 +61,21 @@ function MCRHomePage() {
             <div className="flex flex-col items-center md:flex-row justify-center gap-4 mt-2">
               <MCSCustomButton
                 path=""
-                buttonTitle="Register Patient"
+                buttonTitle="Create Appointments"
                 isPrimary={false}
-                buttonIcon={HiUserAdd}
+                buttonIcon={FaCalendarPlus}
               />
               <MCSCustomButton
-                path="/medicalCenterReceptionist/appointments"
-                buttonTitle="Appointments"
+                path="/medicalCenterReceptionist/appointments/payment"
+                buttonTitle="Appointment Payments"
                 isPrimary={true}
-                buttonIcon={FaCalendarDays}
+                buttonIcon={FaHandHoldingDollar}
               />
               <MCSCustomButton
                 path=""
-                buttonTitle="Medical Center"
+                buttonTitle="Update Appointments"
                 isPrimary={false}
-                buttonIcon={FaClinicMedical}
+                buttonIcon={GrUpdate}
               />
             </div>
           </div>
@@ -79,4 +88,4 @@ function MCRHomePage() {
   );
 }
 
-export default MCRHomePage;
+export default MCRAppointmentsMainPage;
