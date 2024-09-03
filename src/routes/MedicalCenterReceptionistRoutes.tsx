@@ -5,6 +5,7 @@ function MedicalCenterReceptionistRoutes() {
   return (
     <Routes>
       <Route path="/" element={<MCRHomePage />} />
+      <Route path="/appointments" element={<MCRHomePage />} />
     </Routes>
   );
 }
