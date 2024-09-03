@@ -9,7 +9,7 @@ import { FaQrcode } from "react-icons/fa6";
 import MCRPaymentBody from "../../components/mcr/MCRPaymentBody";
 import NormalButtonWithIcon from "../../components/NormalButtonWithIcon";
 import MCRPaymentScanQr from "../../components/mcr/MCRPaymentScanQr";
-import MCRPaymentsDefault from "../../components/mcr/MCRPaymentsDefault";
+import Swal from "sweetalert2";
 
 type SearchProps = GetProps<typeof Input.Search>;
 
@@ -31,6 +31,12 @@ function MCRAppointmentsPaymentsPage() {
   function handleScanResult(appointmentNumber: string) {
     setAppointmentNumber(appointmentNumber);
     setIsModalOpen(false);
+    Swal.fire({
+      icon: "success",
+      title: "Scan Successful",
+      showConfirmButton: false,
+      timer: 1500,
+    });
   }
 
   const showModal = () => {
