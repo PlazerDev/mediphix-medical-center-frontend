@@ -8,7 +8,7 @@ interface Props {
   colorType: number;
 }
 
-function MCRNormalButtonWithIcon({
+function NormalButtonWithIcon({
   title,
   link,
   buttonIcon: ButtonIcon,
@@ -20,6 +20,9 @@ function MCRNormalButtonWithIcon({
   if (colorType === 1) {
     bgColor = "bg-mediphix_text_b";
     hoverBgColor = "hover:bg-[#535353]";
+  } else if (colorType === 2) {
+    bgColor = "bg-mediphix_accent";
+    hoverBgColor = "hover:bg-[#FF9129]";
   }
 
   return (
@@ -34,4 +37,4 @@ function MCRNormalButtonWithIcon({
   );
 }
 
-export default MCRNormalButtonWithIcon;
+export default NormalButtonWithIcon;

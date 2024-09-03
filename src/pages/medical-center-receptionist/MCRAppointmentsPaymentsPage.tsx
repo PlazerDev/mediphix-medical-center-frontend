@@ -6,9 +6,8 @@ import Footer from "../../components/Footer";
 import { Input } from "antd";
 import type { GetProps } from "antd";
 import { FaQrcode } from "react-icons/fa6";
-import MCRNormalButtonWithIcon from "../../components/mcr/MCRNormalButtonWithIcon";
-import MCRPaymentsDefault from "../../components/mcr/MCRPaymentsDefault";
-import MCRUnpaid from "../../components/mcr/MCRUnpaid";
+import MCRPaymentBody from "../../components/mcr/MCRPaymentBody";
+import NormalButtonWithIcon from "../../components/NormalButtonWithIcon";
 
 type SearchProps = GetProps<typeof Input.Search>;
 
@@ -60,7 +59,7 @@ function MCRAppointmentsPaymentsPage() {
               size="large"
               onSearch={onSearch}
             />
-            <MCRNormalButtonWithIcon
+            <NormalButtonWithIcon
               link=""
               title="Scan QR"
               buttonIcon={FaQrcode}
@@ -70,7 +69,7 @@ function MCRAppointmentsPaymentsPage() {
           {/* Default view when the search bar is clear*/}
           {/* <MCRPaymentsDefault /> */}
           {/* When there is a search result and its unpaid */}
-          <MCRUnpaid />
+          <MCRPaymentBody />
         </div>
       )}
       {loading && <Loading />}

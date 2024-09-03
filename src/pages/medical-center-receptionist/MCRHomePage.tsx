@@ -5,7 +5,7 @@ import Loading from "../../components/Loading";
 import Footer from "../../components/Footer";
 import MCSCustomButton from "../../components/mcs/MCSCustomButton";
 import { FaCalendarDays } from "react-icons/fa6";
-import bodyImg from "./../../assets/images/mcs/manageAppoinments.png";
+import bodyImg from "./../../assets/images/mcr/Hello.gif";
 import { HiUserAdd } from "react-icons/hi";
 import { FaClinicMedical } from "react-icons/fa";
 

@@ -5,13 +5,7 @@ import MCSCustomButton from "../../components/mcs/MCSCustomButton";
 import MCSMainGreeting from "../../components/mcs/MCSMainGreeting";
 import MCSNavBar from "../../components/mcs/MCSNavBar";
 import bodyImg from "./../../assets/images/mcs/manageAppoinments.png";
-import { HiUserAdd } from "react-icons/hi";
-import {
-  FaCalendarDays,
-  FaCalendarPlus,
-  FaHandHoldingDollar,
-} from "react-icons/fa6";
-import { FaClinicMedical } from "react-icons/fa";
+import { FaCalendarPlus, FaHandHoldingDollar } from "react-icons/fa6";
 import { GrUpdate } from "react-icons/gr";
 
 function MCRAppointmentsMainPage() {
