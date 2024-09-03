@@ -1,16 +1,37 @@
 import MCSGreeting from "./MCSGreeting";
 import MCSGreetingVerificationName from "./MCSGreetingVerificationName";
 
-interface Props {
-  medicalCenterName: string;
-  memberName: string;
+interface BreadcrumbItem {
+  title: string;
+  link: string;
 }
 
-function MCSMainGreeting({ medicalCenterName, memberName }: Props) {
+interface Props {
+  medicalCenterName: string;
+  titleMemberName: string;
+  role: string;
+  title: string;
+  breadcrumbItems: BreadcrumbItem[];
+}
+
+function MCSMainGreeting({
+  medicalCenterName,
+  titleMemberName,
+  role,
+  title,
+  breadcrumbItems,
+}: Props) {
   return (
     <div className="flex md:flex-row md:items-center md:justify-between md:my-4 my-2 flex-col gap-2">
-      <MCSGreeting memberName={memberName} />
-      <MCSGreetingVerificationName medicalCenterName={medicalCenterName} />
+      <MCSGreeting
+        titleMemberName={titleMemberName}
+        title={title}
+        breadcrumb={breadcrumbItems}
+      />
+      <MCSGreetingVerificationName
+        medicalCenterName={medicalCenterName}
+        role={role}
+      />
     </div>
   );
 }
