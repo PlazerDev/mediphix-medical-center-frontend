@@ -9,6 +9,7 @@ import { FaQrcode } from "react-icons/fa6";
 import MCRPaymentBody from "../../components/mcr/MCRPaymentBody";
 import NormalButtonWithIcon from "../../components/NormalButtonWithIcon";
 import MCRPaymentScanQr from "../../components/mcr/MCRPaymentScanQr";
+import MCRPaymentsDefault from "../../components/mcr/MCRPaymentsDefault";
 
 type SearchProps = GetProps<typeof Input.Search>;
 
@@ -18,11 +19,19 @@ const onSearch: SearchProps["onSearch"] = (value, _e, info) =>
   console.log(info?.source, value);
 
 function MCRAppointmentsPaymentsPage() {
+  // search
+  const [appointmentNumber, setAppointmentNumber] = useState("");
+
   // setting loading
   const [loading, setLoading] = useState(false);
 
   // for scan QR
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  function handleScanResult(appointmentNumber: string) {
+    setAppointmentNumber(appointmentNumber);
+    setIsModalOpen(false);
+  }
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -74,6 +83,7 @@ function MCRAppointmentsPaymentsPage() {
               enterButton="Search"
               size="large"
               onSearch={onSearch}
+              value={appointmentNumber}
             />
             <div onClick={showModal} className="h-10">
               <NormalButtonWithIcon
@@ -84,12 +94,13 @@ function MCRAppointmentsPaymentsPage() {
               />
             </div>
             <Modal
-              title="Basic Modal"
+              title="Point the QR Code to the camera"
               open={isModalOpen}
               onOk={handleOk}
               onCancel={handleCancel}
+              destroyOnClose={true}
             >
-              <MCRPaymentScanQr />
+              <MCRPaymentScanQr handleScanResult={handleScanResult} />
             </Modal>
           </div>
           {/* Default view when the search bar is clear*/}
