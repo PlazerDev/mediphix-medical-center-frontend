@@ -10,6 +10,20 @@ import MCSNextPatientDetailsCard from "../../components/mcs/MCSNextPatientDetail
 import MCSQueueDetailsCard from "../../components/mcs/MCSQueueDetailsCard";
 
 function MedicalCenterStaffOngoingSessionPage() {
+  const breadcrumbItems = [
+    {
+      title: "Home",
+      link: "/medicalCenterStaff",
+    },
+    {
+      title: "Ongoing Sessions",
+      link: "/medicalCenterStaff/onGoingSessions",
+    },
+    {
+      title: "A Session",
+      link: "",
+    },
+  ];
   const { sessionId } = useParams<{ sessionId: string }>();
   return (
     <div className="min-h-screen flex flex-col">
@@ -18,9 +32,13 @@ function MedicalCenterStaffOngoingSessionPage() {
       {/* Body */}
       <div className="flex-grow px-8">
         <MCSMainGreeting
+          title="Session"
+          titleMemberName=""
+          breadcrumbItems={breadcrumbItems}
+          role="Medical Center Staff Member"
           medicalCenterName="Nawaloka Hospital"
-          memberName="Vishwa"
         />
+
         {/* Main Body div */}
         <Divider>
           <MCSDateTimeTitle />

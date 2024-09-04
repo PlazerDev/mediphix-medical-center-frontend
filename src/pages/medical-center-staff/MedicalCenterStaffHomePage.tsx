@@ -16,20 +16,20 @@ interface MCSMemeberData {
 }
 
 function MedicalCenterStaffHomePage() {
-  const [mcsMemeberData, setMCSMemberData] = useState<MCSMemeberData>();
-  const [loading, setLoading] = useState(true);
+  const [mcsMemeberData, setMCSMemberData] = useState<MCSMemeberData>({
+    first_name: "Vishwa",
+    medical_center_id: "1231",
+    medical_center_name: "Nawaloka",
+  });
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    setLoading(true);
-    axios
-      .get<MCSMemeberData>(
-        "http://localhost:9090/mcsMember?userId=66a4ccd911b7d9fcc87b5d6c"
-      )
-      .then((res) => {
-        setMCSMemberData(res.data);
-        setLoading(false);
-      });
-  }, []);
+  // setting breadcrumb
+  const breadcrumbItems = [
+    {
+      title: "Home",
+      link: "",
+    },
+  ];
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -39,14 +39,11 @@ function MedicalCenterStaffHomePage() {
       {!loading && (
         <div className="flex-grow px-8">
           <MCSMainGreeting
-            medicalCenterName={
-              mcsMemeberData
-                ? mcsMemeberData.medical_center_name
-                : "medical center name"
-            }
-            memberName={
-              mcsMemeberData ? mcsMemeberData.first_name : "mcs member name"
-            }
+            title="Good Evening"
+            titleMemberName={mcsMemeberData.first_name}
+            breadcrumbItems={breadcrumbItems}
+            role="Medical Center Staff Member"
+            medicalCenterName="Nawaloka Hospital"
           />
           {/* Main Body div */}
           <div className="px-8 bg-mediphix_card_background py-8 rounded-lg">

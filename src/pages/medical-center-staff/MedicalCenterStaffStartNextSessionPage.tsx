@@ -5,6 +5,24 @@ import doctorImg from "./../../assets/images/mcs/doctor_nurse.png";
 import { Button } from "antd";
 
 function MedicalCenterStaffStartNextSessionPage() {
+  const breadcrumbItems = [
+    {
+      title: "Home",
+      link: "/medicalCenterStaff",
+    },
+    {
+      title: "Ongoing Sessions",
+      link: "/medicalCenterStaff/onGoingSessions",
+    },
+    {
+      title: "A Session",
+      link: "/medicalCenterStaff/onGoingSessions/51351465465d",
+    },
+    {
+      title: "Start Next",
+      link: "",
+    },
+  ];
   return (
     <div className="min-h-screen flex flex-col">
       {/* Navigation Bar  */}
@@ -12,8 +30,11 @@ function MedicalCenterStaffStartNextSessionPage() {
       {/* Body */}
       <div className="flex-grow px-8">
         <MCSMainGreeting
+          title="Start Next Patient Session"
+          titleMemberName=""
+          breadcrumbItems={breadcrumbItems}
+          role="Medical Center Staff Member"
           medicalCenterName="Nawaloka Hospital"
-          memberName="Vishwa"
         />
         {/* Main Body div */}
         <div className="bg-mediphix_card_background p-8 rounded-lg flex flex-col items-center">
