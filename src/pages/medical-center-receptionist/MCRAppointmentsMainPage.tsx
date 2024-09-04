@@ -1,32 +1,25 @@
-import Footer from "./../../components/Footer";
-import bodyImg from "./../../assets/images/mcs/manageAppoinments.png";
-import { FaCalendarDays } from "react-icons/fa6";
-import { FaHandHoldingMedical } from "react-icons/fa";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import MCSNavBar from "../../components/mcs/MCSNavBar";
+import { useState } from "react";
+import Footer from "../../components/Footer";
+import Loading from "../../components/Loading";
 import MCSCustomButton from "../../components/mcs/MCSCustomButton";
 import MCSMainGreeting from "../../components/mcs/MCSMainGreeting";
-import Loading from "../../components/Loading";
+import MCSNavBar from "../../components/mcs/MCSNavBar";
+import bodyImg from "./../../assets/images/mcs/manageAppoinments.png";
+import { FaCalendarPlus, FaHandHoldingDollar } from "react-icons/fa6";
+import { GrUpdate } from "react-icons/gr";
 
-interface MCSMemeberData {
-  first_name: string;
-  medical_center_id: string;
-  medical_center_name: string;
-}
-
-function MedicalCenterStaffHomePage() {
-  const [mcsMemeberData, setMCSMemberData] = useState<MCSMemeberData>({
-    first_name: "Vishwa",
-    medical_center_id: "1231",
-    medical_center_name: "Nawaloka",
-  });
+function MCRAppointmentsMainPage() {
+  // setting loading
   const [loading, setLoading] = useState(false);
 
   // setting breadcrumb
   const breadcrumbItems = [
     {
       title: "Home",
+      link: "/medicalCenterReceptionist",
+    },
+    {
+      title: "Appointments",
       link: "",
     },
   ];
@@ -39,20 +32,19 @@ function MedicalCenterStaffHomePage() {
       {!loading && (
         <div className="flex-grow px-8">
           <MCSMainGreeting
-            title="Good Evening"
-            titleMemberName={mcsMemeberData.first_name}
+            title="Appointments"
+            titleMemberName=""
             breadcrumbItems={breadcrumbItems}
-            role="Medical Center Staff Member"
+            role="Medical Center Receptionist"
             medicalCenterName="Nawaloka Hospital"
           />
           {/* Main Body div */}
           <div className="px-8 bg-mediphix_card_background py-8 rounded-lg">
             <div className="flex flex-col md:flex-row items-center md:items-center md:justify-between">
               <p className="text-xl md:text-2xl font-bold">
-                Hi{" "}
-                {mcsMemeberData ? mcsMemeberData.first_name : "mcs member name"}
-                !
-                <br /> Manage your assigned clinic sessions here
+                Welocome,
+                <br />
+                Manage appointments here
               </p>
               <img
                 src={bodyImg}
@@ -62,16 +54,22 @@ function MedicalCenterStaffHomePage() {
             </div>
             <div className="flex flex-col items-center md:flex-row justify-center gap-4 mt-2">
               <MCSCustomButton
-                path="/medicalCenterStaff/upcomingSessions"
-                buttonTitle="Upcoming Clinic Sessions"
+                path=""
+                buttonTitle="Create Appointments"
                 isPrimary={false}
-                buttonIcon={FaCalendarDays}
+                buttonIcon={FaCalendarPlus}
               />
               <MCSCustomButton
-                path="/medicalCenterStaff/onGoingSessions"
-                buttonTitle="Ongoing Clinic Sessions"
+                path="/medicalCenterReceptionist/appointments/payment"
+                buttonTitle="Appointment Payments"
                 isPrimary={true}
-                buttonIcon={FaHandHoldingMedical}
+                buttonIcon={FaHandHoldingDollar}
+              />
+              <MCSCustomButton
+                path=""
+                buttonTitle="Update Appointments"
+                isPrimary={false}
+                buttonIcon={GrUpdate}
               />
             </div>
           </div>
@@ -84,4 +82,4 @@ function MedicalCenterStaffHomePage() {
   );
 }
 
-export default MedicalCenterStaffHomePage;
+export default MCRAppointmentsMainPage;
