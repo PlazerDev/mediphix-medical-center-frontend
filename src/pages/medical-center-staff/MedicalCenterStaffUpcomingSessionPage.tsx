@@ -28,13 +28,31 @@ function MedicalCenterStaffUpcomingSessionPage() {
     setDateComponents({ day, weekday, month, year });
   };
 
+  // setting breadcrumb
+  const breadcrumbItems = [
+    {
+      title: "Home",
+      link: "/medicalCenterStaff",
+    },
+    {
+      title: "Upcomming Sessions",
+      link: "",
+    },
+  ];
+
   return (
     <div className="min-h-screen flex flex-col">
       {/* Navigation Bar  */}
       <MCSNavBar />
       {/* Body */}
       <div className="flex-grow px-8">
-        <MCSMainGreeting memberName="Vishwa" medicalCenterName="Nawaloka" />
+        <MCSMainGreeting
+          title="Upcomming Sessions"
+          titleMemberName=""
+          breadcrumbItems={breadcrumbItems}
+          role="Medical Center Staff Member"
+          medicalCenterName="Nawaloka Hospital"
+        />
         {/* Main Body div */}
         <MCSCalender updateSelectedDate={updateSelectedDate} />
         <MCSSelectedDate

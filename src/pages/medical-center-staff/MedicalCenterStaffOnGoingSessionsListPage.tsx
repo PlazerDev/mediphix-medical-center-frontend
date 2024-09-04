@@ -10,6 +10,16 @@ import MCSEmptyCard from "../../components/mcs/MCSEmptyCard";
 
 function MedicalCenterStaffOnGoingSessionsListPage() {
   var noOfSessions: number = 2;
+  const breadcrumbItems = [
+    {
+      title: "Home",
+      link: "/medicalCenterStaff",
+    },
+    {
+      title: "Ongoing Sessions",
+      link: "",
+    },
+  ];
 
   if (noOfSessions > 0) {
     swal({
@@ -30,7 +40,13 @@ function MedicalCenterStaffOnGoingSessionsListPage() {
       <MCSNavBar />
       {/* Body */}
       <div className="flex-grow px-8">
-        <MCSMainGreeting memberName="Vishwa" medicalCenterName="Nawaloka" />
+        <MCSMainGreeting
+          title="Ongoing Sessions"
+          titleMemberName=""
+          breadcrumbItems={breadcrumbItems}
+          role="Medical Center Staff Member"
+          medicalCenterName="Nawaloka Hospital"
+        />
         {/* Main Body div from here*/}
         {noOfSessions === 0 && <MCSEmptyCard />}
         {noOfSessions > 0 && (
