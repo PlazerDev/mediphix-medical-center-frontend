@@ -70,6 +70,7 @@ function MedicalCenterStaffUpcomingSessionPage() {
             doctorEducation="MBBS (COL) specialized in cardiology"
             doctorImg={doctorImg}
             sessionId="#"
+            clickable={false}
           />
           <MCSOnGoingSessionDetailsCard
             timeFrame="06.00 AM - 08.00 AM"
@@ -80,6 +81,7 @@ function MedicalCenterStaffUpcomingSessionPage() {
             doctorEducation="MBBS (COL) specialized in cardiology"
             doctorImg={doctorImg}
             sessionId="#"
+            clickable={false}
           />
         </div>
       </div>

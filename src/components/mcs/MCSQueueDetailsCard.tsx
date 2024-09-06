@@ -1,8 +1,11 @@
 import MCSQueueCollapseCard from "./MCSQueueCollapseCard";
 
-function MCSQueueDetailsCard() {
+interface Props {
+  handler: () => void;
+}
+function MCSQueueDetailsCard({ handler }: Props) {
   return (
-    <div className="bg-mediphix_card_background p-8 rounded-lg">
+    <div className="bg-mediphix_card_background p-8 rounded-lg mt-4">
       <p className="font-bold text-mediphix_text_a">Queue Details</p>
       <div className="my-2 flex md:flex-row flex-col gap-2 md:gap-0">
         <div className="flex flex-1">
@@ -34,7 +37,7 @@ function MCSQueueDetailsCard() {
           </div>
         </div>
       </div>
-      <MCSQueueCollapseCard />
+      <MCSQueueCollapseCard handler={handler} />
     </div>
   );
 }
