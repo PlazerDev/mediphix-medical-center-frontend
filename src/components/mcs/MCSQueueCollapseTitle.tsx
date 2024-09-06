@@ -11,7 +11,7 @@ interface Props {
   title: string;
   isPaymentDone: boolean;
   isFinished: boolean;
-  isNext: boolean;
+  isNext: [boolean, number];
   isActive: boolean;
   isAbsent: boolean;
 }
@@ -48,9 +48,9 @@ function MCSQueueCollapseTitle({
             On Going
           </Tag>
         )}
-        {isNext && (
-          <Tag icon={<ExclamationCircleOutlined />} color="warning">
-            Next Patient
+        {isNext[0] && (
+          <Tag icon={<ExclamationCircleOutlined />} color="geekblue">
+            Next Patient {isNext[1]}
           </Tag>
         )}
       </div>
