@@ -4,11 +4,10 @@ import MCSMainGreeting from "../../components/mcs/MCSMainGreeting";
 import MCSCustomButton from "../../components/mcs/MCSCustomButton";
 import Loading from "../../components/Loading";
 import Footer from "../../components/Footer";
-import { FaCalendarDays, FaUserDoctor } from "react-icons/fa6";
-import { FaClinicMedical } from "react-icons/fa";
-import bodyImg from "./../../assets/images/mca/hello.gif";
+import { FaUserDoctor, FaUsers } from "react-icons/fa6";
+import bodyImg from "./../../assets/images/mcs/manageAppoinments.png";
 
-function MCAHomePage() {
+function MCADoctorMainPage() {
   // setting loading
   const [loading, setLoading] = useState(false);
 
@@ -17,6 +16,10 @@ function MCAHomePage() {
     {
       title: "Home",
       link: "/medicalCenterAdmin",
+    },
+    {
+      title: "Doctors",
+      link: "",
     },
   ];
 
@@ -38,9 +41,9 @@ function MCAHomePage() {
           <div className="px-8 bg-mediphix_card_background py-8 rounded-lg">
             <div className="flex flex-col md:flex-row items-center md:items-center md:justify-between">
               <p className="text-xl md:text-2xl font-bold">
-                Welocome,
+                Hi there !
                 <br />
-                Here is your control center
+                Manage your clinic doctors here
               </p>
               <img
                 src={bodyImg}
@@ -50,22 +53,16 @@ function MCAHomePage() {
             </div>
             <div className="flex flex-col items-center md:flex-row justify-center gap-4 mt-2">
               <MCSCustomButton
-                path="/medicalCenterAdmin/doctors"
-                buttonTitle="Doctors"
+                path=""
+                buttonTitle="Join Requests"
                 isPrimary={false}
-                buttonIcon={FaUserDoctor}
+                buttonIcon={FaUsers}
               />
               <MCSCustomButton
-                path="/medicalCenterAdmin/sessions"
-                buttonTitle="Sessions"
+                path=""
+                buttonTitle="Clinic Doctors"
                 isPrimary={true}
-                buttonIcon={FaCalendarDays}
-              />
-              <MCSCustomButton
-                path="/medicalCenterAdmin/staff"
-                buttonTitle="Staff"
-                isPrimary={false}
-                buttonIcon={FaClinicMedical}
+                buttonIcon={FaUserDoctor}
               />
             </div>
           </div>
@@ -78,4 +75,4 @@ function MCAHomePage() {
   );
 }
 
-export default MCAHomePage;
+export default MCADoctorMainPage;
