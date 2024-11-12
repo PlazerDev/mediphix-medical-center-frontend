@@ -1,16 +1,15 @@
 import { useState } from "react";
 import MCSNavBar from "../../components/mcs/MCSNavBar";
 import MCSMainGreeting from "../../components/mcs/MCSMainGreeting";
+import bodyImg from "./../../assets/images/mcs/manageAppoinments.png";
 import MCSCustomButton from "../../components/mcs/MCSCustomButton";
+import { HiDocumentDuplicate } from "react-icons/hi2";
+import { FaCalendarAlt } from "react-icons/fa";
 import Loading from "../../components/Loading";
 import Footer from "../../components/Footer";
-import { FaUserDoctor, FaUsers } from "react-icons/fa6";
-import bodyImg from "./../../assets/images/mcs/manageAppoinments.png";
 
-function MCADoctorMainPage() {
-  // setting loading
+function MCASessionMainPage() {
   const [loading, setLoading] = useState(false);
-
   // setting breadcrumb
   const breadcrumbItems = [
     {
@@ -18,7 +17,7 @@ function MCADoctorMainPage() {
       link: "/medicalCenterAdmin",
     },
     {
-      title: "Doctors",
+      title: "Sessions",
       link: "",
     },
   ];
@@ -41,9 +40,9 @@ function MCADoctorMainPage() {
           <div className="px-8 bg-mediphix_card_background py-8 rounded-lg">
             <div className="flex flex-col md:flex-row items-center md:items-center md:justify-between">
               <p className="text-xl md:text-2xl font-bold">
-                Welcome,
+                Welocome,
                 <br />
-                Manage your clinic doctors here
+                Manage your clinic sessions here
               </p>
               <img
                 src={bodyImg}
@@ -54,15 +53,15 @@ function MCADoctorMainPage() {
             <div className="flex flex-col items-center md:flex-row justify-center gap-4 mt-2">
               <MCSCustomButton
                 path=""
-                buttonTitle="Join Requests"
+                buttonTitle="Clinic Session Vacancies"
                 isPrimary={false}
-                buttonIcon={FaUsers}
+                buttonIcon={HiDocumentDuplicate}
               />
               <MCSCustomButton
-                path=""
-                buttonTitle="Clinic Doctors"
+                path="/medicalCenterAdmin/sessions/upcommingSessions"
+                buttonTitle="Upcoming Clinic Sessions"
                 isPrimary={true}
-                buttonIcon={FaUserDoctor}
+                buttonIcon={FaCalendarAlt}
               />
             </div>
           </div>
@@ -75,4 +74,4 @@ function MCADoctorMainPage() {
   );
 }
 
-export default MCADoctorMainPage;
+export default MCASessionMainPage;

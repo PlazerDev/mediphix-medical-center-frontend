@@ -44,7 +44,7 @@ function MCACStaffMainPage() {
               <p className="text-xl md:text-2xl font-bold">
                 Welocome,
                 <br />
-                Here is your control center
+                Manage your clinic staff here
               </p>
               <img
                 src={bodyImg}
