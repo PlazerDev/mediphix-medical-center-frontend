@@ -4,6 +4,7 @@ import MCADoctorMainPage from "../pages/medical-center-admin/MCADoctorMainPage";
 import MCACStaffMainPage from "../pages/medical-center-admin/MCACStaffMainPage";
 import MCASessionMainPage from "../pages/medical-center-admin/MCASessionMainPage";
 import MCAUpcommingSessionListPage from "../pages/medical-center-admin/MCAUpcommingSessionListPage";
+import MCAUpcommingSessionPage from "../pages/medical-center-admin/MCAUpcommingSessionPage";
 
 function MedicalCenterAdminRoutes() {
   return (
@@ -15,6 +16,10 @@ function MedicalCenterAdminRoutes() {
       <Route
         path="/sessions/upcommingSessions"
         element={<MCAUpcommingSessionListPage />}
+      />
+      <Route
+        path="/clinicSessions/upcommingSessions/:sessionId"
+        element={<MCAUpcommingSessionPage />}
       />
     </Routes>
   );
