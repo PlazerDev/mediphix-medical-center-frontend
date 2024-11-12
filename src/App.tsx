@@ -5,6 +5,7 @@ import { ConfigProvider } from "antd";
 import LandingPage from "./pages/LandingPage.tsx";
 import MedicalCenterReceptionistRoutes from "./routes/MedicalCenterReceptionistRoutes.tsx";
 import MedicalCenterAdminRoutes from "./routes/MedicalCenterAdminRoutes.tsx";
+import MedicalCenterLabStaffRoutes from "./routes/MedicalCenterLabStaffRoutes.tsx";
 
 function App() {
   const asgardeoConfig = {
@@ -54,6 +55,11 @@ function App() {
               <Route
                 path="/medicalCenterAdmin/*"
                 element={<MedicalCenterAdminRoutes />}
+              />
+              {/* Medical Center Lab Staff Routes  */}
+              <Route
+                path="/medicalCenterLabStaff/*"
+                element={<MedicalCenterLabStaffRoutes />}
               />
             </Routes>
           </Router>
