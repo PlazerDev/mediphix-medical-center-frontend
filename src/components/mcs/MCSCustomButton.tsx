@@ -32,7 +32,7 @@ function MCSCustomButton({
         className="h-full absolute right-0 mix-blend-luminosity opacity-25"
       />
       <div className="z-10 flex flex-col justify-center items-center gap-4">
-        <ButtonIcon className="text-4xl text-mediphix_text_d" />
+        <ButtonIcon className="text-4xl text-mediphix_card_background" />
         <p className="text-mediphix_card_background font-bold text-center">
           {buttonTitle}
         </p>
