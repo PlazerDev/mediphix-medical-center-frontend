@@ -44,7 +44,7 @@ function MCACStaffMainPage() {
               <p className="text-xl md:text-2xl font-bold">
                 Welocome,
                 <br />
-                Manage your clinic staff here
+                Manage your clinic employees here
               </p>
               <img
                 src={bodyImg}
@@ -67,7 +67,7 @@ function MCACStaffMainPage() {
               />
               <MCSCustomButton
                 path=""
-                buttonTitle="Clinic Laboratories"
+                buttonTitle="Clinic Laboratory Staff"
                 isPrimary={false}
                 buttonIcon={FaFileMedicalAlt}
               />
