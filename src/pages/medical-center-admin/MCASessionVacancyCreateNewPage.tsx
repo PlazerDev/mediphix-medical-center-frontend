@@ -3,13 +3,10 @@ import MCSNavBar from "../../components/mcs/MCSNavBar";
 import MCSMainGreeting from "../../components/mcs/MCSMainGreeting";
 import Loading from "../../components/Loading";
 import Footer from "../../components/Footer";
-import NormalButtonWithIcon from "../../components/NormalButtonWithIcon";
-import { FaPlusCircle } from "react-icons/fa";
-import MCATable from "../../components/mca/MCATable";
+import MCAVacancyNavigator from "../../components/mca/MCAVacancyNavigator";
 
-function MCASessionVacancyMainPage() {
+function MCASessionVacancyCreateNewPage() {
   const [loading, setLoading] = useState(false);
-  // setting breadcrumb
   const breadcrumbItems = [
     {
       title: "Home",
@@ -21,6 +18,10 @@ function MCASessionVacancyMainPage() {
     },
     {
       title: "Vacancies",
+      link: "/medicalCenterAdmin/sessions/vacancies",
+    },
+    {
+      title: "New Vacancy",
       link: "",
     },
   ];
@@ -33,24 +34,14 @@ function MCASessionVacancyMainPage() {
       {!loading && (
         <div className="flex-grow px-8">
           <MCSMainGreeting
-            title="Clinic Sessions Vacancies"
+            title="Create A New Clinic Session Vacancy"
             titleMemberName=""
             breadcrumbItems={breadcrumbItems}
             role="Medical Center Admin"
             medicalCenterName="Nawaloka Hospital"
           />
           {/* Main Body div */}
-          <div className="flex flex-col items-start">
-            <div className="h-8 mb-4">
-              <NormalButtonWithIcon
-                buttonIcon={FaPlusCircle}
-                colorType={2}
-                link="/medicalCenterAdmin/sessions/vacancies/createNew"
-                title="Create a new vacancy"
-              />
-            </div>
-            <MCATable />
-          </div>
+          <MCAVacancyNavigator />
         </div>
       )}
       {loading && <Loading />}
@@ -60,4 +51,4 @@ function MCASessionVacancyMainPage() {
   );
 }
 
-export default MCASessionVacancyMainPage;
+export default MCASessionVacancyCreateNewPage;
