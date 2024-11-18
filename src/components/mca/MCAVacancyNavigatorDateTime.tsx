@@ -16,7 +16,12 @@ type vacancyData = {
   endTime: String;
 };
 
-function MCAVacancyNavigatorDateTime() {
+interface Props {
+  setCurrent: (value: number) => void;
+  setIs1Complete: (value: boolean) => void;
+}
+
+function MCAVacancyNavigatorDateTime({ setCurrent, setIs1Complete }: Props) {
   const [timeList, setTimeList] = useState<String[][]>([]);
   const [vacancyDataList, setVacancyDataList] = useState<vacancyData[]>([]);
 
@@ -37,6 +42,11 @@ function MCAVacancyNavigatorDateTime() {
   useEffect(() => {
     console.log(timeList);
   }, [timeList]);
+
+  function moveToNext() {
+    setIs1Complete(true);
+    setCurrent(1);
+  }
 
   return (
     <>
@@ -117,7 +127,7 @@ function MCAVacancyNavigatorDateTime() {
           <div className="flex flex-row justify-end mt-4">
             <NormalButtonWithFunction
               colorType={2}
-              handler={() => {}}
+              handler={moveToNext}
               title="Move to next step"
             />
           </div>

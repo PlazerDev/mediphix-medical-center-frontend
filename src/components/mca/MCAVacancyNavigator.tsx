@@ -56,7 +56,12 @@ function MCAVacancyNavigator() {
         />
       </div>
       <div className="mt-4">
-        {current === 0 && <MCAVacancyNavigatorDateTime />}
+        {current === 0 && (
+          <MCAVacancyNavigatorDateTime
+            setCurrent={setCurrent}
+            setIs1Complete={setIs1Complete}
+          />
+        )}
         {current === 1 && <MCAVacancyNavigatorAdditionalDetails />}
         {current === 2 && <MCAVacancyNavigatorPreview />}
       </div>
