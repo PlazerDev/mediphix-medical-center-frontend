@@ -72,23 +72,35 @@ function MCAVacancyNavigatorAdditionalDetails({
     <div>
       <div className="bg-mediphix_card_background rounded-lg px-8 py-4">
         <p className="font-bold">Additional Details</p>
-        <div className="flex flex-col gap-2 mt-4">
-          <div className="flex flex-col">
-            <p>Appointment Category</p>
-            <Select
-              mode="multiple"
-              maxTagCount={MAX_COUNT}
-              value={aptCategories}
-              style={{ width: "400px" }}
-              onChange={(values) => setAptCategories(values)}
-              suffixIcon={suffix}
-              placeholder="Please select one or more categories"
-              options={[
-                { value: "opd", label: "OPD" },
-                { value: "dental", label: "Dental" },
-                { value: "mental_health", label: "Mental Health" },
-              ]}
-            />
+        <div className="flex flex-col gap-4 mt-4">
+          <div className="flex flex-row justify-between gap-4">
+            <div className="flex flex-col flex-1">
+              <p>Appointment Category</p>
+              <Select
+                mode="multiple"
+                maxTagCount={MAX_COUNT}
+                value={aptCategories}
+                onChange={(values) => setAptCategories(values)}
+                suffixIcon={suffix}
+                placeholder="Please select one or more categories"
+                options={[
+                  { value: "opd", label: "OPD" },
+                  { value: "dental", label: "Dental" },
+                  { value: "mental_health", label: "Mental Health" },
+                ]}
+              />
+            </div>
+            <div className="flex flex-col w-60 flex-1">
+              <p>Contact Number</p>
+              <Input
+                value={contactNumber}
+                onChange={(e) => setContactNumber(e.target.value)}
+                type="tel"
+                addonBefore="+94"
+                placeholder="Enter your contact number"
+                required
+              />
+            </div>
           </div>
           <div className="flex flex-col">
             <p>Note for doctors</p>
@@ -102,19 +114,8 @@ function MCAVacancyNavigatorAdditionalDetails({
               style={{ height: 120, resize: "none" }}
             />
           </div>
-          <div className="flex flex-col w-60">
-            <p>Contact Number</p>
-            <Input
-              value={contactNumber}
-              onChange={(e) => setContactNumber(e.target.value)}
-              type="number"
-              addonBefore="+94"
-              placeholder="Enter your contact number"
-              required
-            />
-          </div>
         </div>
-        <div className="flex flex-row justify-end mt-4">
+        <div className="flex flex-row justify-end mt-8">
           <NormalButtonWithFunction
             colorType={2}
             handler={moveToNext}

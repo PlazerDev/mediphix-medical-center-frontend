@@ -49,7 +49,7 @@ function MCAVacancyNavigatorPreview({
       </div>
       <div className="bg-mediphix_card_background rounded-lg px-8 py-4 mt-4">
         <p className="font-bold">Date & Time Details</p>
-        <div className="mt-4">
+        <div className="mt-4 flex flex-col gap-4">
           {vacancyDataList.map((dataObj, index) => {
             return (
               <div className="flex flex-row gap-1 border-2 border-mediphix_text_d p-4 rounded-lg items-center">
