@@ -1,7 +1,129 @@
-import React from "react";
+import { Input, Select } from "antd";
+import { useState } from "react";
+import { DownOutlined } from "@ant-design/icons";
+import TextArea from "antd/es/input/TextArea";
+import NormalButtonWithFunction from "../NormalButtonWithFunction";
+import Swal from "sweetalert2";
 
-function MCAVacancyNavigatorAdditionalDetails() {
-  return <div>MCAVacancyNavigatorAdditionalDetails</div>;
+const MAX_COUNT = 3;
+
+type additionalData = {
+  aptCategories: string[];
+  noteForDoctors: string;
+  contactNumber: string;
+};
+
+interface Props {
+  additionalDataObj: additionalData;
+  setAdditionalDataObj: React.Dispatch<React.SetStateAction<additionalData>>;
+  setCurrent: (value: number) => void;
+  setIs2Complete: (value: boolean) => void;
+}
+
+function MCAVacancyNavigatorAdditionalDetails({
+  additionalDataObj,
+  setAdditionalDataObj,
+  setCurrent,
+  setIs2Complete,
+}: Props) {
+  const [aptCategories, setAptCategories] = useState<string[]>(
+    additionalDataObj.aptCategories || []
+  );
+  const [noteForDoctors, setNoteForDoctors] = useState<string>(
+    additionalDataObj.noteForDoctors || ""
+  );
+  const [contactNumber, setContactNumber] = useState<string>(
+    additionalDataObj.contactNumber || ""
+  );
+
+  const suffix = (
+    <>
+      <span>
+        {aptCategories.length} / {MAX_COUNT}
+      </span>
+      <DownOutlined />
+    </>
+  );
+
+  function moveToNext() {
+    if (
+      aptCategories.length > 0 &&
+      noteForDoctors.trim() !== "" &&
+      contactNumber.trim() !== ""
+    ) {
+      setAdditionalDataObj({
+        aptCategories,
+        noteForDoctors,
+        contactNumber,
+      });
+      setIs2Complete(true);
+      setCurrent(2);
+    } else {
+      Swal.fire({
+        title: "Complete Current Step to Proceed",
+        text: "Please complete all the required actions in this step before moving to the next.",
+        icon: "warning",
+        confirmButtonColor: "#FF7300",
+      });
+    }
+  }
+
+  return (
+    <div>
+      <div className="bg-mediphix_card_background rounded-lg px-8 py-4">
+        <p className="font-bold">Additional Details</p>
+        <div className="flex flex-col gap-2 mt-4">
+          <div className="flex flex-col">
+            <p>Appointment Category</p>
+            <Select
+              mode="multiple"
+              maxTagCount={MAX_COUNT}
+              value={aptCategories}
+              style={{ width: "400px" }}
+              onChange={(values) => setAptCategories(values)}
+              suffixIcon={suffix}
+              placeholder="Please select one or more categories"
+              options={[
+                { value: "opd", label: "OPD" },
+                { value: "dental", label: "Dental" },
+                { value: "mental_health", label: "Mental Health" },
+              ]}
+            />
+          </div>
+          <div className="flex flex-col">
+            <p>Note for doctors</p>
+            <TextArea
+              required
+              showCount
+              maxLength={300}
+              onChange={(e) => setNoteForDoctors(e.target.value)}
+              value={noteForDoctors}
+              placeholder="Add your note about the vacancy for doctors"
+              style={{ height: 120, resize: "none" }}
+            />
+          </div>
+          <div className="flex flex-col w-60">
+            <p>Contact Number</p>
+            <Input
+              value={contactNumber}
+              onChange={(e) => setContactNumber(e.target.value)}
+              type="number"
+              addonBefore="+94"
+              placeholder="Enter your contact number"
+              required
+            />
+          </div>
+        </div>
+        <div className="flex flex-row justify-end mt-4">
+          <NormalButtonWithFunction
+            colorType={2}
+            handler={moveToNext}
+            title="Move to next step"
+          />
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default MCAVacancyNavigatorAdditionalDetails;

@@ -19,11 +19,17 @@ type vacancyData = {
 interface Props {
   setCurrent: (value: number) => void;
   setIs1Complete: (value: boolean) => void;
+  setVacancyDataList: React.Dispatch<React.SetStateAction<vacancyData[]>>;
+  vacancyDataList: vacancyData[];
 }
 
-function MCAVacancyNavigatorDateTime({ setCurrent, setIs1Complete }: Props) {
+function MCAVacancyNavigatorDateTime({
+  setCurrent,
+  setIs1Complete,
+  vacancyDataList,
+  setVacancyDataList,
+}: Props) {
   const [timeList, setTimeList] = useState<String[][]>([]);
-  const [vacancyDataList, setVacancyDataList] = useState<vacancyData[]>([]);
 
   // Handler to manage the selected time range
   function timeSelectedHandler(startTime: String, endTime: String) {
@@ -101,17 +107,7 @@ function MCAVacancyNavigatorDateTime({ setCurrent, setIs1Complete }: Props) {
                         : "No Repetition, " + dataObj.selectedDate + " once"
                     }
                   />
-                  <CardTitleAndValue
-                    title={"Sub Range of Dates"}
-                    value={
-                      dataObj.subRangeEndDate === ""
-                        ? "No subrange of dates"
-                        : "From " +
-                          dataObj.selectedDate +
-                          " to " +
-                          dataObj.subRangeEndDate
-                    }
-                  />
+
                   <button
                     className="bg-red-500 rounded-full p-1 hover:bg-red-600 h-8 w-8 flex items-center justify-center"
                     onClick={() => {

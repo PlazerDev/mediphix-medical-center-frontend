@@ -1,21 +1,56 @@
 import { Steps } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MCAVacancyNavigatorDateTime from "./MCAVacancyNavigatorDateTime";
 import MCAVacancyNavigatorAdditionalDetails from "./MCAVacancyNavigatorAdditionalDetails";
 import MCAVacancyNavigatorPreview from "./MCAVacancyNavigatorPreview";
 import Swal from "sweetalert2";
 
+type vacancyData = {
+  mainRangeStartDate: string;
+  mainRangeEndDate: string;
+  selectedDate: string;
+  repeatDays: string[];
+  subRangeEndDate: string;
+  startTime: String;
+  endTime: String;
+};
+
+type additionalData = {
+  aptCategories: string[];
+  noteForDoctors: string;
+  contactNumber: string;
+};
+
 function MCAVacancyNavigator() {
   const [current, setCurrent] = useState(0);
   const [is1Complete, setIs1Complete] = useState(false);
   const [is2Complete, setIs2Complete] = useState(false);
+  const [vacancyDataList, setVacancyDataList] = useState<vacancyData[]>([]);
+  const [additionalDataObj, setAdditionalDataObj] = useState<additionalData>({
+    aptCategories: [],
+    noteForDoctors: "",
+    contactNumber: "",
+  });
+
+  useEffect(() => {
+    if (vacancyDataList.length === 0) {
+      setIs1Complete(false);
+    }
+    if (
+      additionalDataObj.aptCategories.length === 0 ||
+      additionalDataObj.contactNumber === "" ||
+      additionalDataObj.noteForDoctors === ""
+    ) {
+      setIs2Complete(false);
+    }
+  }, [vacancyDataList, additionalDataObj]);
 
   const onChange = (value: number) => {
     if (current > value) {
       setCurrent(value);
-    } else if (value === 2 && is1Complete === true) {
+    } else if (value === 1 && is1Complete === true) {
       setCurrent(value);
-    } else if (value === 3 && is1Complete === true && is2Complete === true) {
+    } else if (value === 2 && is1Complete === true && is2Complete === true) {
       setCurrent(value);
     } else {
       Swal.fire({
@@ -39,18 +74,22 @@ function MCAVacancyNavigator() {
           items={[
             {
               title: "Dates & Time Details",
-              status: "process",
-              description: "In Progress",
+              status: is1Complete ? "finish" : "process",
+              description: is1Complete ? "Completed" : "In Progress",
             },
             {
               title: "Additional Details",
-              status: "wait",
-              description: "Not Completed",
+              status: is2Complete ? "finish" : is1Complete ? "process" : "wait",
+              description: is2Complete
+                ? "Completed"
+                : is1Complete
+                ? "In Progress"
+                : "Not Completed",
             },
             {
               title: "Preview",
-              status: "wait",
-              description: "Not Completed",
+              status: is2Complete ? "process" : "wait",
+              description: is2Complete ? "In Progress" : "Not Completed",
             },
           ]}
         />
@@ -58,12 +97,26 @@ function MCAVacancyNavigator() {
       <div className="mt-4">
         {current === 0 && (
           <MCAVacancyNavigatorDateTime
+            setVacancyDataList={setVacancyDataList}
+            vacancyDataList={vacancyDataList}
             setCurrent={setCurrent}
             setIs1Complete={setIs1Complete}
           />
         )}
-        {current === 1 && <MCAVacancyNavigatorAdditionalDetails />}
-        {current === 2 && <MCAVacancyNavigatorPreview />}
+        {current === 1 && (
+          <MCAVacancyNavigatorAdditionalDetails
+            additionalDataObj={additionalDataObj}
+            setAdditionalDataObj={setAdditionalDataObj}
+            setCurrent={setCurrent}
+            setIs2Complete={setIs2Complete}
+          />
+        )}
+        {current === 2 && (
+          <MCAVacancyNavigatorPreview
+            vacancyDataList={vacancyDataList}
+            additionalDataObj={additionalDataObj}
+          />
+        )}
       </div>
     </>
   );
