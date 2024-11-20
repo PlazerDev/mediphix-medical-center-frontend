@@ -1,17 +1,27 @@
+import { useState, useEffect } from "react";
+
 function MCSDateTimeTitle() {
-  const now = new Date();
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000); // Update every second
+
+    return () => clearInterval(intervalId); // Clean up the interval on component unmount
+  }, []);
 
   // Format the time as hh:mm AM/PM
-  const hours = now.getHours();
-  const minutes = now.getMinutes();
+  const hours = currentTime.getHours();
+  const minutes = currentTime.getMinutes();
   const formattedTime = `${hours % 12 || 12}:${
     minutes < 10 ? "0" : ""
   }${minutes} ${hours >= 12 ? "PM" : "AM"}`;
 
   // Format the date as yyyy MMMM dd
-  const year = now.getFullYear();
-  const month = now.toLocaleString("default", { month: "long" });
-  const day = now.getDate();
+  const year = currentTime.getFullYear();
+  const month = currentTime.toLocaleString("default", { month: "long" });
+  const day = currentTime.getDate();
   const formattedDate = `${year} ${month} ${day}`;
 
   return (

@@ -1,15 +1,42 @@
 import { Link, useParams } from "react-router-dom";
 import Footer from "./../../components/Footer";
-import { Button, Divider } from "antd";
+import { Button, Divider, Modal } from "antd";
 import MCSNavBar from "../../components/mcs/MCSNavBar";
 import MCSMainGreeting from "../../components/mcs/MCSMainGreeting";
 import MCSDateTimeTitle from "../../components/mcs/MCSDateTimeTitle";
 import MCSTimeSlotCard from "../../components/mcs/MCSTimeSlotCard";
-import MCSPatientDetailsCard from "../../components/mcs/MCSPatientDetailsCard";
-import MCSNextPatientDetailsCard from "../../components/mcs/MCSNextPatientDetailsCard";
 import MCSQueueDetailsCard from "../../components/mcs/MCSQueueDetailsCard";
+import NormalButton from "../../components/NormalButton";
+import { useState } from "react";
+import Swal from "sweetalert2";
+import MCRPaymentScanQr from "../../components/mcr/MCRPaymentScanQr";
 
 function MedicalCenterStaffOngoingSessionPage() {
+  const [appointmentNumber, setAppointmentNumber] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  function handleScanResult(appointmentNumber: string) {
+    setAppointmentNumber(appointmentNumber);
+    setIsModalOpen(false);
+    Swal.fire({
+      icon: "success",
+      title: "Patient Varified",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   const breadcrumbItems = [
     {
       title: "Home",
@@ -20,7 +47,7 @@ function MedicalCenterStaffOngoingSessionPage() {
       link: "/medicalCenterStaff/onGoingSessions",
     },
     {
-      title: "A Session",
+      title: "A Clinic Session",
       link: "",
     },
   ];
@@ -32,7 +59,7 @@ function MedicalCenterStaffOngoingSessionPage() {
       {/* Body */}
       <div className="flex-grow px-8">
         <MCSMainGreeting
-          title="Session"
+          title="Clinic Session"
           titleMemberName=""
           breadcrumbItems={breadcrumbItems}
           role="Medical Center Staff Member"
@@ -40,6 +67,16 @@ function MedicalCenterStaffOngoingSessionPage() {
         />
 
         {/* Main Body div */}
+        <Modal
+          title="Point the QR Code to the camera"
+          open={isModalOpen}
+          onOk={handleOk}
+          onCancel={handleCancel}
+          destroyOnClose={true}
+        >
+          <MCRPaymentScanQr handleScanResult={handleScanResult} />
+        </Modal>
+
         <Divider>
           <MCSDateTimeTitle />
         </Divider>
@@ -48,13 +85,13 @@ function MedicalCenterStaffOngoingSessionPage() {
           maxPatientSessions={8}
           status="In Progress"
         />
-        <MCSPatientDetailsCard />
-        <MCSNextPatientDetailsCard />
-        <MCSQueueDetailsCard />
+        <MCSQueueDetailsCard handler={showModal} />
         <div className="flex justify-end mt-4">
-          <Link to={"/medicalCenterStaff/onGoingSessions/" + sessionId + "/#"}>
-            <Button type="primary">End Current Time Slot & Start Next</Button>
-          </Link>
+          <NormalButton
+            colorType={2}
+            link={"/medicalCenterStaff/onGoingSessions/" + sessionId + "/#"}
+            title="End Current Time Slot & Start Next"
+          />
         </div>
       </div>
       {/* Footer */}
