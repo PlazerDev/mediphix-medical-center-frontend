@@ -178,7 +178,7 @@ function MCAVacancyCalender({ startDate, endDate, vacancyDataHandler }: Props) {
                   setRepetitionPatternDays={setRepetitionPatternDays}
                 />
               </div>
-              <div className="mt-8">
+              {/* <div className="mt-8">
                 <div className="flex flex-row items-center gap-2">
                   <Switch
                     onChange={repeatSubRangeSwitchHandler}
@@ -202,7 +202,7 @@ function MCAVacancyCalender({ startDate, endDate, vacancyDataHandler }: Props) {
                     />
                   </>
                 )}
-              </div>
+              </div> */}
             </>
           )}
         </div>
