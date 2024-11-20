@@ -45,10 +45,6 @@ function MCAVacancyNavigatorDateTime({
     setVacancyDataList((prevList) => prevList.filter((_, i) => i !== index));
   }
 
-  useEffect(() => {
-    console.log(timeList);
-  }, [timeList]);
-
   function moveToNext() {
     setIs1Complete(true);
     setCurrent(1);
@@ -57,7 +53,7 @@ function MCAVacancyNavigatorDateTime({
   return (
     <>
       {/* if no time range selected yet */}
-      {timeList.length === 0 && (
+      {vacancyDataList.length === 0 && (
         <div className="bg-mediphix_card_background rounded-lg p-8 mb-4">
           <MCAVacancyDateTimeNotSelect />
         </div>
