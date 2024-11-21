@@ -28,6 +28,10 @@ function MedicalCenterAdminRoutes() {
         element={<MCASessionVacancyMainPage />}
       />
       <Route
+        path="/sessions/vacancies/:vacancyId"
+        element={<MCASessionVacancyDetailedPage />}
+      />
+      <Route
         path="/sessions/vacancies/createNew"
         element={<MCASessionVacancyCreateNewPage />}
       />

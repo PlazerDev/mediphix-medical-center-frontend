@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Tag } from "antd";
+import { Table, Tag, Button } from "antd";
 import type { TableColumnsType, TableProps } from "antd";
 
 interface DataType {
@@ -37,12 +37,25 @@ const columns: TableColumnsType<DataType> = [
       },
     ],
     onFilter: (value, record) => record.status.indexOf(value as string) === 0,
+    render: (status) => {
+      const color = status === "OPEN" ? "green" : "red";
+      return <Tag color={color}>{status}</Tag>;
+    },
   },
   {
     title: "Number of Responses",
     dataIndex: "noOfResponses",
     sorter: (a, b) => a.noOfResponses - b.noOfResponses,
     sortDirections: ["descend", "ascend"],
+  },
+  {
+    title: "Action",
+    key: "action",
+    render: (_, record) => (
+      <Button type="link" onClick={() => console.log(`View more for`, record)}>
+        View More
+      </Button>
+    ),
   },
 ];
 
