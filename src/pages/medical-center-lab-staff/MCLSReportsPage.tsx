@@ -3,6 +3,11 @@ import Loading from "../../components/Loading";
 import Footer from "../../components/Footer";
 import MCSMainGreeting from "../../components/mcs/MCSMainGreeting";
 import MCSNavBar from "../../components/mcs/MCSNavBar";
+import ReportBacklogTitle from "../../components/mcls/MCLSReportBacklogTitle";
+import { Button, Tooltip } from "antd";
+import MCLSReport1stCol from "../../components/mcls/MCLSReport1stCol";
+import MCLSReport2ndCol from "../../components/mcls/MCLSReport2ndCol";
+import MCLSReport3rdCol from "../../components/mcls/MCLSReport3rdCol";
 
 function MCLSReportsPage() {
   // setting loading
@@ -35,16 +40,10 @@ function MCLSReportsPage() {
             medicalCenterName="Nawaloka Hospital"
           />
           {/* Main Body div */}
-          <div className="bg-red-400 rounded-lg flex justify-between gap-8">
-            <div className="flex-1 bg-mediphix_card_background p-8 rounded-lg">
-              <MCLSReportsPage />
-            </div>
-            <div className="flex-1 bg-mediphix_card_background p-8 rounded-lg">
-              In Progress
-            </div>
-            <div className="flex-1 bg-mediphix_card_background p-8 rounded-lg">
-              Done
-            </div>
+          <div className="rounded-lg flex justify-between gap-8">
+            <MCLSReport1stCol />
+            <MCLSReport2ndCol />
+            <MCLSReport3rdCol />
           </div>
         </div>
       )}
