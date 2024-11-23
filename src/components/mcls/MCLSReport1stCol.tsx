@@ -67,7 +67,7 @@ function MCLSReport1stCol() {
                     value={item.dateAdded}
                   />
                 </div>
-                <div className="w-32 h-full flex items-center justify-center">
+                <div className="w-32 h-full flex items-center justify-end">
                   {item.isUrgent && (
                     <Tag
                       icon={<ExclamationCircleOutlined />}

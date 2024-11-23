@@ -61,7 +61,7 @@ function MCLSReport2ndCol() {
                     value={item.dateAdded}
                   />
                 </div>
-                <div className="w-32 h-full flex items-center justify-center">
+                <div className="w-32 h-full flex items-center justify-end">
                   {item.isUrgent && (
                     <Tag
                       icon={<ExclamationCircleOutlined />}
@@ -82,7 +82,7 @@ function MCLSReport2ndCol() {
       </div>
       <Pagination align="end" defaultCurrent={1} total={50} className="mt-4" />
       <Drawer
-        title={"Report Backlog - " + openedReportData.refNumber}
+        title={"In Progress - " + openedReportData.refNumber}
         onClose={onClose}
         open={open}
         size="large"
