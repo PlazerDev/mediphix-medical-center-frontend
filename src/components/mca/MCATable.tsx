@@ -1,6 +1,7 @@
 import React from "react";
-import { Table, Tag } from "antd";
+import { Table, Tag, Button } from "antd";
 import type { TableColumnsType, TableProps } from "antd";
+import { useNavigate } from "react-router-dom";
 
 interface DataType {
   key: React.Key;
@@ -9,42 +10,6 @@ interface DataType {
   status: string;
   noOfResponses: number;
 }
-
-const columns: TableColumnsType<DataType> = [
-  {
-    title: "Opened Date",
-    dataIndex: "openedDate",
-    defaultSortOrder: "descend",
-    sorter: (a, b) =>
-      new Date(a.openedDate).getTime() - new Date(b.openedDate).getTime(),
-    sortDirections: ["descend", "ascend"],
-  },
-  {
-    title: "Appointment Categories",
-    dataIndex: "aptCategory",
-  },
-  {
-    title: "Status",
-    dataIndex: "status",
-    filters: [
-      {
-        text: "OPEN",
-        value: "OPEN",
-      },
-      {
-        text: "CLOSED",
-        value: "CLOSED",
-      },
-    ],
-    onFilter: (value, record) => record.status.indexOf(value as string) === 0,
-  },
-  {
-    title: "Number of Responses",
-    dataIndex: "noOfResponses",
-    sorter: (a, b) => a.noOfResponses - b.noOfResponses,
-    sortDirections: ["descend", "ascend"],
-  },
-];
 
 const data = [
   {
@@ -101,9 +66,66 @@ const onChange: TableProps<DataType>["onChange"] = (
   extra
 ) => {
   console.log("params", pagination, filters, sorter, extra);
+  // navigate to /medicalCenterAdmin/sessions/vacancies/keyValue
 };
 
 function MCATable() {
+  const navigate = useNavigate();
+
+  const columns: TableColumnsType<DataType> = [
+    {
+      title: "Opened Date",
+      dataIndex: "openedDate",
+      defaultSortOrder: "descend",
+      sorter: (a, b) =>
+        new Date(a.openedDate).getTime() - new Date(b.openedDate).getTime(),
+      sortDirections: ["descend", "ascend"],
+    },
+    {
+      title: "Appointment Categories",
+      dataIndex: "aptCategory",
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      filters: [
+        {
+          text: "OPEN",
+          value: "OPEN",
+        },
+        {
+          text: "CLOSED",
+          value: "CLOSED",
+        },
+      ],
+      onFilter: (value, record) => record.status.indexOf(value as string) === 0,
+      render: (status) => {
+        const color = status === "OPEN" ? "green" : "red";
+        return <Tag color={color}>{status}</Tag>;
+      },
+    },
+    {
+      title: "Number of Responses",
+      dataIndex: "noOfResponses",
+      sorter: (a, b) => a.noOfResponses - b.noOfResponses,
+      sortDirections: ["descend", "ascend"],
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <Button
+          type="link"
+          onClick={() => {
+            navigate(`/medicalCenterAdmin/sessions/vacancies/${record.key}`);
+          }}
+        >
+          View More
+        </Button>
+      ),
+    },
+  ];
+
   return (
     <Table<DataType>
       className="w-full"

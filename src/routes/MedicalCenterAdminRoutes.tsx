@@ -7,6 +7,8 @@ import MCAUpcommingSessionListPage from "../pages/medical-center-admin/MCAUpcomm
 import MCAUpcommingSessionPage from "../pages/medical-center-admin/MCAUpcommingSessionPage";
 import MCASessionVacancyMainPage from "../pages/medical-center-admin/MCASessionVacancyMainPage";
 import MCASessionVacancyCreateNewPage from "../pages/medical-center-admin/MCASessionVacancyCreateNewPage";
+import MCASessionVacancyDetailedPage from "../pages/medical-center-admin/MCASessionVacancyDetailedPage";
+import MCASessionVacancyResponsePage from "../pages/medical-center-admin/MCASessionVacancyResponsePage";
 
 function MedicalCenterAdminRoutes() {
   return (
@@ -26,6 +28,14 @@ function MedicalCenterAdminRoutes() {
       <Route
         path="/sessions/vacancies"
         element={<MCASessionVacancyMainPage />}
+      />
+      <Route
+        path="/sessions/vacancies/:vacancyId"
+        element={<MCASessionVacancyDetailedPage />}
+      />
+      <Route
+        path="/sessions/vacancies/:vacancyId/:responseId"
+        element={<MCASessionVacancyResponsePage />}
       />
       <Route
         path="/sessions/vacancies/createNew"
