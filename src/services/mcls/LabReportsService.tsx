@@ -50,7 +50,30 @@ interface DoctorRecord {
   supportedAppointmentCategories: string[];
 }
 
+interface DoctorDetailsRecord {
+  name: string;
+  educationQualification: string;
+  specialization: string;
+  supportedAppointmentCategories: string[];
+  description: string;
+  mobileNumber: string;
+  email: string;
+}
+
 export class LabReportsService {
+  static getSampleDoctorDetails(): DoctorDetailsRecord {
+    return {
+      name: "Dr. Alice Smith",
+      educationQualification: "MBBS, MD (Psychiatry)",
+      specialization: "Psychiatry",
+      supportedAppointmentCategories: ["Mental Health", "Psychiatry"],
+      description:
+        "Dr. Alice Smith is a highly experienced psychiatrist specializing in mental health and psychological counseling. With over 15 years of experience, she is dedicated to helping patients achieve emotional well-being.",
+      mobileNumber: "+1-123-456-7890",
+      email: "alice.smith@hospital.com",
+    };
+  }
+
   static getSampleDoctorList(): DoctorRecord[] {
     return [
       {
