@@ -56,7 +56,7 @@ function MCLSHomePage() {
                 buttonIcon={TbReportSearch}
               />
               <MCSCustomButton
-                path="/medicalCenterLabStaff"
+                path="/medicalCenterLabStaff/ourDoctors"
                 buttonTitle="Our Doctors"
                 isPrimary={false}
                 buttonIcon={FaUserDoctor}

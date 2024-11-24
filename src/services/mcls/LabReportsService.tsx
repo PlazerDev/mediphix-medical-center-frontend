@@ -44,7 +44,94 @@ interface LabReportData {
   progressDetails: ProgressData;
 }
 
+interface DoctorRecord {
+  id: string;
+  name: string;
+  supportedAppointmentCategories: string[];
+}
+
 export class LabReportsService {
+  static getSampleDoctorList(): DoctorRecord[] {
+    return [
+      {
+        id: "DOC001",
+        name: "Dr. Alice Smith",
+        supportedAppointmentCategories: ["Mental Health", "Psychiatry"],
+      },
+      {
+        id: "DOC002",
+        name: "Dr. John Doe",
+        supportedAppointmentCategories: ["General Consultation", "Pediatrics"],
+      },
+      {
+        id: "DOC003",
+        name: "Dr. Emily Taylor",
+        supportedAppointmentCategories: ["Dermatology", "Oncology"],
+      },
+      {
+        id: "DOC004",
+        name: "Dr. Michael Brown",
+        supportedAppointmentCategories: ["Cardiology", "Neurology"],
+      },
+      {
+        id: "DOC005",
+        name: "Dr. Olivia Johnson",
+        supportedAppointmentCategories: ["Orthopedics", "Radiology"],
+      },
+      {
+        id: "DOC006",
+        name: "Dr. William Wilson",
+        supportedAppointmentCategories: ["ENT", "Endocrinology"],
+      },
+      {
+        id: "DOC007",
+        name: "Dr. Sophia Martinez",
+        supportedAppointmentCategories: ["Pulmonology", "Gastroenterology"],
+      },
+      {
+        id: "DOC008",
+        name: "Dr. James Garcia",
+        supportedAppointmentCategories: ["Nephrology", "Urology"],
+      },
+      {
+        id: "DOC009",
+        name: "Dr. Mia Thompson",
+        supportedAppointmentCategories: ["Ophthalmology", "Dermatology"],
+      },
+      {
+        id: "DOC010",
+        name: "Dr. Ethan Harris",
+        supportedAppointmentCategories: [
+          "General Consultation",
+          "Mental Health",
+        ],
+      },
+    ];
+  }
+
+  static getSampleAppointmentCategories(): LabTestTypeData[] {
+    return [
+      { label: "Mental Health", value: "MENTAL_HEALTH" },
+      { label: "General Consultation", value: "GENERAL_CONSULTATION" },
+      { label: "Pediatrics", value: "PEDIATRICS" },
+      { label: "Dermatology", value: "DERMATOLOGY" },
+      { label: "Orthopedics", value: "ORTHOPEDICS" },
+      { label: "Cardiology", value: "CARDIOLOGY" },
+      { label: "Neurology", value: "NEUROLOGY" },
+      { label: "Oncology", value: "ONCOLOGY" },
+      { label: "Gynecology", value: "GYNECOLOGY" },
+      { label: "Radiology", value: "RADIOLOGY" },
+      { label: "ENT (Ear, Nose, Throat)", value: "ENT" },
+      { label: "Endocrinology", value: "ENDOCRINOLOGY" },
+      { label: "Pulmonology", value: "PULMONOLOGY" },
+      { label: "Ophthalmology", value: "OPHTHALMOLOGY" },
+      { label: "Gastroenterology", value: "GASTROENTEROLOGY" },
+      { label: "Nephrology", value: "NEPHROLOGY" },
+      { label: "Urology", value: "UROLOGY" },
+      { label: "Psychiatry", value: "PSYCHIATRY" },
+    ];
+  }
+
   static getAllLabtestTypes(): LabTestTypeData[] {
     return [
       { label: "Microbiology", value: "MICROBIOLOGY" },
