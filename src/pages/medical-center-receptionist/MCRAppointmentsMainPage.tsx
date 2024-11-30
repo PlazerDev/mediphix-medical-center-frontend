@@ -54,7 +54,7 @@ function MCRAppointmentsMainPage() {
             </div>
             <div className="flex flex-col items-center md:flex-row justify-center gap-4 mt-2">
               <MCSCustomButton
-                path=""
+                path="/medicalCenterReceptionist/appointments/createNew"
                 buttonTitle="Create Appointments"
                 isPrimary={false}
                 buttonIcon={FaCalendarPlus}
