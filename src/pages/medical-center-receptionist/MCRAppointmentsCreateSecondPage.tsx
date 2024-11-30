@@ -1,29 +1,14 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import MCSNavBar from "../../components/mcs/MCSNavBar";
 import MCSMainGreeting from "../../components/mcs/MCSMainGreeting";
 import Loading from "../../components/Loading";
 import Footer from "../../components/Footer";
-import MCRCreateAppointmentSearching from "../../components/mcr/MCRCreateAppointmentSearching";
-import {
-  AppointmentDataRecord,
-  AppointmentService,
-} from "../../services/mcr/AppointmentService";
-import MCRCreateAppointmentNoData from "../../components/mcr/MCRCreateAppointmentNoData";
-import MCRCreateAppointmentList from "../../components/mcr/MCRCreateAppointmentList";
+import { useParams } from "react-router-dom";
+import MCRAppointmentCreateSecondBody from "../../components/mcr/MCRAppointmentCreateSecondBody";
 
-function MCRAppointmentsCreatePage() {
+function MCRAppointmentsCreateSecondPage() {
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<AppointmentDataRecord[]>([]);
-
-  function onSearch(values: any) {
-    // just a sample logic to show the interactivity :: remove it later
-    if (data.length > 0) {
-      setData([]);
-    } else {
-      setData(AppointmentService.getSampleAppointmentDataList());
-    }
-  }
-
+  const { appointmentId } = useParams();
   const breadcrumbItems = [
     {
       title: "Home",
@@ -35,6 +20,10 @@ function MCRAppointmentsCreatePage() {
     },
     {
       title: "Create",
+      link: "/medicalCenterReceptionist/appointments/createNew",
+    },
+    {
+      title: "Appointment - " + appointmentId,
       link: "",
     },
   ];
@@ -55,9 +44,7 @@ function MCRAppointmentsCreatePage() {
           />
           {/* Main Body div */}
           <div>
-            <MCRCreateAppointmentSearching onFinish={onSearch} />
-            {data.length === 0 && <MCRCreateAppointmentNoData />}
-            {data.length > 0 && <MCRCreateAppointmentList data={data} />}
+            <MCRAppointmentCreateSecondBody />
           </div>
         </div>
       )}
@@ -68,4 +55,4 @@ function MCRAppointmentsCreatePage() {
   );
 }
 
-export default MCRAppointmentsCreatePage;
+export default MCRAppointmentsCreateSecondPage;

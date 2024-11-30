@@ -1,4 +1,4 @@
-interface AppointmentDataRecord {
+export interface AppointmentDataRecord {
   id: string;
   doctorName: string;
   doctorId: string;
@@ -11,7 +11,70 @@ interface AppointmentDataRecord {
   isAllBooked: boolean;
 }
 
+export interface PatientDetailsRecord {
+  name: string;
+  mobileNumber: string;
+  age: string;
+  gender: string;
+  nationality: string;
+}
+
+interface TimeSlotDataRecord {
+  startTime: string;
+  endTime: string;
+  maxNumberOfPatients: string;
+  currentLastQueueNumber: string;
+  id: string;
+}
+
+export interface DetailedAppointmentDataRecord {
+  patientData: PatientDetailsRecord;
+  timeSlotData: TimeSlotDataRecord[];
+  appointmentData: AppointmentDataRecord;
+}
+
 export class AppointmentService {
+  static getSampleDetailedAppointmentData(): DetailedAppointmentDataRecord {
+    return {
+      patientData: {
+        name: "John Doe",
+        mobileNumber: "0771234567",
+        age: "30-40",
+        gender: "Male",
+        nationality: "Sri Lankan",
+      },
+      timeSlotData: [
+        {
+          startTime: "09:00",
+          endTime: "09:30",
+          maxNumberOfPatients: "10",
+          currentLastQueueNumber: "5",
+          id: "1",
+        },
+        {
+          startTime: "09:30",
+          endTime: "10:00",
+          maxNumberOfPatients: "10",
+          currentLastQueueNumber: "3",
+          id: "2",
+        },
+      ],
+      appointmentData: {
+        id: "A123",
+        doctorName: "Dr. Jane Smith",
+        doctorId: "D456",
+        date: "2024-12-01",
+        startTime: "09:00",
+        endTime: "10:00",
+        appointmentCategories: ["General Consultation", "Vaccination"],
+        noteFromDoctor: "Check vitals and discuss vaccination schedule.",
+        noteFromMedicalCenter:
+          "Ensure patient brings previous vaccination records.",
+        isAllBooked: false,
+      },
+    };
+  }
+
   static getSampleAppointmentDataList(): AppointmentDataRecord[] {
     return [
       {

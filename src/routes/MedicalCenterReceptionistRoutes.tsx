@@ -5,6 +5,7 @@ import MCRAppointmentsPaymentsPage from "../pages/medical-center-receptionist/MC
 import MCRPrintRecieptPage from "../pages/medical-center-receptionist/MCRPrintRecieptPage";
 import MCRPatientRegisterPage from "../pages/medical-center-receptionist/MCRPatientRegisterPage";
 import MCRAppointmentsCreatePage from "../pages/medical-center-receptionist/MCRAppointmentsCreatePage";
+import MCRAppointmentsCreateSecondPage from "../pages/medical-center-receptionist/MCRAppointmentsCreateSecondPage";
 
 function MedicalCenterReceptionistRoutes() {
   return (
@@ -18,6 +19,10 @@ function MedicalCenterReceptionistRoutes() {
       <Route
         path="/appointments/createNew"
         element={<MCRAppointmentsCreatePage />}
+      />
+      <Route
+        path="/appointments/createNew/:appointmentId"
+        element={<MCRAppointmentsCreateSecondPage />}
       />
       <Route
         path="/appointments/payment/print/:appointmentNumber"
