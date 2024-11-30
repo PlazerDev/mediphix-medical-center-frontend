@@ -51,7 +51,7 @@ function MCRHomePage() {
             </div>
             <div className="flex flex-col items-center md:flex-row justify-center gap-4 mt-2">
               <MCSCustomButton
-                path=""
+                path="/medicalCenterReceptionist/registerPatient"
                 buttonTitle="Register Patient"
                 isPrimary={false}
                 buttonIcon={HiUserAdd}
