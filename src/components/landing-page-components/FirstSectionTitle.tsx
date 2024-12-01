@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import BtnFilled from "./BtnFilled";
 
 function FirstSectionTitle() {
@@ -10,10 +11,12 @@ function FirstSectionTitle() {
         Revolutionizing Patient Care and Transforming Facility Management for
         Optimal Efficiency and Patient Satisfaction
       </p>
-      <BtnFilled
-        title="Join Now"
-        style="bg-mediphix_accent hover:bg-white text-white hover:text-mediphix_accent"
-      />
+      <Link to={"/signup"}>
+        <BtnFilled
+          title="Join Now"
+          style="bg-mediphix_accent hover:bg-white text-white hover:text-mediphix_accent"
+        />
+      </Link>
     </div>
   );
 }
