@@ -3,6 +3,7 @@ import logo from "./../../assets/images/mediphix_logo.png";
 import BtnWithBorder from "./BtnWithBorder";
 import BtnWithoutBorder from "./BtnWithoutBorder";
 import DropDown from "./DropDown";
+import { Link } from "react-router-dom";
 function Navigation() {
   const { signIn } = useAuthContext();
   return (
@@ -16,7 +17,9 @@ function Navigation() {
       </div>
       <div className="flex flex-row gap-4">
         <BtnWithoutBorder title="Login" onClickFunction={() => signIn()} />
-        <BtnWithBorder title="Register" />
+        <Link to="/signup">
+          <BtnWithBorder title="Register" />
+        </Link>
       </div>
     </div>
   );

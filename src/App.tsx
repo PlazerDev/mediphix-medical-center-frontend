@@ -6,6 +6,7 @@ import LandingPage from "./pages/LandingPage.tsx";
 import MedicalCenterReceptionistRoutes from "./routes/MedicalCenterReceptionistRoutes.tsx";
 import MedicalCenterAdminRoutes from "./routes/MedicalCenterAdminRoutes.tsx";
 import MedicalCenterLabStaffRoutes from "./routes/MedicalCenterLabStaffRoutes.tsx";
+import SignUpPage from "./pages/SignUpPage.tsx";
 
 function App() {
   const asgardeoConfig = {
@@ -41,6 +42,7 @@ function App() {
           <Router>
             <Routes>
               <Route path="/" element={<LandingPage />} />
+              <Route path="/signup" element={<SignUpPage />} />
               {/* Medical Center Staff Routes  */}
               <Route
                 path="/medicalCenterStaff/*"
