@@ -1,5 +1,5 @@
 import SignUpCardBody from "../components/signup/SignUpCardBody";
-import pattern from "./../../assets/images/signup/widgetsBg.png";
+import pattern from "./../assets/images/signup/widgetsBg.png";
 
 function SignUpPage() {
   return (
