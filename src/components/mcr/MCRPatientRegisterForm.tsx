@@ -13,7 +13,7 @@ function MCRPatientRegisterForm() {
   const { mutate: registerPatient, isLoading } = useMutation(
     PatientService.registerPatient,
     {
-      onSuccess: (data) => {
+      onSuccess: (data: any) => {
         message.success("Patient registered successfully!");
         console.log("Registration success:", data);
         form.resetFields(); // Clear the form on success
