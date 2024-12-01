@@ -7,12 +7,9 @@ import Step3Card from "./Step3Card";
 
 export interface UserData {
   name: string;
-  slmcNumber: string;
-  nic: string;
-  education: string;
+  address: string;
+  district: string;
   mobileNumber: string;
-  specialization: string;
-  appointmentCategories: string[];
   email: string;
   password: string;
   confirmPassword: string;

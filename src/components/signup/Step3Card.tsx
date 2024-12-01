@@ -25,26 +25,15 @@ function Step3Card({ formData }: Props) {
           />
         </div>
         <div className="flex justify-center">
-          <CustomCardTitleAndValue
-            title="Education Qualifications"
-            value={formData.education}
-          />
-          <CustomCardTitleAndValue
-            title="Specialization"
-            value={formData.specialization}
-          />
-          <CustomCardTitleAndValue
-            title="Supported Appointment Categories"
-            value={formData.appointmentCategories?.join(", ")}
-          />
-        </div>
-        <div className="flex justify-center">
-          <CustomCardTitleAndValue
-            title="SLMC Registration Number"
-            value={formData.slmcNumber}
-          />
-          <CustomCardTitleAndValue title="NIC" value={formData.nic} />
-          <CustomCardTitleAndValue title="" value="" />
+          <div style={{ flex: 1 }}>
+            <CustomCardTitleAndValue
+              title="District"
+              value={formData.district}
+            />
+          </div>
+          <div style={{ flex: 2 }}>
+            <CustomCardTitleAndValue title="Address" value={formData.address} />
+          </div>
         </div>
       </div>
       {/* Register Button */}

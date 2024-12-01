@@ -2,6 +2,8 @@ import { Controller, useForm } from "react-hook-form";
 import { Button, Input, Select } from "antd";
 import { UserData } from "./SignUpCardBody";
 
+const { Option } = Select;
+
 interface Props {
   nextBtnHandler: (data: Partial<UserData>) => void; // Updated prop type
 }
@@ -12,14 +14,27 @@ function Step1Card({ nextBtnHandler }: Props) {
     handleSubmit,
     formState: { errors },
   } = useForm<UserData>({
-    defaultValues: {
-      appointmentCategories: [],
-    },
+    defaultValues: {},
   });
 
   const onSubmit = (data: UserData) => {
     nextBtnHandler(data);
   };
+
+  const districts = [
+    "Colombo",
+    "Gampaha",
+    "Kalutara",
+    "Kandy",
+    "Matale",
+    "Nuwara Eliya",
+    "Galle",
+    "Matara",
+    "Hambantota",
+    "Jaffna",
+    "Kilinochchi",
+    "Mannar",
+  ];
 
   return (
     <div className="pt-4">
@@ -31,7 +46,7 @@ function Step1Card({ nextBtnHandler }: Props) {
         className="mt-4 flex flex-col gap-4"
       >
         <div>
-          <p>Name with Initials</p>
+          <p>Name of the medical center</p>
           <Controller
             name="name"
             control={control}
@@ -39,7 +54,7 @@ function Step1Card({ nextBtnHandler }: Props) {
             render={({ field }) => (
               <Input
                 className="h-12"
-                placeholder="Enter your name here"
+                placeholder="Enter the medical center name here"
                 {...field}
               />
             )}
@@ -51,57 +66,49 @@ function Step1Card({ nextBtnHandler }: Props) {
 
         <div className="flex gap-4 items-start">
           <div className="flex-1">
-            <p>SLMC Registration Number</p>
+            <p>Address</p>
             <Controller
-              name="slmcNumber"
+              name="address"
               control={control}
-              rules={{ required: "SLMC Registration Number is required" }}
+              rules={{ required: "Address is required" }}
               render={({ field }) => (
                 <Input
                   className="h-12"
-                  placeholder="Enter registration number here"
+                  placeholder="Enter your address here"
                   {...field}
                 />
               )}
             />
-            {errors.slmcNumber && (
-              <span className="text-red-500">{errors.slmcNumber.message}</span>
-            )}
-          </div>
-
-          <div className="flex-1">
-            <p>NIC</p>
-            <Controller
-              name="nic"
-              control={control}
-              rules={{ required: "NIC is required" }}
-              render={({ field }) => (
-                <Input className="h-12" placeholder="Enter NIC" {...field} />
-              )}
-            />
-            {errors.nic && (
-              <span className="text-red-500">{errors.nic.message}</span>
+            {errors.address && (
+              <span className="text-red-500">{errors.address.message}</span>
             )}
           </div>
         </div>
 
         <div className="flex gap-4 items-start">
           <div className="flex-1">
-            <p>Education</p>
+            <p>District</p>
             <Controller
-              name="education"
+              name="district"
               control={control}
-              rules={{ required: "Education is required" }}
+              rules={{ required: "District is required" }}
               render={({ field }) => (
-                <Input
-                  className="h-12"
-                  placeholder="Enter your education qualification here"
+                <Select
+                  className="w-full h-12"
+                  placeholder="Select a district"
                   {...field}
-                />
+                  onChange={(value) => field.onChange(value)}
+                >
+                  {districts.map((district) => (
+                    <Option key={district} value={district}>
+                      {district}
+                    </Option>
+                  ))}
+                </Select>
               )}
             />
-            {errors.education && (
-              <span className="text-red-500">{errors.education.message}</span>
+            {errors.district && (
+              <span className="text-red-500">{errors.district.message}</span>
             )}
           </div>
 
@@ -131,56 +138,6 @@ function Step1Card({ nextBtnHandler }: Props) {
               </span>
             )}
           </div>
-        </div>
-
-        <div>
-          <p>Specialization</p>
-          <Controller
-            name="specialization"
-            control={control}
-            rules={{ required: "Specialization is required" }}
-            render={({ field }) => (
-              <Input
-                className="h-12"
-                placeholder="Add your specializations here"
-                {...field}
-              />
-            )}
-          />
-          {errors.specialization && (
-            <span className="text-red-500">
-              {errors.specialization.message}
-            </span>
-          )}
-        </div>
-
-        <div className="mb-4">
-          <p>Supported Appointment Categories</p>
-          <Controller
-            name="appointmentCategories"
-            control={control}
-            rules={{ required: "At least one category is required" }}
-            render={({ field }) => (
-              <Select
-                mode="multiple"
-                className="h-12"
-                size="large"
-                placeholder="Please select one or more appointment categories"
-                style={{ width: "100%" }}
-                options={[
-                  { value: "General", label: "General" },
-                  { value: "Specialist", label: "Specialist" },
-                  { value: "Surgery", label: "Surgery" },
-                ]}
-                {...field}
-              />
-            )}
-          />
-          {errors.appointmentCategories && (
-            <span className="text-red-500">
-              {errors.appointmentCategories.message}
-            </span>
-          )}
         </div>
         <div className="flex justify-end my-4">
           <Button

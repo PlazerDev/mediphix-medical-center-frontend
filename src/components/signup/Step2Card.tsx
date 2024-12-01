@@ -1,7 +1,7 @@
 import { Controller, useForm } from "react-hook-form";
 import { UserData } from "./SignUpCardBody";
 import { Button, Input } from "antd";
-import IDUpload from "./IDUpload";
+import FileUpload from "./FileUpload";
 
 interface Props {
   nextBtnHandler: (data: Partial<UserData>) => void; // Updated prop type
@@ -112,8 +112,8 @@ function Step2Card({ nextBtnHandler }: Props) {
         </div>
         <div className="flex items-center gap-4">
           <div className="flex-1">
-            <p>Enter your doctor ID</p>
-            <IDUpload />
+            <p>Enter Your Medical Center Registration Documents</p>
+            <FileUpload />
           </div>
         </div>
         {/* Submit Button */}
