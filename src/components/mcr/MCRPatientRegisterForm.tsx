@@ -1,42 +1,32 @@
 import type { FormProps } from "antd";
-import { Button, Form, Input, Select, message } from "antd";
-import { useMutation } from "@tanstack/react-query";
-import { PatientRegistrationDataRecord } from "../../services/mcr/PatientService";
-import PatientService from "../../services/mcr/PatientService";
+import { Button, Form, Input, Select, notification } from "antd";
+
+import { ResopnseDataService } from "../../services/mcr/ResopnseDataService";
+import {
+  PatientRegistrationDataRecord,
+  PatientService,
+} from "../../services/mcr/PatientService";
 
 const { Option } = Select;
 
-function MCRPatientRegisterForm() {
-  const [form] = Form.useForm<PatientRegistrationDataRecord>();
+const onFinish = async (values: PatientRegistrationDataRecord) => {
+  try {
+    const response = await PatientService.registerPatient(values);
+    ResopnseDataService.showSuccessAlert("Patient has been registered!");
+    console.log("Response:", response);
+  } catch (error) {
+    ResopnseDataService.showErrorAlert("Patient registration unsuccessful!");
+    console.error("Error:", error);
+  }
+};
 
-  // Define the mutation for registering a patient
-  const { mutate: registerPatient, isLoading } = useMutation(
-    PatientService.registerPatient,
-    {
-      onSuccess: (data: any) => {
-        message.success("Patient registered successfully!");
-        console.log("Registration success:", data);
-        form.resetFields(); // Clear the form on success
-      },
-      onError: (error: any) => {
-        message.error(
-          error?.message || "Registration failed. Please try again."
-        );
-        console.error("Registration error:", error);
-      },
-    }
-  );
-
-  const onFinish: FormProps<PatientRegistrationDataRecord>["onFinish"] = (
-    values
-  ) => {
-    registerPatient(values); // Send the request using useMutation
+const onFinishFailed: FormProps<PatientRegistrationDataRecord>["onFinishFailed"] =
+  (errorInfo) => {
+    console.log("Failed:", errorInfo);
   };
 
-  const onFinishFailed: FormProps<PatientRegistrationDataRecord>["onFinishFailed"] =
-    (errorInfo) => {
-      console.log("Failed:", errorInfo);
-    };
+function MCRPatientRegisterForm() {
+  const [form] = Form.useForm<PatientRegistrationDataRecord>();
 
   const clearForm = () => {
     form.resetFields();
@@ -82,8 +72,8 @@ function MCRPatientRegisterForm() {
             rules={[
               { required: true, message: "Please input your mobile number!" },
               {
-                pattern: /^[0-9]{10}$/,
-                message: "Please enter a valid 10-digit number!",
+                pattern: /^[0-9]{9}$/,
+                message: "Please enter a valid 9-digit number!",
               },
             ]}
           >
@@ -162,6 +152,7 @@ function MCRPatientRegisterForm() {
           >
             <Input.Password />
           </Form.Item>
+          <div className="flex-1"></div>
         </div>
 
         <div className="flex items-center justify-between gap-4">
@@ -192,6 +183,7 @@ function MCRPatientRegisterForm() {
               <Option value="other">Other</Option>
             </Select>
           </Form.Item>
+          <div className="flex-1"></div>
         </div>
 
         <Form.Item<PatientRegistrationDataRecord>
@@ -203,11 +195,11 @@ function MCRPatientRegisterForm() {
         </Form.Item>
 
         <div className="flex items-center justify-end gap-4">
-          <Form.Item>
+          <Form.Item label={null}>
             <Button type="default" onClick={clearForm} className="mr-4">
               Clear Form
             </Button>
-            <Button type="primary" htmlType="submit" loading={isLoading}>
+            <Button type="primary" htmlType="submit">
               Submit
             </Button>
           </Form.Item>
