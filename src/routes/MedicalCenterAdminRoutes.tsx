@@ -10,6 +10,7 @@ import MCASessionVacancyCreateNewPage from "../pages/medical-center-admin/MCASes
 import MCASessionVacancyDetailedPage from "../pages/medical-center-admin/MCASessionVacancyDetailedPage";
 import MCASessionVacancyResponsePage from "../pages/medical-center-admin/MCASessionVacancyResponsePage";
 import MCADoctorJoinRequestMainPage from "../pages/medical-center-admin/MCADoctorJoinRequestMainPage";
+import MCADoctorJoinRequestDetailPage from "../pages/medical-center-admin/MCADoctorJoinRequestDetailPage";
 
 function MedicalCenterAdminRoutes() {
   return (
@@ -19,6 +20,10 @@ function MedicalCenterAdminRoutes() {
       <Route
         path="/doctors/joinRequests"
         element={<MCADoctorJoinRequestMainPage />}
+      />
+      <Route
+        path="/doctors/joinRequests/:doctorId"
+        element={<MCADoctorJoinRequestDetailPage />}
       />
 
       <Route path="/staff" element={<MCACStaffMainPage />} />
