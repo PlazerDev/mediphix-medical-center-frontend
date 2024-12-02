@@ -5,13 +5,29 @@ import MCSMainGreeting from "../../components/mcs/MCSMainGreeting";
 import MCSNavBar from "../../components/mcs/MCSNavBar";
 import { StaffService } from "../../services/mca/StaffService";
 import CardTitleAndValue from "../../components/CardTitleAndValue";
-import { Col, Divider, Row } from "antd";
+import { Button, Col, Row, Tag } from "antd";
 import nursesImg from "./../../assets/images/mcs/nurse.png";
-import { Button, ConfigProvider, Flex } from "antd";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { Modal } from "antd";
+import NormalButtonWithIcon from "../../components/NormalButtonWithIcon";
+import { IoIosAddCircle } from "react-icons/io";
 
 function MCACStaffCenterStaffMemberPage() {
   // setting loading
   const [loading, setLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   // setting breadcrumb
   const breadcrumbItems = [
@@ -30,6 +46,11 @@ function MCACStaffCenterStaffMemberPage() {
   ];
 
   const data = StaffService.getSampleStaffMemberList();
+
+  function cardBtnHandler() {
+    showModal();
+  }
+
   return (
     <div className="min-h-screen flex flex-col">
       {/* Navigation Bar  */}
@@ -45,6 +66,46 @@ function MCACStaffCenterStaffMemberPage() {
             medicalCenterName="Nawaloka Hospital"
           />
           {/* Main Body div */}
+          <Modal
+            title="Ajith Perera"
+            open={isModalOpen}
+            onOk={handleOk}
+            onCancel={handleCancel}
+          >
+            <div>
+              <div className="flex flex-col  items-center justify-center  gap-4">
+                <div>
+                  <img src={nursesImg} alt="Profile Photo" />
+                </div>
+                <div className="flex-1  flex flex-col gap-2 w-full ">
+                  <CardTitleAndValue title="Employee ID" value="EMP004" />
+                  <CardTitleAndValue
+                    title="Email"
+                    value="nuwan.fernando@example.com"
+                  />
+                  <CardTitleAndValue title="Mobile Number" value="0769876543" />
+
+                  <Tag icon={<ExclamationCircleOutlined />} color="warning">
+                    Havan't assigned to a clinic session
+                  </Tag>
+                  <div className="flex items-center gap-2">
+                    <Button>Assign a Session</Button>
+                    <Button>Edit</Button>
+                    <Button danger>Delete</Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Modal>
+          <div className="w-96 h-12 mb-4">
+            <NormalButtonWithIcon
+              buttonIcon={IoIosAddCircle}
+              colorType={2}
+              link=""
+              title="Add a new Medical Center Staff Memeber"
+            />
+          </div>
+
           <div className="flex items-center justify-center h-full mb-4">
             <div className="p-4 bg-mediphix_card_background rounded-s-lg flex-1 ">
               <input
@@ -60,7 +121,12 @@ function MCACStaffCenterStaffMemberPage() {
           <Row gutter={16}>
             {data.map((item) => (
               <Col className="gutter-row" span={8}>
-                <div className="bg-mediphix_card_background rounded-lg p-8 mb-4">
+                <div
+                  className="bg-mediphix_card_background rounded-lg p-8 mb-4 h-[270px] hover:cursor-pointer hover:shadow-lg"
+                  onClick={() => {
+                    cardBtnHandler();
+                  }}
+                >
                   <div className="flex items-center justify-center  gap-4">
                     <div>
                       <img src={nursesImg} alt="Profile Photo" />
@@ -71,12 +137,19 @@ function MCACStaffCenterStaffMemberPage() {
                         value={item.empID}
                       />
                       <CardTitleAndValue title="Name" value={item.name} />
-
                       <CardTitleAndValue title="Email" value={item.email} />
                       <CardTitleAndValue
                         title="Mobile Number"
                         value={item.mobileNumber}
                       />
+                      {!item.hasAssigned && (
+                        <Tag
+                          icon={<ExclamationCircleOutlined />}
+                          color="warning"
+                        >
+                          Havan't assigned to a clinic session
+                        </Tag>
+                      )}
                     </div>
                   </div>
                 </div>

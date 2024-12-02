@@ -4,6 +4,7 @@ interface StaffMemberDataRecord {
   empID: string;
   mobileNumber: string;
   id: string;
+  hasAssigned: boolean;
 }
 
 export class StaffService {
@@ -15,6 +16,7 @@ export class StaffService {
         empID: "EMP001",
         mobileNumber: "0712345678",
         id: "1",
+        hasAssigned: false,
       },
       {
         name: "Sanduni Gunawardena",
@@ -22,6 +24,7 @@ export class StaffService {
         empID: "EMP002",
         mobileNumber: "0776543210",
         id: "2",
+        hasAssigned: true,
       },
       {
         name: "Kamal Wickramasinghe",
@@ -29,6 +32,7 @@ export class StaffService {
         empID: "EMP003",
         mobileNumber: "0751234567",
         id: "3",
+        hasAssigned: true,
       },
       {
         name: "Nuwan Fernando",
@@ -36,6 +40,7 @@ export class StaffService {
         empID: "EMP004",
         mobileNumber: "0769876543",
         id: "4",
+        hasAssigned: false,
       },
       {
         name: "Dilani Jayawardena",
@@ -43,6 +48,7 @@ export class StaffService {
         empID: "EMP005",
         mobileNumber: "0704567891",
         id: "5",
+        hasAssigned: true,
       },
     ];
   }
