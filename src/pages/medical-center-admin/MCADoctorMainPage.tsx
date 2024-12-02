@@ -53,7 +53,7 @@ function MCADoctorMainPage() {
             </div>
             <div className="flex flex-col items-center md:flex-row justify-center gap-4 mt-2">
               <MCSCustomButton
-                path=""
+                path="/medicalCenterAdmin/doctors/joinRequests"
                 buttonTitle="Join Requests"
                 isPrimary={false}
                 buttonIcon={FaUsers}
