@@ -1,5 +1,3 @@
-import { AppointmentDataRecord } from "../mcr/AppointmentService";
-
 interface DoctorRequestDataRecord {
   name: string;
   id: string;

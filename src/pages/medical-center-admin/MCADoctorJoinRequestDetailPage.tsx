@@ -9,12 +9,12 @@ import Loading from "../../components/Loading";
 import Footer from "../../components/Footer";
 import docImg from "./../../assets/images/mcs/doctorImage.jpeg";
 import { DoctorService } from "../../services/mca/DoctorService";
-import { Col, Divider, Row } from "antd";
+import { Col, Row } from "antd";
 import MCSCalender from "../../components/mcs/MCSCalender";
 import MCSSelectedDate from "../../components/mcs/MCSSelectedDate";
 import dayjs from "dayjs";
-import MCSOnGoingSessionDetailsCard from "../../components/mcs/MCSOnGoingSessionDetailsCard";
 import medicalCenterImage from "./../../assets/images/mcs/medical_center_logo.png";
+import NormalButtonWithFunction from "../../components/NormalButtonWithFunction";
 
 function MCADoctorJoinRequestDetailPage() {
   const { doctorId } = useParams<{
@@ -119,6 +119,25 @@ function MCADoctorJoinRequestDetailPage() {
               </div>
             </div>
             <div className="bg-mediphix_card_background p-8 rounded-lg">
+              Requested to join
+              <div className="flex flex-row gap-2 mt-2">
+                <div>
+                  <NormalButtonWithFunction
+                    colorType={1}
+                    title="Reject"
+                    handler={() => {}}
+                  />
+                </div>
+                <div>
+                  <NormalButtonWithFunction
+                    colorType={2}
+                    title="Accept"
+                    handler={() => {}}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="bg-mediphix_card_background p-8 rounded-lg">
               <p className="font-bold">Contact Details</p>
               <div className="flex items-center justify-between mt-4">
                 <CardTitleAndValue
@@ -138,19 +157,17 @@ function MCADoctorJoinRequestDetailPage() {
                 ))}
               </Row>
             </div>
-            <div className="bg-mediphix_card_background p-8 rounded-lg"></div>
             {/* From here the appointments  */}
-            <MCSCalender updateSelectedDate={updateSelectedDate} />
-            <MCSSelectedDate
-              day={dateComponents.day}
-              weekday={dateComponents.weekday}
-              monthAndYear={dateComponents.month + " " + dateComponents.year}
-            />
-            <div className="bg-mediphix_card_background p-8">
-              {appointmentList.map((item) => (
-                <div>
-                  {" "}
-                  <div className="bg-mediphix_card_background my-4 rounded-lg p-8">
+            <div className="bg-mediphix_card_background p-8 rounded-lg">
+              <MCSCalender updateSelectedDate={updateSelectedDate} />
+              <MCSSelectedDate
+                day={dateComponents.day}
+                weekday={dateComponents.weekday}
+                monthAndYear={dateComponents.month + " " + dateComponents.year}
+              />
+              <div className="flex flex-col gap-0">
+                {appointmentList.map((item) => (
+                  <div className="border border-mediphix_text_d my-4 rounded-lg p-8">
                     <p className="font-bold">Clinic Session Details</p>
                     <div className="my-2 flex md:flex-row flex-col">
                       <div className="flex flex-1">
@@ -164,32 +181,32 @@ function MCADoctorJoinRequestDetailPage() {
                           <p className="text-mediphix_text_c text-sm">Date</p>
                           <p>{item.date}</p>
                         </div>
+                        <div className="flex-1">
+                          <p className="text-mediphix_text_c text-sm">
+                            Appointment Categories
+                          </p>
+                          <p>{item.appointmentCategories.join(", ")}</p>
+                        </div>
                       </div>
                     </div>
-                    <p className="font-bold mb-2">Doctor Details</p>
-                    <div className="flex gap-2">
+                    <p className="font-bold mb-2">Medical Center Details</p>
+                    <div className="flex gap-8 items-center">
                       <div>
                         <img
                           className="object-cover w-24 h-full rounded-lg"
-                          src={doctorImg}
+                          src={medicalCenterImage}
                         />
                       </div>
                       <div className="flex flex-col gap-2">
                         <div className="flex-1">
                           <p className="text-mediphix_text_c text-sm">Name</p>
-                          <p>{doctorName}</p>
-                        </div>
-                        <div className="flex-1">
-                          <p className="text-mediphix_text_c text-sm">
-                            Education
-                          </p>
-                          <p>{doctorEducation}</p>
+                          <p>{item.name}</p>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </div>
