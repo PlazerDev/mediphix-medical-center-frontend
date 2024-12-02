@@ -7,6 +7,14 @@ import { HiCheckBadge } from "react-icons/hi2";
 import CardTitleAndValue from "../../components/CardTitleAndValue";
 import Loading from "../../components/Loading";
 import Footer from "../../components/Footer";
+import docImg from "./../../assets/images/mcs/doctorImage.jpeg";
+import { DoctorService } from "../../services/mca/DoctorService";
+import { Col, Divider, Row } from "antd";
+import MCSCalender from "../../components/mcs/MCSCalender";
+import MCSSelectedDate from "../../components/mcs/MCSSelectedDate";
+import dayjs from "dayjs";
+import MCSOnGoingSessionDetailsCard from "../../components/mcs/MCSOnGoingSessionDetailsCard";
+import medicalCenterImage from "./../../assets/images/mcs/medical_center_logo.png";
 
 function MCADoctorJoinRequestDetailPage() {
   const { doctorId } = useParams<{
@@ -21,18 +29,42 @@ function MCADoctorJoinRequestDetailPage() {
   const breadcrumbItems = [
     {
       title: "Home",
-      link: "/medicalCenterLabStaff",
+      link: "/medicalCenterAdmin",
     },
     {
-      title: "Our Doctors",
-      link: "/medicalCenterLabStaff/ourDoctors",
+      title: "Doctors",
+      link: "/medicalCenterAdmin/doctors",
     },
     {
-      title: data.name,
+      title: "Join Requests",
+      link: "/medicalCenterAdmin/doctors/joinRequests",
+    },
+    {
+      title: "Doctor Details",
       link: "",
     },
   ];
 
+  const medicalCenterList = DoctorService.getSampleMedicalCenterList();
+  const appointmentList = DoctorService.getSampleAppointmentDataList();
+  const currentDate = dayjs();
+
+  const [dateComponents, setDateComponents] = useState({
+    day: currentDate.format("DD"),
+    weekday: currentDate.format("dddd"),
+    month: currentDate.format("MMMM"),
+    year: currentDate.format("YYYY"),
+  });
+
+  // Function to update state with date components
+  const updateSelectedDate = (
+    day: string,
+    weekday: string,
+    month: string,
+    year: string
+  ) => {
+    setDateComponents({ day, weekday, month, year });
+  };
   return (
     <div className="min-h-screen flex flex-col">
       {/* Navigation Bar  */}
@@ -41,7 +73,7 @@ function MCADoctorJoinRequestDetailPage() {
       {!loading && (
         <div className="flex-grow px-8">
           <MCSMainGreeting
-            title="Our Doctors"
+            title="Doctor Details"
             titleMemberName=""
             breadcrumbItems={breadcrumbItems}
             role="Medical Center Lab Staff"
@@ -51,7 +83,7 @@ function MCADoctorJoinRequestDetailPage() {
           <div className="flex flex-col gap-4">
             <div className="relative bg-red-400 rounded-lg">
               <img
-                src={""}
+                src={docImg}
                 alt="Doctor"
                 className="absolute top-8 left-8 w-32 h-32 object-cover rounded-full border-4 border-white"
               />
@@ -95,6 +127,69 @@ function MCADoctorJoinRequestDetailPage() {
                 />
                 <CardTitleAndValue title="Email" value={data.email} />
               </div>
+            </div>
+            <div className="bg-mediphix_card_background p-8 rounded-lg">
+              <p className="font-bold">Avilable At</p>
+              <Row gutter={16}>
+                {medicalCenterList.map((item) => (
+                  <Col span={6}>
+                    <div>{"🔸" + item}</div>
+                  </Col>
+                ))}
+              </Row>
+            </div>
+            <div className="bg-mediphix_card_background p-8 rounded-lg"></div>
+            {/* From here the appointments  */}
+            <MCSCalender updateSelectedDate={updateSelectedDate} />
+            <MCSSelectedDate
+              day={dateComponents.day}
+              weekday={dateComponents.weekday}
+              monthAndYear={dateComponents.month + " " + dateComponents.year}
+            />
+            <div className="bg-mediphix_card_background p-8">
+              {appointmentList.map((item) => (
+                <div>
+                  {" "}
+                  <div className="bg-mediphix_card_background my-4 rounded-lg p-8">
+                    <p className="font-bold">Clinic Session Details</p>
+                    <div className="my-2 flex md:flex-row flex-col">
+                      <div className="flex flex-1">
+                        <div className="flex-1">
+                          <p className="text-mediphix_text_c text-sm">
+                            Time Frame
+                          </p>
+                          <p>{item.startTime + " - " + item.endTime}</p>
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-mediphix_text_c text-sm">Date</p>
+                          <p>{item.date}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <p className="font-bold mb-2">Doctor Details</p>
+                    <div className="flex gap-2">
+                      <div>
+                        <img
+                          className="object-cover w-24 h-full rounded-lg"
+                          src={doctorImg}
+                        />
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <div className="flex-1">
+                          <p className="text-mediphix_text_c text-sm">Name</p>
+                          <p>{doctorName}</p>
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-mediphix_text_c text-sm">
+                            Education
+                          </p>
+                          <p>{doctorEducation}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
