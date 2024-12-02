@@ -9,12 +9,23 @@ import MCASessionVacancyMainPage from "../pages/medical-center-admin/MCASessionV
 import MCASessionVacancyCreateNewPage from "../pages/medical-center-admin/MCASessionVacancyCreateNewPage";
 import MCASessionVacancyDetailedPage from "../pages/medical-center-admin/MCASessionVacancyDetailedPage";
 import MCASessionVacancyResponsePage from "../pages/medical-center-admin/MCASessionVacancyResponsePage";
+import MCADoctorJoinRequestMainPage from "../pages/medical-center-admin/MCADoctorJoinRequestMainPage";
+import MCADoctorJoinRequestDetailPage from "../pages/medical-center-admin/MCADoctorJoinRequestDetailPage";
 
 function MedicalCenterAdminRoutes() {
   return (
     <Routes>
       <Route path="/" element={<MCAHomePage />} />
       <Route path="/doctors" element={<MCADoctorMainPage />} />
+      <Route
+        path="/doctors/joinRequests"
+        element={<MCADoctorJoinRequestMainPage />}
+      />
+      <Route
+        path="/doctors/joinRequests/:doctorId"
+        element={<MCADoctorJoinRequestDetailPage />}
+      />
+
       <Route path="/staff" element={<MCACStaffMainPage />} />
       <Route path="/sessions" element={<MCASessionMainPage />} />
       <Route
