@@ -1,4 +1,3 @@
-import React from "react";
 import CardTitleAndValue from "../CardTitleAndValue";
 import NormalButtonWithFunction from "../NormalButtonWithFunction";
 
