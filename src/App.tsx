@@ -8,6 +8,7 @@ import MedicalCenterAdminRoutes from "./routes/MedicalCenterAdminRoutes.tsx";
 import MedicalCenterLabStaffRoutes from "./routes/MedicalCenterLabStaffRoutes.tsx";
 import SignUpPage from "./pages/SignUpPage.tsx";
 import { LoadingProvider } from "./contexts/LoadingContext.tsx";
+import ProtectedRoute from "./components/ProtectedRoute.tsx";
 
 function App() {
   const asgardeoConfig = {
@@ -48,22 +49,38 @@ function App() {
                 {/* Medical Center Staff Routes  */}
                 <Route
                   path="/medicalCenterStaff/*"
-                  element={<MedicalCenterStaffRoutes />}
+                  element={
+                    <ProtectedRoute allowedRoles={["MCS"]}>
+                      <MedicalCenterStaffRoutes />
+                    </ProtectedRoute>
+                  }
                 />
                 {/* Medical Center Receptionist Routes  */}
                 <Route
                   path="/medicalCenterReceptionist/*"
-                  element={<MedicalCenterReceptionistRoutes />}
+                  element={
+                    <ProtectedRoute allowedRoles={["MCR"]}>
+                      <MedicalCenterReceptionistRoutes />
+                    </ProtectedRoute>
+                  }
                 />
                 {/* Medical Center Admin Routes  */}
                 <Route
                   path="/medicalCenterAdmin/*"
-                  element={<MedicalCenterAdminRoutes />}
+                  element={
+                    <ProtectedRoute allowedRoles={["MCA"]}>
+                      <MedicalCenterAdminRoutes />
+                    </ProtectedRoute>
+                  }
                 />
                 {/* Medical Center Lab Staff Routes  */}
                 <Route
                   path="/medicalCenterLabStaff/*"
-                  element={<MedicalCenterLabStaffRoutes />}
+                  element={
+                    <ProtectedRoute allowedRoles={["MCLS"]}>
+                      <MedicalCenterLabStaffRoutes />
+                    </ProtectedRoute>
+                  }
                 />
               </Routes>
             </Router>

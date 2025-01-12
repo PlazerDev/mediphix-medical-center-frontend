@@ -41,6 +41,7 @@ export class UserService {
       const medicalCenterData = data.medicalCenterData;
 
       localStorage.setItem("userName", userData.name);
+      localStorage.setItem("role", data.role);
       localStorage.setItem("userProfileImage", userData.profileImage);
 
       if (data.role == "MCA") {
