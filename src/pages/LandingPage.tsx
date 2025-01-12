@@ -20,6 +20,7 @@ import { Navigate } from "react-router-dom";
 import { UserService } from "../services/user/UserService";
 import Loading from "../components/Loading";
 import { useLoading } from "../contexts/LoadingContext";
+import { AlertService } from "../services/AlertService";
 
 function LandingPage() {
   const { state, getAccessToken, signOut } = useAuthContext();
@@ -38,6 +39,10 @@ function LandingPage() {
         const url: string = await UserService.fetchUserRole(accessToken);
         setRedirectUrl(url);
         if (url == "/") {
+          AlertService.showErrorTimerAlert(
+            "",
+            "Error occured! Returning to home page"
+          );
           signOut();
         }
         stopLoading();
@@ -113,11 +118,14 @@ function LandingPage() {
   }
 
   if (redirectUrl != null) {
+    AlertService.showSuccessTimerAlert("", "Logging Sucessfull!");
     return <Navigate to={redirectUrl} />;
   } else {
-    <div className="flex flex-col items-center justify-between w-full min-h-screen">
-      <Loading />
-    </div>;
+    return (
+      <div className="flex flex-col items-center justify-between w-full min-h-screen">
+        <Loading />
+      </div>
+    );
   }
 }
 
