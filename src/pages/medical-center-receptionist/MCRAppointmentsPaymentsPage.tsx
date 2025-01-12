@@ -10,15 +10,18 @@ import MCRPaymentBody from "../../components/mcr/MCRPaymentBody";
 import NormalButtonWithIcon from "../../components/NormalButtonWithIcon";
 import MCRPaymentScanQr from "../../components/mcr/MCRPaymentScanQr";
 import Swal from "sweetalert2";
+import MCRPaymentsDefault from "../../components/mcr/MCRPaymentsDefault";
 
 type SearchProps = GetProps<typeof Input.Search>;
 
 const { Search } = Input;
 
-const onSearch: SearchProps["onSearch"] = (value, _e, info) =>
-  console.log(info?.source, value);
-
 function MCRAppointmentsPaymentsPage() {
+  const [flag, setFlag] = useState(false);
+  const onSearch: SearchProps["onSearch"] = (value, _e, info) => {
+    console.log(info?.source, value);
+    setFlag(!flag);
+  };
   // search
   const [appointmentNumber, setAppointmentNumber] = useState("");
 
@@ -112,7 +115,7 @@ function MCRAppointmentsPaymentsPage() {
           {/* Default view when the search bar is clear*/}
           {/* <MCRPaymentsDefault /> */}
           {/* When there is a search result and its unpaid */}
-          <MCRPaymentBody />
+          <MCRPaymentBody flag={flag} />
         </div>
       )}
       {loading && <Loading />}

@@ -2,8 +2,12 @@ import MCRPaymentAppointmentDetailCard from "./MCRPaymentAppointmentDetailCard";
 import MCRPaymentDoctorCard from "./MCRPaymentDoctorCard";
 import MCRPaymentPatientCard from "./MCRPaymentPatientCard";
 import MCRPaymentReciept from "./MCRPaymentReciept";
+import MCRPaymentUnpaidCard from "./MCRPaymentUnpaidCard";
 
-function MCRPaymentBody() {
+interface Props {
+  flag: boolean;
+}
+function MCRPaymentBody({ flag }: Props) {
   return (
     <div className="mt-8 flex flex-row gap-4 justify-between">
       <div className="flex-1 flex flex-col gap-4">
@@ -12,9 +16,10 @@ function MCRPaymentBody() {
         <MCRPaymentDoctorCard />
       </div>
       {/* For Unpaid Appointments  */}
-      {/* <MCRPaymentUnpaidCard /> */}
+      {!flag && <MCRPaymentUnpaidCard />}
+
       {/* For Paid Appointments  */}
-      <MCRPaymentReciept />
+      {flag && <MCRPaymentReciept />}
     </div>
   );
 }

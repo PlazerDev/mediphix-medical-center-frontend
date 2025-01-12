@@ -46,14 +46,14 @@ export class AppointmentService {
       timeSlotData: [
         {
           startTime: "09:00",
-          endTime: "09:30",
+          endTime: "10:00",
           maxNumberOfPatients: "10",
           currentLastQueueNumber: "5",
           id: "1",
         },
         {
-          startTime: "09:30",
-          endTime: "10:00",
+          startTime: "10:00",
+          endTime: "11:00",
           maxNumberOfPatients: "10",
           currentLastQueueNumber: "3",
           id: "2",
@@ -65,7 +65,7 @@ export class AppointmentService {
         doctorId: "D456",
         date: "2024-12-01",
         startTime: "09:00",
-        endTime: "10:00",
+        endTime: "11:00",
         appointmentCategories: ["General Consultation", "Vaccination"],
         noteFromDoctor: "Check vitals and discuss vaccination schedule.",
         noteFromMedicalCenter:

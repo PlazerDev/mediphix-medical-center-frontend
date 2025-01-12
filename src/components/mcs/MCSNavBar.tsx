@@ -5,8 +5,31 @@ import {
 } from "@ant-design/icons";
 import { Button } from "antd";
 import logo from "./../../assets/images/mediphix_withoutPadding.jpg";
+import { useAuthContext } from "@asgardeo/auth-react";
+import Swal from "sweetalert2";
 
 function MCSNavBar() {
+  const { signOut } = useAuthContext();
+  function logOutButtonHandler() {
+    Swal.fire({
+      title: "Are you sure?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#ff7300",
+      confirmButtonText: "Yes, Log Out",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        signOut();
+        Swal.fire({
+          text: "You have been successfully logged out",
+          icon: "success",
+          confirmButtonColor: "#ff7300",
+        });
+      }
+    });
+  }
+
   return (
     <div>
       <>
@@ -39,6 +62,7 @@ function MCSNavBar() {
                 type="default"
                 size="large"
                 shape="circle"
+                onClick={logOutButtonHandler}
                 icon={<LogoutOutlined style={{ color: "#FF7300" }} />}
               />
             </div>
