@@ -54,7 +54,7 @@ function MCACStaffMainPage() {
             </div>
             <div className="flex flex-col items-center md:flex-row justify-center gap-4 mt-2">
               <MCSCustomButton
-                path=""
+                path="/medicalCenterAdmin/staff/medicalCenterMember"
                 buttonTitle="Clinic Staff Memebers"
                 isPrimary={false}
                 buttonIcon={FaUserNurse}

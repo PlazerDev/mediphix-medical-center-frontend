@@ -188,15 +188,25 @@ function MCASessionVacancyResponsePage() {
                 })}
               </div>
             </div>
-            <div className="bg-mediphix_card_background w-full p-8 rounded-lg">
-              <p>Note for the patients from medical center</p>
-              <TextArea
-                placeholder="Type the note here"
-                className="mt-2"
-                rows={4}
-                value={note}
-                onChange={(e) => setNote(e.target.value)}
-              />
+            <div className="bg-mediphix_card_background w-full p-8 rounded-lg flex flex-col gap-4">
+              <div>
+                <p>Note for the patients from medical center</p>
+                <TextArea
+                  placeholder="Type the note here"
+                  className="mt-2"
+                  rows={4}
+                  value={note}
+                  onChange={(e) => setNote(e.target.value)}
+                />
+              </div>
+              <div>
+                <p>Enter the hall number</p>
+                <Input placeholder="Please enter the hall number here" />
+              </div>
+              <div>
+                <p>Enter the appointment payment</p>
+                <Input placeholder="Please enter amount here" />
+              </div>
             </div>
             <div className="bg-mediphix_card_background w-full p-8 rounded-lg">
               <p className="font-medium">
