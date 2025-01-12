@@ -9,7 +9,12 @@ export class UserService {
         },
       });
 
-      const role = response.data.role; // Assuming backend response includes role field
+      const role = response.data.role;
+
+      if (this.storeUserDataInLocalStorage(response.data) == -1) {
+        // case :: storing failed!
+        return "/";
+      }
 
       switch (role) {
         case "MCA":
@@ -27,6 +32,32 @@ export class UserService {
     } catch (error) {
       console.error("Failed to fetch user role:", error);
       return "/";
+    }
+  }
+
+  static storeUserDataInLocalStorage(data: any): number {
+    try {
+      const userData = data.userData;
+      const medicalCenterData = data.medicalCenterData;
+
+      localStorage.setItem("userName", userData.name);
+      localStorage.setItem("userProfileImage", userData.profileImage);
+
+      if (data.role == "MCA") {
+        localStorage.setItem("medicalCenterEmail", userData.medicalCenterEmail);
+      } else {
+        localStorage.setItem("centerId", userData.centerId);
+      }
+
+      localStorage.setItem("medicalCenterName", medicalCenterData.name);
+      localStorage.setItem(
+        "medicalCenterProfileImage",
+        medicalCenterData.profileImage
+      );
+      return 0;
+    } catch (error) {
+      console.error("Failed to store user data in local storage:", error);
+      return -1;
     }
   }
 }

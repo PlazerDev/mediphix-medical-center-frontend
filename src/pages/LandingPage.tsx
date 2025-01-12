@@ -22,7 +22,7 @@ import Loading from "../components/Loading";
 import { useLoading } from "../contexts/LoadingContext";
 
 function LandingPage() {
-  const { state, getAccessToken } = useAuthContext();
+  const { state, getAccessToken, signOut } = useAuthContext();
   const { isLoading, startLoading, stopLoading } = useLoading();
 
   const [redirectUrl, setRedirectUrl] = useState<string | null>(null);
@@ -30,16 +30,19 @@ function LandingPage() {
   useEffect(() => {
     AOS.init();
 
+    // if authenticated fetch the relevent route and store the data
     const getRole = async () => {
       if (state.isAuthenticated) {
         startLoading();
         const accessToken = await getAccessToken();
         const url: string = await UserService.fetchUserRole(accessToken);
         setRedirectUrl(url);
+        if (url == "/") {
+          signOut();
+        }
         stopLoading();
       }
     };
-
     getRole();
   }, [state.isAuthenticated]);
 
