@@ -1,4 +1,3 @@
-import { useState } from "react";
 import MCSNavBar from "../../components/mcs/MCSNavBar";
 import MCSMainGreeting from "../../components/mcs/MCSMainGreeting";
 import bodyImg from "./../../assets/images/mcs/manageAppoinments.png";
@@ -7,10 +6,11 @@ import { FaHospitalUser, FaUserNurse } from "react-icons/fa6";
 import { FaFileMedicalAlt } from "react-icons/fa";
 import Loading from "../../components/Loading";
 import Footer from "../../components/Footer";
+import { StorageService } from "../../services/StorageService";
+import { useLoading } from "../../contexts/LoadingContext";
 
 function MCACStaffMainPage() {
-  // setting loading
-  const [loading, setLoading] = useState(false);
+  const { isLoading } = useLoading();
 
   // setting breadcrumb
   const breadcrumbItems = [
@@ -29,14 +29,14 @@ function MCACStaffMainPage() {
       {/* Navigation Bar  */}
       <MCSNavBar />
       {/* Body */}
-      {!loading && (
+      {!isLoading && (
         <div className="flex-grow px-8">
           <MCSMainGreeting
             title="Good Evening"
-            titleMemberName="Vishwa"
+            titleMemberName={StorageService.getUserName() || ""}
             breadcrumbItems={breadcrumbItems}
             role="Medical Center Admin"
-            medicalCenterName="Nawaloka Hospital"
+            medicalCenterName={StorageService.getMedicalCenterName() || ""}
           />
           {/* Main Body div */}
           <div className="px-8 bg-mediphix_card_background py-8 rounded-lg">
@@ -75,7 +75,7 @@ function MCACStaffMainPage() {
           </div>
         </div>
       )}
-      {loading && <Loading />}
+      {isLoading && <Loading />}
       {/* Footer */}
       <Footer />
     </div>

@@ -46,6 +46,7 @@ export class UserService {
 
       if (data.role == "MCA") {
         localStorage.setItem("medicalCenterEmail", userData.medicalCenterEmail);
+        localStorage.setItem("centerId", medicalCenterData._id);
       } else {
         localStorage.setItem("centerId", userData.centerId);
       }

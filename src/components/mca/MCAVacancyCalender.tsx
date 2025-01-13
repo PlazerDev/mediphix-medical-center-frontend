@@ -143,9 +143,10 @@ function MCAVacancyCalender({ startDate, endDate, vacancyDataHandler }: Props) {
     >
       <Calendar
         fullscreen={false}
-        onPanelChange={() => {}}
+        onPanelChange={() => {
+          console.log("clicked");
+        }}
         onSelect={onDateSelect}
-        value={value}
       />
       <Modal
         title={value.format("dddd DD MMM YYYY")}

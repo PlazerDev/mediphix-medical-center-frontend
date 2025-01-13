@@ -7,6 +7,8 @@ import Footer from "../../components/Footer";
 import { FaCalendarDays, FaUserDoctor } from "react-icons/fa6";
 import { FaClinicMedical } from "react-icons/fa";
 import bodyImg from "./../../assets/images/mca/hello.gif";
+import { StorageService } from "../../services/StorageService";
+import { TimeService } from "../../services/TimeService";
 
 function MCAHomePage() {
   // setting loading
@@ -28,11 +30,11 @@ function MCAHomePage() {
       {!loading && (
         <div className="flex-grow px-8">
           <MCSMainGreeting
-            title="Good Evening"
-            titleMemberName="Vishwa"
+            title={TimeService.getGreeting()}
+            titleMemberName={StorageService.getUserName() || ""}
             breadcrumbItems={breadcrumbItems}
             role="Medical Center Admin"
-            medicalCenterName="Nawaloka Hospital"
+            medicalCenterName={StorageService.getMedicalCenterName() || ""}
           />
           {/* Main Body div */}
           <div className="px-8 bg-mediphix_card_background py-8 rounded-lg">
