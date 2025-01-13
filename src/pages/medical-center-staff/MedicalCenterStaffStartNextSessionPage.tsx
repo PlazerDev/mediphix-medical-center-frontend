@@ -34,7 +34,6 @@ function MedicalCenterStaffStartNextSessionPage() {
           titleMemberName=""
           breadcrumbItems={breadcrumbItems}
           role="Medical Center Staff Member"
-          medicalCenterName="Nawaloka Hospital"
         />
         {/* Main Body div */}
         <div className="bg-mediphix_card_background p-8 rounded-lg flex flex-col items-center">

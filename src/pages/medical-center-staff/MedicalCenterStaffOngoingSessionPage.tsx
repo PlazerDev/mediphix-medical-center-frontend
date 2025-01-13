@@ -10,6 +10,8 @@ import NormalButton from "../../components/NormalButton";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import MCRPaymentScanQr from "../../components/mcr/MCRPaymentScanQr";
+import { TimeService } from "../../services/TimeService";
+import { StorageService } from "../../services/StorageService";
 
 function MedicalCenterStaffOngoingSessionPage() {
   const [appointmentNumber, setAppointmentNumber] = useState("");
@@ -63,9 +65,7 @@ function MedicalCenterStaffOngoingSessionPage() {
           titleMemberName=""
           breadcrumbItems={breadcrumbItems}
           role="Medical Center Staff Member"
-          medicalCenterName="Nawaloka Hospital"
         />
-
         {/* Main Body div */}
         <Modal
           title="Point the QR Code to the camera"

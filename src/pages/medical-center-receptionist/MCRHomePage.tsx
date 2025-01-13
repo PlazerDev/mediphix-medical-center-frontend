@@ -8,6 +8,8 @@ import { FaCalendarDays } from "react-icons/fa6";
 import bodyImg from "./../../assets/images/mcr/Hello.gif";
 import { HiUserAdd } from "react-icons/hi";
 import { FaClinicMedical } from "react-icons/fa";
+import { TimeService } from "../../services/TimeService";
+import { StorageService } from "../../services/StorageService";
 
 function MCRHomePage() {
   // setting loading
@@ -29,11 +31,11 @@ function MCRHomePage() {
       {!loading && (
         <div className="flex-grow px-8">
           <MCSMainGreeting
-            title="Good Evening"
-            titleMemberName="Vishwa"
+            title={TimeService.getGreeting()}
+            titleMemberName={StorageService.getUserName() || ""}
             breadcrumbItems={breadcrumbItems}
             role="Medical Center Receptionist"
-            medicalCenterName="Nawaloka Hospital"
+            medicalCenterName={StorageService.getMedicalCenterName() || ""}
           />
           {/* Main Body div */}
           <div className="px-8 bg-mediphix_card_background py-8 rounded-lg">

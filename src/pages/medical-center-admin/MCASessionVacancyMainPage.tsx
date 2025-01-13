@@ -6,6 +6,8 @@ import Footer from "../../components/Footer";
 import NormalButtonWithIcon from "../../components/NormalButtonWithIcon";
 import { FaPlusCircle } from "react-icons/fa";
 import MCATable from "../../components/mca/MCATable";
+import { TimeService } from "../../services/TimeService";
+import { StorageService } from "../../services/StorageService";
 
 function MCASessionVacancyMainPage() {
   const [loading, setLoading] = useState(false);
@@ -33,11 +35,11 @@ function MCASessionVacancyMainPage() {
       {!loading && (
         <div className="flex-grow px-8">
           <MCSMainGreeting
-            title="Clinic Sessions Vacancies"
-            titleMemberName=""
+            title={TimeService.getGreeting()}
+            titleMemberName={StorageService.getUserName() || ""}
             breadcrumbItems={breadcrumbItems}
             role="Medical Center Admin"
-            medicalCenterName="Nawaloka Hospital"
+            medicalCenterName={StorageService.getMedicalCenterName() || ""}
           />
           {/* Main Body div */}
           <div className="flex flex-col items-start">
