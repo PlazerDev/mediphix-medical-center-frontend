@@ -45,7 +45,6 @@ function MedicalCenterStaffOnGoingSessionsListPage() {
           titleMemberName=""
           breadcrumbItems={breadcrumbItems}
           role="Medical Center Staff Member"
-          medicalCenterName="Nawaloka Hospital"
         />
         {/* Main Body div from here*/}
         {noOfSessions === 0 && <MCSEmptyCard />}
