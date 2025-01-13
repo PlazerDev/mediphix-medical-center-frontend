@@ -5,21 +5,21 @@ import MCRPaymentReciept from "./MCRPaymentReciept";
 import MCRPaymentUnpaidCard from "./MCRPaymentUnpaidCard";
 
 interface Props {
-  flag: boolean;
+  data: any;
 }
-function MCRPaymentBody({ flag }: Props) {
+function MCRPaymentBody({ data }: Props) {
   return (
     <div className="mt-8 flex flex-row gap-4 justify-between">
       <div className="flex-1 flex flex-col gap-4">
-        <MCRPaymentAppointmentDetailCard />
-        <MCRPaymentPatientCard />
-        <MCRPaymentDoctorCard />
+        <MCRPaymentAppointmentDetailCard data={data.aptAndSessionDetails} />
+        <MCRPaymentPatientCard data={data.patientDetails} />
+        <MCRPaymentDoctorCard data={data.doctorDetails} />
       </div>
       {/* For Unpaid Appointments  */}
-      {!flag && <MCRPaymentUnpaidCard />}
+      {!data.paymentDetails.isPaid && <MCRPaymentUnpaidCard data={data} />}
 
       {/* For Paid Appointments  */}
-      {flag && <MCRPaymentReciept />}
+      {data.paymentDetails.isPaid && <MCRPaymentReciept data={data} />}
     </div>
   );
 }

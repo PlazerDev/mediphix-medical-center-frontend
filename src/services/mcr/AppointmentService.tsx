@@ -1,3 +1,6 @@
+import axios from "axios";
+import { AlertService } from "../AlertService";
+
 export interface AppointmentDataRecord {
   id: string;
   doctorName: string;
@@ -34,6 +37,35 @@ export interface DetailedAppointmentDataRecord {
 }
 
 export class AppointmentService {
+  static async searchAppointmentForPayments(
+    aptNumber: string,
+    getAccessToken: () => Promise<string>,
+    setResult: React.Dispatch<any>,
+    stopLoading: () => void
+  ) {
+    try {
+      const token = await getAccessToken();
+      const response = await axios.get(
+        `http://localhost:9000/mcr/searchPayment/${aptNumber}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response);
+      setResult(response.data);
+      stopLoading();
+    } catch (error: any) {
+      console.error("Failed to fetch user role:", error);
+      setResult(null);
+      stopLoading();
+      AlertService.showErrorTimerAlert(
+        "Couldn't found",
+        "Invalid Appointment Number"
+      );
+    }
+  }
   static getSampleDetailedAppointmentData(): DetailedAppointmentDataRecord {
     return {
       patientData: {

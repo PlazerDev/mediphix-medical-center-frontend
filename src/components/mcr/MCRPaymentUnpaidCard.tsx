@@ -1,7 +1,10 @@
 import NormalButton from "../NormalButton";
 import btnImg from "./../../assets/images/mcr/pattern.png";
 
-function MCRPaymentUnpaidCard() {
+interface Props {
+  data: any;
+}
+function MCRPaymentUnpaidCard({ data }: Props) {
   return (
     <div className=" bg-mediphix_card_background rounded-lg w-96 flex flex-col justify-between items-center pb-8">
       <div className="relative w-full h-40 flex flex-col justify-center items-center rounded-tl-lg rounded-tr-lg rounde">
@@ -15,7 +18,9 @@ function MCRPaymentUnpaidCard() {
       <div>
         <div className="flex flex-col items-center gap-2">
           <p className="text-mediphix_text_c text-sm">Payment Amount</p>
-          <p className="font-bold text-4xl">Rs. 1, 950.00</p>
+          <p className="font-bold text-4xl">
+            {"Rs. " + data.paymentDetails.amount + ".00"}
+          </p>
         </div>
       </div>
       <div className="h-10">

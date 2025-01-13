@@ -3,7 +3,10 @@ import NormalButtonWithIcon from "../NormalButtonWithIcon";
 import { FaPrint } from "react-icons/fa6";
 import MCRPaymentRecieptContent from "./MCRPaymentRecieptContent";
 
-function MCRPaymentReciept() {
+interface Props {
+  data: any;
+}
+function MCRPaymentReciept({ data }: Props) {
   const handlePrintClick = () => {
     // Open the URL in a new tab
     window.open(
