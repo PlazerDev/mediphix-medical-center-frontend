@@ -17,7 +17,7 @@ function MCRPaymentReciept({ data }: Props) {
   return (
     <div>
       <Badge.Ribbon text="Payment Receipt" color="#FF7300">
-        <MCRPaymentRecieptContent />
+        <MCRPaymentRecieptContent data={data} />
       </Badge.Ribbon>
 
       <div className="mt-4 h-12" onClick={handlePrintClick}>

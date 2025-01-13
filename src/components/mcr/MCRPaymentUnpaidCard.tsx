@@ -1,10 +1,25 @@
+import { useAuthContext } from "@asgardeo/auth-react";
+import { useLoading } from "../../contexts/LoadingContext";
 import NormalButton from "../NormalButton";
 import btnImg from "./../../assets/images/mcr/pattern.png";
+import { AppointmentService } from "../../services/mcr/AppointmentService";
 
 interface Props {
   data: any;
+  setResult: React.Dispatch<any>;
 }
-function MCRPaymentUnpaidCard({ data }: Props) {
+function MCRPaymentUnpaidCard({ data, setResult }: Props) {
+  const { startLoading, stopLoading } = useLoading();
+  const { getAccessToken } = useAuthContext();
+  const paymentAcceptHandler = () => {
+    startLoading();
+    AppointmentService.markAsPaid(
+      data.aptAndSessionDetails.aptNumber,
+      getAccessToken,
+      stopLoading,
+      setResult
+    );
+  };
   return (
     <div className=" bg-mediphix_card_background rounded-lg w-96 flex flex-col justify-between items-center pb-8">
       <div className="relative w-full h-40 flex flex-col justify-center items-center rounded-tl-lg rounded-tr-lg rounde">
@@ -24,7 +39,9 @@ function MCRPaymentUnpaidCard({ data }: Props) {
         </div>
       </div>
       <div className="h-10">
-        <NormalButton colorType={2} link="" title="Accept the Payment" />
+        <button onClick={paymentAcceptHandler} className="h-10">
+          <NormalButton colorType={2} link="" title="Accept the Payment" />
+        </button>
       </div>
     </div>
   );

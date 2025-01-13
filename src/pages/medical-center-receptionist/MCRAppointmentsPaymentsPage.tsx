@@ -129,7 +129,7 @@ function MCRAppointmentsPaymentsPage() {
             <Loading />
           </div>
         ) : resultData ? (
-          <MCRPaymentBody data={resultData} />
+          <MCRPaymentBody data={resultData} setResult={setResultData} />
         ) : (
           <MCRPaymentsDefault />
         )}

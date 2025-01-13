@@ -53,11 +53,10 @@ export class AppointmentService {
           },
         }
       );
-      console.log(response);
       setResult(response.data);
       stopLoading();
     } catch (error: any) {
-      console.error("Failed to fetch user role:", error);
+      console.error("Error:", error);
       setResult(null);
       stopLoading();
       AlertService.showErrorTimerAlert(
@@ -66,6 +65,40 @@ export class AppointmentService {
       );
     }
   }
+
+  static async markAsPaid(
+    aptNumber: string,
+    getAccessToken: () => Promise<string>,
+    stopLoading: () => void,
+    setResult: React.Dispatch<any>
+  ) {
+    try {
+      const token = await getAccessToken();
+      await axios.put(
+        `http://localhost:9000/mcr/markToPay?aptNumber=${aptNumber}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      stopLoading();
+      AlertService.showSuccessTimerAlert(
+        "Success",
+        "Appointment marked as paid"
+      );
+      setResult(null);
+    } catch (error: any) {
+      console.error("Error:", error);
+      stopLoading();
+      AlertService.showErrorTimerAlert(
+        "Couldn't found",
+        "Invalid Appointment Number"
+      );
+    }
+  }
+
   static getSampleDetailedAppointmentData(): DetailedAppointmentDataRecord {
     return {
       patientData: {
