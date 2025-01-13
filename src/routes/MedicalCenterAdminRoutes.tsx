@@ -11,7 +11,9 @@ import MCASessionVacancyDetailedPage from "../pages/medical-center-admin/MCASess
 import MCASessionVacancyResponsePage from "../pages/medical-center-admin/MCASessionVacancyResponsePage";
 import MCADoctorJoinRequestMainPage from "../pages/medical-center-admin/MCADoctorJoinRequestMainPage";
 import MCADoctorJoinRequestDetailPage from "../pages/medical-center-admin/MCADoctorJoinRequestDetailPage";
-import MCACStaffCenterStaffMemberPage from "../pages/medical-center-staff/MCACStaffCenterStaffMemberPage";
+import MCACStaffCenterStaffMemberPage from "../pages/medical-center-admin/MCACStaffCenterStaffMemberPage";
+import MCACStaffCenterReceptionistPage from "../pages/medical-center-admin/MCACStaffCenterReceptionistPage";
+import MCACStaffCenterLabPage from "../pages/medical-center-admin/MCACStaffCenterLabPage";
 
 function MedicalCenterAdminRoutes() {
   return (
@@ -26,11 +28,18 @@ function MedicalCenterAdminRoutes() {
         path="/doctors/joinRequests/:doctorId"
         element={<MCADoctorJoinRequestDetailPage />}
       />
-
       <Route path="/staff" element={<MCACStaffMainPage />} />
       <Route
         path="/staff/medicalCenterMember"
         element={<MCACStaffCenterStaffMemberPage />}
+      />
+      <Route
+        path="/staff/medicalCenterReceptionMember"
+        element={<MCACStaffCenterReceptionistPage />}
+      />
+      <Route
+        path="/staff/medicalCenterLabMember"
+        element={<MCACStaffCenterLabPage />}
       />
       <Route path="/sessions" element={<MCASessionMainPage />} />
       <Route

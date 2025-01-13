@@ -61,13 +61,13 @@ function MCACStaffMainPage() {
                 buttonIcon={FaUserNurse}
               />
               <MCSCustomButton
-                path=""
+                path="/medicalCenterAdmin/staff/medicalCenterReceptionMember"
                 buttonTitle="Clinic Staff Receptionists"
                 isPrimary={true}
                 buttonIcon={FaHospitalUser}
               />
               <MCSCustomButton
-                path=""
+                path="/medicalCenterAdmin/staff/medicalCenterLabMember"
                 buttonTitle="Clinic Laboratory Staff"
                 isPrimary={false}
                 buttonIcon={FaFileMedicalAlt}

@@ -71,7 +71,7 @@ export class UserService {
     const url = "http://localhost:9000/registration/medicalCenterStaff";
 
     try {
-      const response = await axios.post(
+      await axios.post(
         url,
         {
           name: data.name,
@@ -95,7 +95,77 @@ export class UserService {
       );
     } catch (error: any) {
       stopLoading();
-      console.error("Error creating medical center profile!", error);
+      console.error("Error creating medical center staff profile!", error);
+      AlertService.showErrorTimerAlert("Action Failed!", error);
+    }
+  }
+
+  // REQ :: creating a new MCR profile
+  static async postAddNewReceptionMember(data: any, stopLoading: () => void) {
+    const url =
+      "http://localhost:9000/registration/registerMedicalCenterReceptionist";
+
+    try {
+      await axios.post(
+        url,
+        {
+          name: data.name,
+          email: data.email,
+          mobile: data.mobile,
+          nic: data.nic,
+          centerId: StorageService.getCenterId() || "",
+          empId: data.empID,
+          password: data.password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      stopLoading();
+      AlertService.showSuccessTimerAlert(
+        "Success!",
+        "Medical Center Receptionist Added Successfully"
+      );
+    } catch (error: any) {
+      stopLoading();
+      console.error("Error creating medical center reception profile!", error);
+      AlertService.showErrorTimerAlert("Action Failed!", error);
+    }
+  }
+
+  // REQ :: creating a new MCR profile
+  static async postAddNewLabMember(data: any, stopLoading: () => void) {
+    const url =
+      "http://localhost:9000/registration/registerMedicalCenterLabStaff";
+
+    try {
+      await axios.post(
+        url,
+        {
+          name: data.name,
+          email: data.email,
+          mobile: data.mobile,
+          nic: data.nic,
+          centerId: StorageService.getCenterId() || "",
+          empId: data.empID,
+          password: data.password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      stopLoading();
+      AlertService.showSuccessTimerAlert(
+        "Success!",
+        "Medical Center Lab Member Added Successfully"
+      );
+    } catch (error: any) {
+      stopLoading();
+      console.error("Error creating medical center Lab profile!", error);
       AlertService.showErrorTimerAlert("Action Failed!", error);
     }
   }
