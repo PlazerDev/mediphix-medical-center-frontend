@@ -1,25 +1,34 @@
 import { Controller, useForm } from "react-hook-form";
-import { Button, Input, Select } from "antd";
-import { UserData } from "./SignUpCardBody";
+import {
+  Button,
+  Input,
+  Select,
+  Form,
+  Upload,
+  UploadProps,
+  message,
+} from "antd";
+import { CenterData } from "./SignUpCardBody";
+import { UploadOutlined } from "@ant-design/icons";
 
 const { Option } = Select;
 
 interface Props {
-  nextBtnHandler: (data: Partial<UserData>) => void; // Updated prop type
+  nextBtnHandler: (data: CenterData) => void; // Updated prop type
+  backBtnHandler: () => void;
+  initialData: CenterData;
 }
 
-function Step1Card({ nextBtnHandler }: Props) {
+function Step1Card({ nextBtnHandler, backBtnHandler, initialData }: Props) {
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<UserData>({
-    defaultValues: {},
+    watch,
+  } = useForm<CenterData>({
+    defaultValues: initialData,
   });
-
-  const onSubmit = (data: UserData) => {
-    nextBtnHandler(data);
-  };
+  const email = watch("email");
 
   const districts = [
     "Colombo",
@@ -36,24 +45,65 @@ function Step1Card({ nextBtnHandler }: Props) {
     "Mannar",
   ];
 
+  const onSubmit = (data: CenterData) => {
+    console.log("Form Submitted with Data:", data);
+    nextBtnHandler(data);
+  };
+
+  const propLogo: UploadProps = {
+    name: "file",
+    action: `http://localhost:9000/media/upload?email=${email}&userType=medicalCenter&uploadType=logo`,
+    headers: {
+      authorization: "authorization-text",
+    },
+    onChange(info) {
+      if (info.file.status !== "uploading") {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === "done") {
+        message.success(`${info.file.name} file uploaded successfully`);
+      } else if (info.file.status === "error") {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+  };
+
+  const propLicense: UploadProps = {
+    name: "file",
+    action: `http://localhost:9000/media/upload?email=${email}&userType=medicalCenter&uploadType=license`,
+    headers: {
+      authorization: "authorization-text",
+    },
+    onChange(info) {
+      if (info.file.status !== "uploading") {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === "done") {
+        message.success(`${info.file.name} file uploaded successfully`);
+      } else if (info.file.status === "error") {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+  };
+
   return (
     <div className="pt-4">
       <p className="text-mediphix_text_c">
-        Fill your information and press continue
+        Fill medical center information and press next
       </p>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="mt-4 flex flex-col gap-4"
+      <Form
+        onFinish={handleSubmit(onSubmit)}
+        requiredMark={false}
+        layout="vertical"
+        className="mt-4 flex flex-col gap-0"
       >
-        <div>
-          <p>Name of the medical center</p>
+        <Form.Item label="Name of the Medical Center" required>
           <Controller
             name="name"
             control={control}
             rules={{ required: "Name is required" }}
             render={({ field }) => (
               <Input
-                className="h-12"
                 placeholder="Enter the medical center name here"
                 {...field}
               />
@@ -62,39 +112,30 @@ function Step1Card({ nextBtnHandler }: Props) {
           {errors.name && (
             <span className="text-red-500">{errors.name.message}</span>
           )}
-        </div>
+        </Form.Item>
 
-        <div className="flex gap-4 items-start">
-          <div className="flex-1">
-            <p>Address</p>
+        <div className="flex justify-between items-center gap-4">
+          <Form.Item label="Address" required className="flex-1">
             <Controller
               name="address"
               control={control}
               rules={{ required: "Address is required" }}
               render={({ field }) => (
-                <Input
-                  className="h-12"
-                  placeholder="Enter your address here"
-                  {...field}
-                />
+                <Input placeholder="Enter your address here" {...field} />
               )}
             />
             {errors.address && (
               <span className="text-red-500">{errors.address.message}</span>
             )}
-          </div>
-        </div>
+          </Form.Item>
 
-        <div className="flex gap-4 items-start">
-          <div className="flex-1">
-            <p>District</p>
+          <Form.Item label="District" required className="flex-1">
             <Controller
               name="district"
               control={control}
               rules={{ required: "District is required" }}
               render={({ field }) => (
                 <Select
-                  className="w-full h-12"
                   placeholder="Select a district"
                   {...field}
                   onChange={(value) => field.onChange(value)}
@@ -110,12 +151,33 @@ function Step1Card({ nextBtnHandler }: Props) {
             {errors.district && (
               <span className="text-red-500">{errors.district.message}</span>
             )}
-          </div>
+          </Form.Item>
+        </div>
 
-          <div className="flex-1">
-            <p>Mobile Number</p>
+        <div className="flex justify-between items-center gap-4">
+          <Form.Item label="Email" required className="flex-1">
             <Controller
-              name="mobileNumber"
+              name="email"
+              control={control}
+              rules={{
+                required: "Email is required",
+                pattern: {
+                  value: /^\S+@\S+\.\S+$/,
+                  message: "Invalid email format",
+                },
+              }}
+              render={({ field }) => (
+                <Input placeholder="Enter center's email here" {...field} />
+              )}
+            />
+            {errors.email && (
+              <span className="text-red-500">{errors.email.message}</span>
+            )}
+          </Form.Item>
+
+          <Form.Item label="Mobile Number" required className="flex-1">
+            <Controller
+              name="mobile"
               control={control}
               rules={{
                 required: "Mobile number is required",
@@ -125,21 +187,61 @@ function Step1Card({ nextBtnHandler }: Props) {
                 },
               }}
               render={({ field }) => (
-                <Input
-                  className="h-12"
-                  placeholder="Enter Mobile Number"
-                  {...field}
-                />
+                <Input placeholder="Enter mobile number here" {...field} />
               )}
             />
-            {errors.mobileNumber && (
-              <span className="text-red-500">
-                {errors.mobileNumber.message}
-              </span>
+            {errors.mobile && (
+              <span className="text-red-500">{errors.mobile.message}</span>
             )}
+          </Form.Item>
+        </div>
+
+        <Form.Item label="Description" required>
+          <Controller
+            name="specialNotes"
+            control={control}
+            rules={{ required: "Description is required" }}
+            render={({ field }) => (
+              <Input.TextArea placeholder="Describe your center" {...field} />
+            )}
+          />
+          {errors.specialNotes && (
+            <span className="text-red-500">{errors.specialNotes.message}</span>
+          )}
+        </Form.Item>
+
+        <div className="flex justify-between items-center gap-4">
+          <div className="flex-1">
+            <p className="mb-2">Center Logo</p>
+            <Upload {...propLogo}>
+              <Button icon={<UploadOutlined />}>Click to Upload</Button>
+            </Upload>
+          </div>
+          <div className="flex-1">
+            <div className="flex gap-4">
+              <p className="mb-2">Center Regestration Document</p>
+              <a
+                href="https://drive.google.com/uc?export=download&id=18vtlgJ7P7NHJEtFxX8yepWckOuC7CHeG"
+                download="your-file-name.pdf"
+                className="text-mediphix_accent"
+              >
+                Download PDF
+              </a>
+            </div>
+            <Upload {...propLicense}>
+              <Button icon={<UploadOutlined />}>Click to Upload</Button>
+            </Upload>
           </div>
         </div>
-        <div className="flex justify-end my-4">
+
+        <div className="flex justify-end my-4 gap-2">
+          <Button
+            onClick={backBtnHandler}
+            className="px-4 py-2 rounded-lg"
+            disabled
+          >
+            Back
+          </Button>
           <Button
             type="primary"
             htmlType="submit"
@@ -148,7 +250,7 @@ function Step1Card({ nextBtnHandler }: Props) {
             Next
           </Button>
         </div>
-      </form>
+      </Form>
     </div>
   );
 }

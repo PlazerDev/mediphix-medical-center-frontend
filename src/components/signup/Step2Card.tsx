@@ -1,123 +1,132 @@
-import { Controller, useForm } from "react-hook-form";
-import { UserData } from "./SignUpCardBody";
-import { Button, Input } from "antd";
-import FileUpload from "./FileUpload";
+import { useEffect } from "react";
+import { Form, Input, Button } from "antd";
+import { AdminData } from "./SignUpCardBody";
 
 interface Props {
-  nextBtnHandler: (data: Partial<UserData>) => void; // Updated prop type
+  nextBtnHandler: (data: AdminData) => void;
+  backBtnHandler: () => void;
+  initialData: AdminData;
 }
 
-function Step2Card({ nextBtnHandler }: Props) {
-  const {
-    control,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<UserData>();
+function Step2Card({ nextBtnHandler, backBtnHandler, initialData }: Props) {
+  const [form] = Form.useForm();
 
-  const onSubmit = (data: Partial<UserData>) => {
-    nextBtnHandler(data);
+  // Set the initial values of the form
+  useEffect(() => {
+    form.setFieldsValue(initialData);
+  }, [initialData, form]);
+
+  const onFinish = (values: AdminData) => {
+    nextBtnHandler(values);
   };
-
-  const password = watch("password"); // Watch password field for confirmation validation
 
   return (
     <div className="py-4">
       <p className="text-mediphix_text_c">
-        Enter your email & upload required documents.
+        Enter your admin details to proceed.
       </p>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="mt-4 flex flex-col gap-4"
+      <Form
+        requiredMark={false}
+        form={form}
+        layout="vertical"
+        onFinish={onFinish}
+        className="mt-4 flex flex-col"
       >
-        {/* Email Field */}
-        <div>
-          <p>Email</p>
-          <Controller
+        <div className="flex justify-between items-center gap-4">
+          {/* Name Field */}
+          <Form.Item
+            className="flex-1"
+            name="name"
+            label="Name"
+            rules={[{ required: true, message: "Name is required" }]}
+          >
+            <Input placeholder="Enter your name" />
+          </Form.Item>
+
+          {/* NIC Field */}
+          <Form.Item
+            className="flex-1"
+            name="nic"
+            label="NIC"
+            rules={[{ required: true, message: "NIC is required" }]}
+          >
+            <Input placeholder="Enter your NIC" />
+          </Form.Item>
+        </div>
+
+        {/* Mobile Number Field */}
+        <div className="flex justify-between items-center gap-4">
+          <Form.Item
+            className="flex-1"
+            name="mobile"
+            label="Mobile Number"
+            rules={[
+              { required: true, message: "Mobile number is required" },
+              {
+                pattern: /^[0-9]{10}$/,
+                message: "Invalid mobile number format",
+              },
+            ]}
+          >
+            <Input placeholder="Enter your mobile number" />
+          </Form.Item>
+
+          {/* Email Field */}
+          <Form.Item
+            className="flex-1"
             name="email"
-            control={control}
-            rules={{
-              required: "Email is required",
-              pattern: {
-                value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+            label="Email"
+            rules={[
+              { required: true, message: "Email is required" },
+              {
+                pattern: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
                 message: "Invalid email format",
               },
-            }}
-            render={({ field }) => (
-              <Input
-                className="h-12"
-                placeholder="Enter your email here"
-                {...field}
-              />
-            )}
-          />
-          {errors.email && (
-            <span className="text-red-500">{errors.email.message}</span>
-          )}
+            ]}
+          >
+            <Input placeholder="Enter your email" />
+          </Form.Item>
         </div>
+        <div className="flex justify-between items-center gap-4">
+          {/* Password Field */}
+          <Form.Item
+            className="flex-1"
+            name="password"
+            label="Password"
+            rules={[
+              { required: true, message: "Password is required" },
+              { min: 6, message: "Password must be at least 6 characters" },
+            ]}
+          >
+            <Input.Password placeholder="Enter your password" />
+          </Form.Item>
 
-        {/* Password & Confirm Password Fields */}
-        <div className="flex items-start gap-4">
-          {/* Password */}
-          <div className="flex-1">
-            <p>Password</p>
-            <Controller
-              name="password"
-              control={control}
-              rules={{
-                required: "Password is required",
-                minLength: {
-                  value: 6,
-                  message: "Password must be at least 6 characters",
+          {/* Confirm Password Field */}
+          <Form.Item
+            className="flex-1"
+            name="confirmPassword"
+            label="Confirm Password"
+            dependencies={["password"]}
+            rules={[
+              { required: true, message: "Please confirm your password" },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue("password") === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(new Error("Passwords do not match"));
                 },
-              }}
-              render={({ field }) => (
-                <Input.Password
-                  className="h-12"
-                  placeholder="Enter your password"
-                  {...field}
-                />
-              )}
-            />
-            {errors.password && (
-              <span className="text-red-500">{errors.password.message}</span>
-            )}
-          </div>
-
-          {/* Confirm Password */}
-          <div className="flex-1">
-            <p>Confirm Password</p>
-            <Controller
-              name="confirmPassword"
-              control={control}
-              rules={{
-                required: "Please confirm your password",
-                validate: (value) =>
-                  value === password || "Passwords do not match",
-              }}
-              render={({ field }) => (
-                <Input.Password
-                  className="h-12"
-                  placeholder="Confirm your password"
-                  {...field}
-                />
-              )}
-            />
-            {errors.confirmPassword && (
-              <span className="text-red-500">
-                {errors.confirmPassword.message}
-              </span>
-            )}
-          </div>
+              }),
+            ]}
+          >
+            <Input.Password placeholder="Confirm your password" />
+          </Form.Item>
         </div>
-        <div className="flex items-center gap-4">
-          <div className="flex-1">
-            <p>Enter Your Medical Center Registration Documents</p>
-            <FileUpload />
-          </div>
-        </div>
-        {/* Submit Button */}
-        <div className="flex justify-end">
+        {/* Buttons */}
+        <div className="flex justify-end my-4 gap-2">
+          <Button onClick={backBtnHandler} className="px-4 py-2 rounded-lg">
+            Back
+          </Button>
           <Button
             type="primary"
             htmlType="submit"
@@ -126,7 +135,7 @@ function Step2Card({ nextBtnHandler }: Props) {
             Next
           </Button>
         </div>
-      </form>
+      </Form>
     </div>
   );
 }
