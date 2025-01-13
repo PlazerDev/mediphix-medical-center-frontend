@@ -7,6 +7,8 @@ import { HiDocumentDuplicate } from "react-icons/hi2";
 import { FaCalendarAlt } from "react-icons/fa";
 import Loading from "../../components/Loading";
 import Footer from "../../components/Footer";
+import { TimeService } from "../../services/TimeService";
+import { StorageService } from "../../services/StorageService";
 
 function MCASessionMainPage() {
   const [loading, setLoading] = useState(false);
@@ -30,11 +32,11 @@ function MCASessionMainPage() {
       {!loading && (
         <div className="flex-grow px-8">
           <MCSMainGreeting
-            title="Good Evening"
-            titleMemberName="Vishwa"
+            title={TimeService.getGreeting()}
+            titleMemberName={StorageService.getUserName() || ""}
             breadcrumbItems={breadcrumbItems}
             role="Medical Center Admin"
-            medicalCenterName="Nawaloka Hospital"
+            medicalCenterName={StorageService.getMedicalCenterName() || ""}
           />
           {/* Main Body div */}
           <div className="px-8 bg-mediphix_card_background py-8 rounded-lg">

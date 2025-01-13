@@ -51,7 +51,6 @@ function MedicalCenterStaffUpcomingSessionPage() {
           titleMemberName=""
           breadcrumbItems={breadcrumbItems}
           role="Medical Center Staff Member"
-          medicalCenterName="Nawaloka Hospital"
         />
         {/* Main Body div */}
         <MCSCalender updateSelectedDate={updateSelectedDate} />

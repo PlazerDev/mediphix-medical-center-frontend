@@ -7,6 +7,8 @@ import MedicalCenterReceptionistRoutes from "./routes/MedicalCenterReceptionistR
 import MedicalCenterAdminRoutes from "./routes/MedicalCenterAdminRoutes.tsx";
 import MedicalCenterLabStaffRoutes from "./routes/MedicalCenterLabStaffRoutes.tsx";
 import SignUpPage from "./pages/SignUpPage.tsx";
+import { LoadingProvider } from "./contexts/LoadingContext.tsx";
+import ProtectedRoute from "./components/ProtectedRoute.tsx";
 
 function App() {
   const asgardeoConfig = {
@@ -39,32 +41,50 @@ function App() {
             },
           }}
         >
-          <Router>
-            <Routes>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/signup" element={<SignUpPage />} />
-              {/* Medical Center Staff Routes  */}
-              <Route
-                path="/medicalCenterStaff/*"
-                element={<MedicalCenterStaffRoutes />}
-              />
-              {/* Medical Center Receptionist Routes  */}
-              <Route
-                path="/medicalCenterReceptionist/*"
-                element={<MedicalCenterReceptionistRoutes />}
-              />
-              {/* Medical Center Admin Routes  */}
-              <Route
-                path="/medicalCenterAdmin/*"
-                element={<MedicalCenterAdminRoutes />}
-              />
-              {/* Medical Center Lab Staff Routes  */}
-              <Route
-                path="/medicalCenterLabStaff/*"
-                element={<MedicalCenterLabStaffRoutes />}
-              />
-            </Routes>
-          </Router>
+          <LoadingProvider>
+            <Router>
+              <Routes>
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/signup" element={<SignUpPage />} />
+                {/* Medical Center Staff Routes  */}
+                <Route
+                  path="/medicalCenterStaff/*"
+                  element={
+                    <ProtectedRoute allowedRoles={["MCS"]}>
+                      <MedicalCenterStaffRoutes />
+                    </ProtectedRoute>
+                  }
+                />
+                {/* Medical Center Receptionist Routes  */}
+                <Route
+                  path="/medicalCenterReceptionist/*"
+                  element={
+                    <ProtectedRoute allowedRoles={["MCR"]}>
+                      <MedicalCenterReceptionistRoutes />
+                    </ProtectedRoute>
+                  }
+                />
+                {/* Medical Center Admin Routes  */}
+                <Route
+                  path="/medicalCenterAdmin/*"
+                  element={
+                    <ProtectedRoute allowedRoles={["MCA"]}>
+                      <MedicalCenterAdminRoutes />
+                    </ProtectedRoute>
+                  }
+                />
+                {/* Medical Center Lab Staff Routes  */}
+                <Route
+                  path="/medicalCenterLabStaff/*"
+                  element={
+                    <ProtectedRoute allowedRoles={["MCLS"]}>
+                      <MedicalCenterLabStaffRoutes />
+                    </ProtectedRoute>
+                  }
+                />
+              </Routes>
+            </Router>
+          </LoadingProvider>
         </ConfigProvider>
       </AuthProvider>
     </>

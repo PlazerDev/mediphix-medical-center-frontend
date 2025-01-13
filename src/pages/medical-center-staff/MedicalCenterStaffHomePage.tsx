@@ -8,6 +8,8 @@ import MCSNavBar from "../../components/mcs/MCSNavBar";
 import MCSCustomButton from "../../components/mcs/MCSCustomButton";
 import MCSMainGreeting from "../../components/mcs/MCSMainGreeting";
 import Loading from "../../components/Loading";
+import { TimeService } from "../../services/TimeService";
+import { StorageService } from "../../services/StorageService";
 
 interface MCSMemeberData {
   first_name: string;
@@ -39,11 +41,10 @@ function MedicalCenterStaffHomePage() {
       {!loading && (
         <div className="flex-grow px-8">
           <MCSMainGreeting
-            title="Good Evening"
-            titleMemberName={mcsMemeberData.first_name}
+            title={TimeService.getGreeting()}
+            titleMemberName={StorageService.getUserName() || ""}
             breadcrumbItems={breadcrumbItems}
             role="Medical Center Staff Member"
-            medicalCenterName="Nawaloka Hospital"
           />
           {/* Main Body div */}
           <div className="px-8 bg-mediphix_card_background py-8 rounded-lg">

@@ -7,11 +7,12 @@ interface BreadcrumbItem {
 }
 
 interface Props {
-  medicalCenterName: string;
+  medicalCenterName?: string;
   titleMemberName: string;
   role: string;
   title: string;
   breadcrumbItems: BreadcrumbItem[];
+  logoUrl?: string;
 }
 
 function MCSMainGreeting({

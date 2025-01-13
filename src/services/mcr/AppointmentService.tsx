@@ -1,3 +1,6 @@
+import axios from "axios";
+import { AlertService } from "../AlertService";
+
 export interface AppointmentDataRecord {
   id: string;
   doctorName: string;
@@ -34,6 +37,68 @@ export interface DetailedAppointmentDataRecord {
 }
 
 export class AppointmentService {
+  static async searchAppointmentForPayments(
+    aptNumber: string,
+    getAccessToken: () => Promise<string>,
+    setResult: React.Dispatch<any>,
+    stopLoading: () => void
+  ) {
+    try {
+      const token = await getAccessToken();
+      const response = await axios.get(
+        `http://localhost:9000/mcr/searchPayment/${aptNumber}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setResult(response.data);
+      stopLoading();
+    } catch (error: any) {
+      console.error("Error:", error);
+      setResult(null);
+      stopLoading();
+      AlertService.showErrorTimerAlert(
+        "Couldn't found",
+        "Invalid Appointment Number"
+      );
+    }
+  }
+
+  static async markAsPaid(
+    aptNumber: string,
+    getAccessToken: () => Promise<string>,
+    stopLoading: () => void,
+    setResult: React.Dispatch<any>
+  ) {
+    try {
+      const token = await getAccessToken();
+      await axios.put(
+        `http://localhost:9000/mcr/markToPay?aptNumber=${aptNumber}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      stopLoading();
+      AlertService.showSuccessTimerAlert(
+        "Success",
+        "Appointment marked as paid"
+      );
+      setResult(null);
+    } catch (error: any) {
+      console.error("Error:", error);
+      stopLoading();
+      AlertService.showErrorTimerAlert(
+        "Couldn't found",
+        "Invalid Appointment Number"
+      );
+    }
+  }
+
   static getSampleDetailedAppointmentData(): DetailedAppointmentDataRecord {
     return {
       patientData: {
@@ -46,14 +111,14 @@ export class AppointmentService {
       timeSlotData: [
         {
           startTime: "09:00",
-          endTime: "09:30",
+          endTime: "10:00",
           maxNumberOfPatients: "10",
           currentLastQueueNumber: "5",
           id: "1",
         },
         {
-          startTime: "09:30",
-          endTime: "10:00",
+          startTime: "10:00",
+          endTime: "11:00",
           maxNumberOfPatients: "10",
           currentLastQueueNumber: "3",
           id: "2",
@@ -65,7 +130,7 @@ export class AppointmentService {
         doctorId: "D456",
         date: "2024-12-01",
         startTime: "09:00",
-        endTime: "10:00",
+        endTime: "11:00",
         appointmentCategories: ["General Consultation", "Vaccination"],
         noteFromDoctor: "Check vitals and discuss vaccination schedule.",
         noteFromMedicalCenter:

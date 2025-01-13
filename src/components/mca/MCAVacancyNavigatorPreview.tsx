@@ -1,30 +1,48 @@
+import { useAuthContext } from "@asgardeo/auth-react";
+import { useLoading } from "../../contexts/LoadingContext";
+import {
+  additionalData,
+  SessionService,
+  vacancyData,
+} from "../../services/mca/SessionService";
 import CardTitleAndValue from "../CardTitleAndValue";
+import Loading from "../Loading";
 import NormalButtonWithFunction from "../NormalButtonWithFunction";
-
-type vacancyData = {
-  mainRangeStartDate: string;
-  mainRangeEndDate: string;
-  selectedDate: string;
-  repeatDays: string[];
-  subRangeEndDate: string;
-  startTime: String;
-  endTime: String;
-};
-
-type additionalData = {
-  aptCategories: string[];
-  noteForDoctors: string;
-  contactNumber: string;
-};
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   vacancyDataList: vacancyData[];
   additionalDataObj: additionalData;
 }
+
 function MCAVacancyNavigatorPreview({
   vacancyDataList,
   additionalDataObj,
 }: Props) {
+  const { startLoading, stopLoading, isLoading } = useLoading();
+  const { getAccessToken } = useAuthContext();
+  const navigate = useNavigate();
+
+  const submitHandler = async () => {
+    startLoading();
+    const accessToken = await getAccessToken();
+    SessionService.postSessionVacancy(
+      vacancyDataList,
+      additionalDataObj,
+      accessToken,
+      navigate,
+      stopLoading
+    );
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col my-16">
+        <Loading />
+      </div>
+    );
+  }
+
   return (
     <div>
       <div className="bg-mediphix_card_background rounded-lg px-8 py-4">
@@ -84,7 +102,7 @@ function MCAVacancyNavigatorPreview({
         <NormalButtonWithFunction
           colorType={2}
           title="Confirm & Submit"
-          handler={() => {}}
+          handler={submitHandler}
         />
       </div>
     </div>
