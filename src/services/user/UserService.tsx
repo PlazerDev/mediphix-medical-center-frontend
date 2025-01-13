@@ -1,6 +1,8 @@
 import axios from "axios";
 import { StorageService } from "../StorageService";
 import { AlertService } from "../AlertService";
+import { FinalCenterAdminData } from "../../components/signup/SignUpCardBody";
+import { NavigateFunction } from "react-router-dom";
 
 export class UserService {
   // REQ :: geting userData
@@ -166,6 +168,34 @@ export class UserService {
     } catch (error: any) {
       stopLoading();
       console.error("Error creating medical center Lab profile!", error);
+      AlertService.showErrorTimerAlert("Action Failed!", error);
+    }
+  }
+
+  // REQ :: creating a new Medical Center & Admin profile
+  static async registerMedicalCenterAndAdmin(
+    data: FinalCenterAdminData,
+    stopLoading: () => void,
+    navigate: NavigateFunction
+  ) {
+    console.log("Here is data, ", data);
+    const url = "http://localhost:9000/registration/medicalCenter";
+
+    try {
+      await axios.post(url, data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      stopLoading();
+      AlertService.showSuccessTimerAlert(
+        "Success!",
+        "Medical Center registerd successfully"
+      );
+      navigate("/");
+    } catch (error: any) {
+      stopLoading();
+      console.error("Error registering medical center and admin !", error);
       AlertService.showErrorTimerAlert("Action Failed!", error);
     }
   }

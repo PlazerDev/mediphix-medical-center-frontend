@@ -22,14 +22,14 @@ export interface AdminData {
   password: string;
 }
 
-export interface finalCenterAdminData {
+export interface FinalCenterAdminData {
   mcaData: AdminData;
   mcData: CenterData;
 }
 
 function SignUpCardBody() {
   const [currentStep, setCurrentStep] = useState<number>(0);
-  const [formData, setFormData] = useState<finalCenterAdminData>({
+  const [formData, setFormData] = useState<FinalCenterAdminData>({
     mcaData: {
       email: "",
       nic: "",
@@ -71,7 +71,7 @@ function SignUpCardBody() {
   }
 
   return (
-    <div className="bg-mediphix_card_background rounded-lg w-full px-8 mx-40 mt-64">
+    <div className="bg-mediphix_card_background rounded-lg w-full px-8 mx-40 mt-16">
       <div className="flex items-center justify-center">
         <img src={logo} alt="" className="w-24" />
       </div>

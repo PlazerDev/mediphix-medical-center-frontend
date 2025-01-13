@@ -1,7 +1,7 @@
 import axios from "axios";
 import { StorageService } from "../StorageService";
 import { AlertService } from "../AlertService";
-import { NavigateFunction, useNavigate } from "react-router-dom";
+import { NavigateFunction } from "react-router-dom";
 
 export type vacancyData = {
   mainRangeStartDate: string;
@@ -138,7 +138,7 @@ export class SessionService {
     const url = "http://localhost:9000/mca/createSessionVacancy";
 
     try {
-      const response = await axios.post(url, payload, {
+      await axios.post(url, payload, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,

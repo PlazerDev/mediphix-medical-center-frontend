@@ -3,13 +3,11 @@ export class TimeService {
     const currentHour = new Date().getHours();
 
     if (currentHour >= 5 && currentHour < 12) {
-      return "Good Morning! Let's go";
+      return "Good Morning";
     } else if (currentHour >= 12 && currentHour < 17) {
-      return "Good Afternoon! Keep going";
-    } else if (currentHour >= 17 && currentHour < 21) {
-      return "Good Evening! Keep it up";
+      return "Good Afternoon";
     } else {
-      return "Night Owl! Shine on";
+      return "Good Evening";
     }
   }
 }
