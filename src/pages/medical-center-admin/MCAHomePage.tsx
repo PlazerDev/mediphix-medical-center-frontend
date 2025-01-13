@@ -34,7 +34,6 @@ function MCAHomePage() {
             titleMemberName={StorageService.getUserName() || ""}
             breadcrumbItems={breadcrumbItems}
             role="Medical Center Admin"
-            medicalCenterName={StorageService.getMedicalCenterName() || ""}
           />
           {/* Main Body div */}
           <div className="px-8 bg-mediphix_card_background py-8 rounded-lg">
