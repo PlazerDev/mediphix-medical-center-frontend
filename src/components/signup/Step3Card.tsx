@@ -53,7 +53,7 @@ function Step3Card({ formData, backBtnHandler }: Props) {
         <Divider />
         <p>Administrator Details</p>
         <Image
-          className="rounded-full my-2"
+          className="my-2"
           width={68}
           src={
             "https://mediphix-bucket.s3.ap-southeast-1.amazonaws.com/mca-resources/" +

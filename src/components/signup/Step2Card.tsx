@@ -1,6 +1,7 @@
-import { useEffect } from "react";
-import { Form, Input, Button } from "antd";
+import { useEffect, useState } from "react";
+import { Form, Input, Button, Upload, UploadProps, message } from "antd";
 import { AdminData } from "./SignUpCardBody";
+import { UploadOutlined } from "@ant-design/icons";
 
 interface Props {
   nextBtnHandler: (data: AdminData) => void;
@@ -10,6 +11,7 @@ interface Props {
 
 function Step2Card({ nextBtnHandler, backBtnHandler, initialData }: Props) {
   const [form] = Form.useForm();
+  const [email, setEmail] = useState<string>(initialData.email);
 
   // Set the initial values of the form
   useEffect(() => {
@@ -18,6 +20,25 @@ function Step2Card({ nextBtnHandler, backBtnHandler, initialData }: Props) {
 
   const onFinish = (values: AdminData) => {
     nextBtnHandler(values);
+  };
+
+  const prop: UploadProps = {
+    name: "file",
+    action: `http://localhost:9000/media/upload?email=${email}&userType=mca&uploadType=profileImage`,
+    headers: {
+      authorization: "authorization-text",
+    },
+    onChange(info) {
+      console.log(email);
+      if (info.file.status !== "uploading") {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === "done") {
+        message.success(`${info.file.name} file uploaded successfully`);
+      } else if (info.file.status === "error") {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
   };
 
   return (
@@ -31,6 +52,11 @@ function Step2Card({ nextBtnHandler, backBtnHandler, initialData }: Props) {
         layout="vertical"
         onFinish={onFinish}
         className="mt-4 flex flex-col"
+        onValuesChange={(changedValues) => {
+          if (changedValues.email) {
+            setEmail(changedValues.email);
+          }
+        }}
       >
         <div className="flex justify-between items-center gap-4">
           {/* Name Field */}
@@ -121,6 +147,12 @@ function Step2Card({ nextBtnHandler, backBtnHandler, initialData }: Props) {
           >
             <Input.Password placeholder="Confirm your password" />
           </Form.Item>
+        </div>
+        <div className="">
+          <p className="mb-2">Profile Image</p>
+          <Upload {...prop}>
+            <Button icon={<UploadOutlined />}>Click to Upload</Button>
+          </Upload>
         </div>
         {/* Buttons */}
         <div className="flex justify-end my-4 gap-2">

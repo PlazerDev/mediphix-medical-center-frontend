@@ -14,12 +14,11 @@ import {
   message,
   Row,
   Space,
-  Tag,
   Upload,
   UploadProps,
 } from "antd";
 import nursesImg from "./../../assets/images/mcs/nurse.png";
-import { ExclamationCircleOutlined, UploadOutlined } from "@ant-design/icons";
+import { UploadOutlined } from "@ant-design/icons";
 import { Modal } from "antd";
 import NormalButtonWithIcon from "../../components/NormalButtonWithIcon";
 import { IoIosAddCircle } from "react-icons/io";

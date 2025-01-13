@@ -71,7 +71,7 @@ function SignUpCardBody() {
   }
 
   return (
-    <div className="bg-mediphix_card_background rounded-lg w-full px-8 mx-40 my-16">
+    <div className="bg-mediphix_card_background rounded-lg w-full px-8 mx-40 mt-64">
       <div className="flex items-center justify-center">
         <img src={logo} alt="" className="w-24" />
       </div>
