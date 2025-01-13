@@ -1,6 +1,9 @@
 import axios from "axios";
+import { StorageService } from "../StorageService";
+import { AlertService } from "../AlertService";
 
 export class UserService {
+  // REQ :: geting userData
   static async fetchUserRole(token: string) {
     try {
       const response = await axios.get(`http://localhost:9000/user/find`, {
@@ -60,6 +63,40 @@ export class UserService {
     } catch (error) {
       console.error("Failed to store user data in local storage:", error);
       return -1;
+    }
+  }
+
+  // REQ :: creating a new MCS profile
+  static async postAddNewStaffMember(data: any, stopLoading: () => void) {
+    const url = "http://localhost:9000/registration/medicalCenterStaff";
+
+    try {
+      const response = await axios.post(
+        url,
+        {
+          name: data.name,
+          email: data.email,
+          mobile: data.mobile,
+          nic: data.nic,
+          centerId: StorageService.getCenterId() || "",
+          empId: data.empID,
+          password: data.password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      stopLoading();
+      AlertService.showSuccessTimerAlert(
+        "Success!",
+        "Medical Center Staff Member Added Successfully"
+      );
+    } catch (error: any) {
+      stopLoading();
+      console.error("Error creating medical center profile!", error);
+      AlertService.showErrorTimerAlert("Action Failed!", error);
     }
   }
 }

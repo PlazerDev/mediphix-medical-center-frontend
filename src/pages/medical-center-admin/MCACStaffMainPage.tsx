@@ -8,6 +8,7 @@ import Loading from "../../components/Loading";
 import Footer from "../../components/Footer";
 import { StorageService } from "../../services/StorageService";
 import { useLoading } from "../../contexts/LoadingContext";
+import { TimeService } from "../../services/TimeService";
 
 function MCACStaffMainPage() {
   const { isLoading } = useLoading();
@@ -32,8 +33,8 @@ function MCACStaffMainPage() {
       {!isLoading && (
         <div className="flex-grow px-8">
           <MCSMainGreeting
-            title="Good Evening"
-            titleMemberName={StorageService.getUserName() || ""}
+            title="Manage Clinic Staff"
+            titleMemberName=""
             breadcrumbItems={breadcrumbItems}
             role="Medical Center Admin"
             medicalCenterName={StorageService.getMedicalCenterName() || ""}
