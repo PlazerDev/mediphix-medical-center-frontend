@@ -7,6 +7,8 @@ import MCSMainGreeting from "../../components/mcs/MCSMainGreeting";
 import MCSCustomButton from "../../components/mcs/MCSCustomButton";
 import Loading from "../../components/Loading";
 import Footer from "../../components/Footer";
+import { TimeService } from "../../services/TimeService";
+import { StorageService } from "../../services/StorageService";
 
 function MCLSHomePage() {
   // setting loading
@@ -28,11 +30,11 @@ function MCLSHomePage() {
       {!loading && (
         <div className="flex-grow px-8">
           <MCSMainGreeting
-            title="Good Evening"
-            titleMemberName="Vishwa"
+            title={TimeService.getGreeting()}
+            titleMemberName={StorageService.getUserName() || ""}
             breadcrumbItems={breadcrumbItems}
             role="Medical Center Lab Staff"
-            medicalCenterName="Nawaloka Hospital"
+            medicalCenterName={StorageService.getMedicalCenterName() || ""}
           />
           {/* Main Body div */}
           <div className="px-8 bg-mediphix_card_background py-8 rounded-lg">
