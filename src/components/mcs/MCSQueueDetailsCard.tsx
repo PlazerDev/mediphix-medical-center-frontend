@@ -3,8 +3,9 @@ import MCSQueueCollapseCard from "./MCSQueueCollapseCard";
 interface Props {
   handler: () => void;
   data: any;
+  sessionId: string;
 }
-function MCSQueueDetailsCard({ handler, data }: Props) {
+function MCSQueueDetailsCard({ handler, data, sessionId }: Props) {
   return (
     <div className="bg-mediphix_card_background p-8 rounded-lg mt-4">
       <p className="font-bold text-mediphix_text_a">Queue Details</p>
@@ -42,7 +43,11 @@ function MCSQueueDetailsCard({ handler, data }: Props) {
           </div>
         </div>
       </div>
-      <MCSQueueCollapseCard handler={handler} data={data} />
+      <MCSQueueCollapseCard
+        handler={handler}
+        data={data}
+        sessionId={sessionId}
+      />
     </div>
   );
 }

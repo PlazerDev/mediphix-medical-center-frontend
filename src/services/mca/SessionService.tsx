@@ -300,4 +300,38 @@ export class SessionService {
       );
     }
   }
+
+  // REQ :: PUT
+  static async stratNextAppointment(
+    sessionId: string,
+    slotId: string,
+    getAccessToken: () => Promise<string>,
+    stopLoading: () => void
+  ) {
+    try {
+      console.log("here", sessionId, slotId);
+      const token = await getAccessToken();
+      await axios.put(
+        `http://localhost:9000/mcs/startAppointment/?sessionId=${sessionId}&slotId=${slotId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      stopLoading();
+      AlertService.showSuccessTimerAlert(
+        "Success",
+        "The next patient appointment started"
+      );
+    } catch (error: any) {
+      console.error("Error:", error);
+      stopLoading();
+      AlertService.showErrorTimerAlert(
+        "Action Failed",
+        "Couldn't start the next appointment" + error
+      );
+    }
+  }
 }

@@ -25,6 +25,9 @@ function MedicalCenterStaffOngoingSessionPage() {
   const { startLoading, stopLoading, isLoading } = useLoading();
   const [data, setData] = useState<any | null>(null);
   const { sessionId } = useParams<{ sessionId: string }>();
+  // const [nextSlotData, setNextSlotData] = useState<[string, boolean] | null>(
+  //   null
+  // );
 
   const sId: string = sessionId || "";
 
@@ -124,6 +127,7 @@ function MedicalCenterStaffOngoingSessionPage() {
             {data != null && <MCSTimeSlotCard data={data} sessionId={sId} />}
             {data != null && isShowable && (
               <MCSQueueDetailsCard
+                sessionId={sId}
                 handler={showModal}
                 data={data.timeSlots[0]}
               />

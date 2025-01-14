@@ -7,9 +7,10 @@ import MCSQueueStatusAlert from "./MCSQueueStatusAlert";
 interface Props {
   handler: () => void;
   data: any;
+  sessionId: string;
 }
 
-function MCSQueueOngoingSessions({ handler, data }: Props) {
+function MCSQueueOngoingSessions({ handler, data, sessionId }: Props) {
   const { token } = theme.useToken();
 
   function panelStyle() {
@@ -81,6 +82,8 @@ function MCSQueueOngoingSessions({ handler, data }: Props) {
       {/* When there is no ongoing sessions */}
       {ongoingSession?.length == 0 && (
         <MCSQueueStatusAlert
+          data={data}
+          sessionId={sessionId}
           title="Currently, there are no ongoing sessions."
           isOngoing={true}
         />
