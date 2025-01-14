@@ -1,15 +1,27 @@
 import Footer from "./../../components/Footer";
 import { Divider, Pagination } from "antd";
-import doctorImg from "./../../assets/images/mcs/doctorImage.jpeg";
-import swal from "sweetalert";
 import MCSNavBar from "../../components/mcs/MCSNavBar";
 import MCSMainGreeting from "../../components/mcs/MCSMainGreeting";
 import MCSDateTimeTitle from "../../components/mcs/MCSDateTimeTitle";
 import MCSOnGoingSessionDetailsCard from "../../components/mcs/MCSOnGoingSessionDetailsCard";
 import MCSEmptyCard from "../../components/mcs/MCSEmptyCard";
+import { useEffect, useState } from "react";
+import { SessionService } from "../../services/mca/SessionService";
+import { useAuthContext } from "@asgardeo/auth-react";
+import { useLoading } from "../../contexts/LoadingContext";
+import Loading from "../../components/Loading";
+import { TimeService } from "../../services/TimeService";
 
 function MedicalCenterStaffOnGoingSessionsListPage() {
-  var noOfSessions: number = 2;
+  const [data, setData] = useState<any | null>(null);
+  const { getAccessToken } = useAuthContext();
+  const { startLoading, stopLoading, isLoading } = useLoading();
+
+  useEffect(() => {
+    startLoading();
+    SessionService.getOngoingSessionList(getAccessToken, setData, stopLoading);
+  }, []);
+
   const breadcrumbItems = [
     {
       title: "Home",
@@ -20,19 +32,6 @@ function MedicalCenterStaffOnGoingSessionsListPage() {
       link: "",
     },
   ];
-
-  if (noOfSessions > 0) {
-    swal({
-      title: "Alert",
-      text: "You have " + noOfSessions + " ongoing clinic sessions",
-      icon: "info",
-      buttons: {
-        confirm: {
-          text: "OK",
-        },
-      },
-    });
-  }
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -47,34 +46,40 @@ function MedicalCenterStaffOnGoingSessionsListPage() {
           role="Medical Center Staff Member"
         />
         {/* Main Body div from here*/}
-        {noOfSessions === 0 && <MCSEmptyCard />}
-        {noOfSessions > 0 && (
-          <>
-            <Divider>
-              <MCSDateTimeTitle />
-            </Divider>
-            <MCSOnGoingSessionDetailsCard
-              doctorImg={doctorImg}
-              doctorName="Dr. Nishanth Perera"
-              doctorEducation="MBBS (COL) specialized in cardiology"
-              timeFrame="06.00 AM - 08.00 AM"
-              date="2024/June/13"
-              hallNumber="HALL - A"
-              status="Started"
-              sessionId="125ASDSAd"
-            />
-            <MCSOnGoingSessionDetailsCard
-              doctorImg={doctorImg}
-              doctorName="Dr. Nishanth Perera"
-              doctorEducation="MBBS (COL) specialized in cardiology"
-              timeFrame="06.00 AM - 08.00 AM"
-              date="2024/June/13"
-              hallNumber="HALL - A"
-              status="Started"
-              sessionId="125ASDSAd"
-            />
-            <Pagination defaultCurrent={1} total={20} className="text-end" />
-          </>
+        {isLoading && (
+          <div className="flex justify-center mt-32">
+            <Loading />
+          </div>
+        )}
+        {!isLoading && (
+          <div>
+            {data == null && <MCSEmptyCard />}
+            {data && (
+              <>
+                <Divider>
+                  <MCSDateTimeTitle />
+                </Divider>
+                {data.map((s: any) => (
+                  <MCSOnGoingSessionDetailsCard
+                    doctorImg={s.doctorDetails.profilePhoto}
+                    doctorName={s.doctorDetails.name}
+                    doctorEducation={s.doctorDetails.education.join(", ")}
+                    timeFrame={
+                      TimeService.formatTime(s.startTimestamp) +
+                      " - " +
+                      TimeService.formatTime(s.endTimestamp)
+                    }
+                    date={TimeService.formatDate(s.startTimestamp)}
+                    hallNumber={s.hallNumber}
+                    status={s.overallSessionStatus}
+                    sessionId={s._id}
+                  />
+                ))}
+
+                {/* <Pagination defaultCurrent={1} total={20} className="text-end" /> */}
+              </>
+            )}
+          </div>
         )}
       </div>
       {/* Footer */}

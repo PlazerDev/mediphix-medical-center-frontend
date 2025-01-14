@@ -1,11 +1,13 @@
 import { Collapse, CollapseProps, Divider, theme } from "antd";
 import MCSQueueCollapseTitle from "./MCSQueueCollapseTitle";
 import MCSQueueCollapseDesc from "./MCSQueueCollapseDesc";
+import MCSQueueStatusAlert from "./MCSQueueStatusAlert";
 
 interface Props {
   handler: () => void;
+  data: any;
 }
-function MCSQueueNext({ handler }: Props) {
+function MCSQueueNext({ handler, data }: Props) {
   const { token } = theme.useToken();
   function panelStyle() {
     let panelStyleFinished: React.CSSProperties;
@@ -17,13 +19,25 @@ function MCSQueueNext({ handler }: Props) {
     };
     return panelStyleFinished;
   }
-  let nextSession: CollapseProps["items"] = [
-    {
-      key: "4",
+  let nextSession: CollapseProps["items"] = [];
+
+  if (
+    data.queue.queueOperations.nextPatient1 == -1 ||
+    data.queue.appointments[data.queue.queueOperations.nextPatient1 - 1] ==
+      undefined
+  ) {
+    // all are empty
+  } else {
+    nextSession.push({
+      key: "1",
       style: panelStyle(),
       label: (
         <MCSQueueCollapseTitle
-          title={"NO 04 | REF_A061"}
+          title={`Queue Number ${
+            data.queue.queueOperations.nextPatient1
+          } | Appointment Number ${
+            data.queue.appointments[data.queue.queueOperations.nextPatient1 - 1]
+          }`}
           isPaymentDone={true}
           isActive={false}
           isFinished={false}
@@ -33,8 +47,8 @@ function MCSQueueNext({ handler }: Props) {
       ),
       children: (
         <MCSQueueCollapseDesc
-          patientName="Vishwa Sandaruwan"
-          age="20 - 30"
+          patientName=""
+          age=""
           isEndToQueueActive={false}
           isMoveToAbsentActive={true}
           isUndoActive={false}
@@ -44,35 +58,49 @@ function MCSQueueNext({ handler }: Props) {
           handler={handler}
         />
       ),
-    },
-    {
-      key: "5",
-      style: panelStyle(),
-      label: (
-        <MCSQueueCollapseTitle
-          title={"NO 05 | REF_A091"}
-          isPaymentDone={true}
-          isActive={false}
-          isFinished={false}
-          isNext={[true, 2]}
-          isAbsent={false}
-        />
-      ),
-      children: (
-        <MCSQueueCollapseDesc
-          patientName="Vishwa Sandaruwan"
-          age="20 - 30"
-          isEndToQueueActive={false}
-          isMoveToAbsentActive={true}
-          isUndoActive={false}
-          isSetNext1Active={true}
-          isSetNext2Active={false}
-          isSetDefaultActive={false}
-          handler={handler}
-        />
-      ),
-    },
-  ];
+    });
+
+    if (
+      data.queue.queueOperations.nextPatient2 == -1 ||
+      data.queue.appointments[data.queue.queueOperations.nextPatient2 - 1] ==
+        undefined
+    ) {
+    } else {
+      nextSession.push({
+        key: "1",
+        style: panelStyle(),
+        label: (
+          <MCSQueueCollapseTitle
+            title={`Queue Number ${
+              data.queue.queueOperations.nextPatient2
+            } | Appointment Number ${
+              data.queue.appointments[
+                data.queue.queueOperations.nextPatient2 - 1
+              ]
+            }`}
+            isPaymentDone={true}
+            isActive={false}
+            isFinished={false}
+            isNext={[true, 1]}
+            isAbsent={false}
+          />
+        ),
+        children: (
+          <MCSQueueCollapseDesc
+            patientName=""
+            age=""
+            isEndToQueueActive={false}
+            isMoveToAbsentActive={true}
+            isUndoActive={false}
+            isSetNext1Active={false}
+            isSetNext2Active={true}
+            isSetDefaultActive={false}
+            handler={handler}
+          />
+        ),
+      });
+    }
+  }
   return (
     <div className="mt-8">
       <Divider
@@ -81,17 +109,29 @@ function MCSQueueNext({ handler }: Props) {
       >
         Next Sessions
       </Divider>
+
       {/* When there is no next sessions */}
-      <Collapse
-        className="mt-4"
-        accordion
-        bordered={false}
-        items={nextSession}
-        defaultActiveKey={["1"]}
-        onChange={() => {}}
-      />
+      {nextSession.length != 0 && (
+        <Collapse
+          className="mt-4"
+          accordion
+          bordered={false}
+          items={nextSession}
+          defaultActiveKey={["1"]}
+          onChange={() => {}}
+        />
+      )}
+
       {/* When there is next sessions */}
-      {/* <MCSQueueStatusAlert title="Currently, No sessions has been set as next." /> */}
+      {nextSession.length == 1 && (
+        <MCSQueueStatusAlert title="Currently, No sessions has been set as next 2." />
+      )}
+      {nextSession.length == 0 && (
+        <>
+          <MCSQueueStatusAlert title="Currently, No sessions has been set as next 2." />
+          <MCSQueueStatusAlert title="Currently, No sessions has been set as next 2." />
+        </>
+      )}
     </div>
   );
 }

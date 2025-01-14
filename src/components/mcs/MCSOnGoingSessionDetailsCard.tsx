@@ -56,7 +56,7 @@ function MCSOnGoingSessionDetailsCard({
             src={doctorImg}
           />
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 ml-8">
           <div className="flex-1">
             <p className="text-mediphix_text_c text-sm">Name</p>
             <p>{doctorName}</p>

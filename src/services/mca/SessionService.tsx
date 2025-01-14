@@ -194,4 +194,144 @@ export class SessionService {
       ],
     };
   }
+
+  // REQ :: GET
+  static async getOngoingSessionList(
+    getAccessToken: () => Promise<string>,
+    setResult: React.Dispatch<any>,
+    stopLoading: () => void
+  ) {
+    try {
+      const token = await getAccessToken();
+      const response = await axios.get(
+        `http://localhost:9000/mcs/ongoingClinicSessions`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setResult(response.data);
+      stopLoading();
+    } catch (error: any) {
+      console.error("Error:", error);
+      setResult(null);
+      stopLoading();
+      AlertService.showErrorTimerAlert(
+        "Couldn't find any on going sessions !",
+        ""
+      );
+    }
+  }
+
+  // REQ :: GET
+  static async getOngoingSessionDetails(
+    sessionId: string,
+    getAccessToken: () => Promise<string>,
+    setResult: React.Dispatch<any>,
+    stopLoading: () => void,
+    navigate: NavigateFunction
+  ) {
+    try {
+      const token = await getAccessToken();
+      const response = await axios.get(
+        `http://localhost:9000/mcs/ongoingClinicSessions/${sessionId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setResult(response.data);
+      console.log(response.data);
+      stopLoading();
+    } catch (error: any) {
+      console.error("Error:", error);
+      setResult(null);
+      stopLoading();
+      AlertService.showErrorTimerAlert(
+        "Couldn't find the session details !",
+        ""
+      );
+      navigate("/medicalCenterStaff/onGoingSessions");
+    }
+  }
+
+  static getNextStartableSlotIndex(
+    data: { status: "STARTED" | "NOT_STARTED" | "FINISHED" }[]
+  ): [string, boolean] | null {
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].status === "NOT_STARTED") {
+        return [(i + 1).toString(), true]; // Slot can be started
+      } else if (data[i].status === "STARTED") {
+        return [(i + 1).toString(), false]; // Slot is already started
+      }
+    }
+    return null; // Everything is finished
+  }
+
+  // REQ :: PUT
+  static async stratTimeSlot(
+    sessionId: string,
+    getAccessToken: () => Promise<string>,
+    stopLoading: () => void,
+    navigate: NavigateFunction
+  ) {
+    try {
+      const token = await getAccessToken();
+      await axios.put(
+        `http://localhost:9000/mcs/startTimeSlot/?sessionId=${sessionId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      stopLoading();
+      AlertService.showSuccessTimerAlert("Success", "The Time Slot Started");
+      navigate("/medicalCenterStaff/onGoingSessions/" + sessionId);
+    } catch (error: any) {
+      console.error("Error:", error);
+      stopLoading();
+      AlertService.showErrorTimerAlert(
+        "Action Failed",
+        "Couldn't start the time slot"
+      );
+    }
+  }
+
+  // REQ :: PUT
+  static async stratNextAppointment(
+    sessionId: string,
+    slotId: string,
+    getAccessToken: () => Promise<string>,
+    stopLoading: () => void
+  ) {
+    try {
+      console.log("here", sessionId, slotId);
+      const token = await getAccessToken();
+      await axios.put(
+        `http://localhost:9000/mcs/startAppointment/?sessionId=${sessionId}&slotId=${slotId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      stopLoading();
+      AlertService.showSuccessTimerAlert(
+        "Success",
+        "The next patient appointment started"
+      );
+    } catch (error: any) {
+      console.error("Error:", error);
+      stopLoading();
+      AlertService.showErrorTimerAlert(
+        "Action Failed",
+        "Couldn't start the next appointment" + error
+      );
+    }
+  }
 }
