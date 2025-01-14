@@ -269,4 +269,35 @@ export class SessionService {
     }
     return null; // Everything is finished
   }
+
+  // REQ :: PUT
+  static async stratTimeSlot(
+    sessionId: string,
+    getAccessToken: () => Promise<string>,
+    stopLoading: () => void,
+    navigate: NavigateFunction
+  ) {
+    try {
+      const token = await getAccessToken();
+      await axios.put(
+        `http://localhost:9000/mcs/startTimeSlot/?sessionId=${sessionId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      stopLoading();
+      AlertService.showSuccessTimerAlert("Success", "The Time Slot Started");
+      navigate("/medicalCenterStaff/onGoingSessions/" + sessionId);
+    } catch (error: any) {
+      console.error("Error:", error);
+      stopLoading();
+      AlertService.showErrorTimerAlert(
+        "Action Failed",
+        "Couldn't start the time slot"
+      );
+    }
+  }
 }

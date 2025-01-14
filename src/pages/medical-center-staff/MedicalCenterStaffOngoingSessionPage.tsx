@@ -39,6 +39,17 @@ function MedicalCenterStaffOngoingSessionPage() {
     );
   }, []);
 
+  let startableData: [string, boolean] | null;
+  let isShowable: boolean = true;
+  if (data != null) {
+    startableData = SessionService.getNextStartableSlotIndex(data.timeSlots);
+    if (startableData == null) {
+      isShowable = false;
+    } else if (startableData[1] == true) {
+      isShowable = false;
+    }
+  }
+
   function handleScanResult(appointmentNumber: string) {
     setAppointmentNumber(appointmentNumber);
     setIsModalOpen(false);
@@ -110,20 +121,13 @@ function MedicalCenterStaffOngoingSessionPage() {
         )}
         {!isLoading && (
           <div>
-            {data != null && <MCSTimeSlotCard data={data} />}
-            {data != null && (
+            {data != null && <MCSTimeSlotCard data={data} sessionId={sId} />}
+            {data != null && isShowable && (
               <MCSQueueDetailsCard
                 handler={showModal}
                 data={data.timeSlots[0]}
               />
             )}
-            <div className="flex justify-end mt-4">
-              <NormalButton
-                colorType={2}
-                link={"/medicalCenterStaff/onGoingSessions/" + sessionId + "/#"}
-                title="End Current Time Slot & Start Next"
-              />
-            </div>
           </div>
         )}
       </div>
