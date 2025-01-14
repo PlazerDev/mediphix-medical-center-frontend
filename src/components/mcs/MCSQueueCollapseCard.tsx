@@ -6,16 +6,17 @@ import MCSQueueAbsent from "./MCSQueueAbsent";
 
 interface Props {
   handler: () => void;
+  data: any;
 }
 
-function MCSQueueCollapseCard({ handler }: Props) {
+function MCSQueueCollapseCard({ handler, data }: Props) {
   return (
     <>
-      <MCSQueueFinishedSessions handler={handler} />
-      <MCSQueueOngoingSessions handler={handler} />
-      <MCSQueueNext handler={handler} />
-      <MCSQueueCurrentQueue handler={handler} />
-      <MCSQueueAbsent handler={handler} />
+      <MCSQueueFinishedSessions handler={handler} data={data} />
+      <MCSQueueOngoingSessions handler={handler} data={data} />
+      <MCSQueueNext handler={handler} data={data} />
+      <MCSQueueCurrentQueue handler={handler} data={data} />
+      <MCSQueueAbsent handler={handler} data={data} />
     </>
   );
 }

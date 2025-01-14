@@ -223,4 +223,50 @@ export class SessionService {
       );
     }
   }
+
+  // REQ :: GET
+  static async getOngoingSessionDetails(
+    sessionId: string,
+    getAccessToken: () => Promise<string>,
+    setResult: React.Dispatch<any>,
+    stopLoading: () => void,
+    navigate: NavigateFunction
+  ) {
+    try {
+      const token = await getAccessToken();
+      const response = await axios.get(
+        `http://localhost:9000/mcs/ongoingClinicSessions/${sessionId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setResult(response.data);
+      console.log(response.data);
+      stopLoading();
+    } catch (error: any) {
+      console.error("Error:", error);
+      setResult(null);
+      stopLoading();
+      AlertService.showErrorTimerAlert(
+        "Couldn't find the session details !",
+        ""
+      );
+      navigate("/medicalCenterStaff/onGoingSessions");
+    }
+  }
+
+  static getNextStartableSlotIndex(
+    data: { status: "STARTED" | "NOT_STARTED" | "FINISHED" }[]
+  ): [string, boolean] | null {
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].status === "NOT_STARTED") {
+        return [(i + 1).toString(), true]; // Slot can be started
+      } else if (data[i].status === "STARTED") {
+        return [(i + 1).toString(), false]; // Slot is already started
+      }
+    }
+    return null; // Everything is finished
+  }
 }

@@ -2,12 +2,14 @@ import type { CollapseProps } from "antd";
 import { Collapse, Divider, theme } from "antd";
 import MCSQueueCollapseDesc from "./MCSQueueCollapseDesc";
 import MCSQueueCollapseTitle from "./MCSQueueCollapseTitle";
+import MCSQueueStatusAlert from "./MCSQueueStatusAlert";
 
 interface Props {
   handler: () => void;
+  data: any;
 }
 
-function MCSQueueOngoingSessions({ handler }: Props) {
+function MCSQueueOngoingSessions({ handler, data }: Props) {
   const { token } = theme.useToken();
 
   function panelStyle() {
@@ -21,13 +23,19 @@ function MCSQueueOngoingSessions({ handler }: Props) {
     return panelStyleFinished;
   }
 
-  let ongoingSession: CollapseProps["items"] = [
-    {
-      key: "3",
+  let ongoingSession: CollapseProps["items"] = [];
+
+  if (data.queue.queueOperations.ongoing != -1) {
+    ongoingSession.push({
+      key: "888",
       style: panelStyle(),
       label: (
         <MCSQueueCollapseTitle
-          title={"NO 03 | REF_A0561"}
+          title={`Queue Number ${
+            data.queue.queueOperations.ongoing
+          } | Appointment Number ${
+            data.queue.appointments[data.queue.queueOperations.ongoing - 1]
+          }`}
           isPaymentDone={true}
           isActive={true}
           isFinished={false}
@@ -37,8 +45,8 @@ function MCSQueueOngoingSessions({ handler }: Props) {
       ),
       children: (
         <MCSQueueCollapseDesc
-          patientName="Vishwa Sandaruwan"
-          age="20 - 30"
+          patientName=""
+          age=""
           isEndToQueueActive={false}
           isMoveToAbsentActive={false}
           isUndoActive={false}
@@ -48,8 +56,9 @@ function MCSQueueOngoingSessions({ handler }: Props) {
           handler={handler}
         />
       ),
-    },
-  ];
+    });
+  }
+
   return (
     <div className="mt-8">
       <Divider
@@ -59,18 +68,23 @@ function MCSQueueOngoingSessions({ handler }: Props) {
         Ongoing Session
       </Divider>
       {/* When there is ongoing sessions */}
-      <Collapse
-        className="mt-4"
-        accordion
-        items={ongoingSession}
-        defaultActiveKey={["1"]}
-        onChange={() => {}}
-      />
+      {ongoingSession?.length != 0 && (
+        <Collapse
+          className="mt-4"
+          accordion
+          items={ongoingSession}
+          defaultActiveKey={["1"]}
+          onChange={() => {}}
+        />
+      )}
+
       {/* When there is no ongoing sessions */}
-      {/* <MCSQueueStatusAlert
-    title="Currently, there are no ongoing sessions."
-    isOngoing={true}
-  /> */}
+      {ongoingSession?.length == 0 && (
+        <MCSQueueStatusAlert
+          title="Currently, there are no ongoing sessions."
+          isOngoing={true}
+        />
+      )}
     </div>
   );
 }

@@ -1,65 +1,45 @@
 import { Collapse, CollapseProps, Divider } from "antd";
 import MCSQueueCollapseDesc from "./MCSQueueCollapseDesc";
 import MCSQueueCollapseTitle from "./MCSQueueCollapseTitle";
+import MCSQueueStatusAlert from "./MCSQueueStatusAlert";
 
 interface Props {
   handler: () => void;
+  data: any;
 }
-function MCSQueueAbsent({ handler }: Props) {
-  let absentQueue: CollapseProps["items"] = [
-    {
-      key: "1",
-      label: (
-        <MCSQueueCollapseTitle
-          title={"NO 09 | REF_A0077"}
-          isPaymentDone={true}
-          isActive={false}
-          isFinished={false}
-          isNext={[false, 0]}
-          isAbsent={true}
-        />
-      ),
-      children: (
-        <MCSQueueCollapseDesc
-          patientName="Vishwa Sandaruwan"
-          age="20 - 30"
-          isEndToQueueActive={true}
-          isMoveToAbsentActive={false}
-          isUndoActive={false}
-          isSetNext1Active={true}
-          isSetNext2Active={true}
-          isSetDefaultActive={false}
-          handler={handler}
-        />
-      ),
-    },
-    {
-      key: "2",
-      label: (
-        <MCSQueueCollapseTitle
-          title={"NO 10 | REF_A0088"}
-          isPaymentDone={false}
-          isActive={false}
-          isFinished={false}
-          isNext={[false, 0]}
-          isAbsent={true}
-        />
-      ),
-      children: (
-        <MCSQueueCollapseDesc
-          patientName="Vishwa Sandaruwan"
-          age="20 - 30"
-          isEndToQueueActive={false}
-          isMoveToAbsentActive={false}
-          isUndoActive={true}
-          isSetNext1Active={true}
-          isSetNext2Active={true}
-          isSetDefaultActive={false}
-          handler={handler}
-        />
-      ),
-    },
-  ];
+function MCSQueueAbsent({ handler, data }: Props) {
+  let absentQueue: CollapseProps["items"] =
+    data.queue.queueOperations.absent.map((q: any, index: number) => {
+      return {
+        key: index,
+        label: (
+          <MCSQueueCollapseTitle
+            title={`Queue Number ${q} | Appointment Number ${
+              data.queue.appointments[q - 1]
+            }`}
+            isPaymentDone={true}
+            isActive={false}
+            isFinished={false}
+            isNext={[false, 0]}
+            isAbsent={true}
+          />
+        ),
+        children: (
+          <MCSQueueCollapseDesc
+            patientName=""
+            age=""
+            isEndToQueueActive={true}
+            isMoveToAbsentActive={false}
+            isUndoActive={false}
+            isSetNext1Active={true}
+            isSetNext2Active={true}
+            isSetDefaultActive={false}
+            handler={handler}
+          />
+        ),
+      };
+    });
+
   return (
     <div className="mt-8">
       <Divider
@@ -69,15 +49,21 @@ function MCSQueueAbsent({ handler }: Props) {
         Absent Queue
       </Divider>
       {/* When there is no absent sessions */}
-      {/* <MCSQueueStatusAlert title="Currently, there are no absent sessions." /> */}
+      {absentQueue?.length == 0 && (
+        <MCSQueueStatusAlert title="Currently, there are no absent sessions." />
+      )}
+
       {/* When there is absent queue */}
-      <Collapse
-        className="mt-4"
-        accordion
-        items={absentQueue}
-        defaultActiveKey={["1"]}
-        onChange={() => {}}
-      />
+
+      {absentQueue?.length != 0 && (
+        <Collapse
+          className="mt-4"
+          accordion
+          items={absentQueue}
+          defaultActiveKey={["1"]}
+          onChange={() => {}}
+        />
+      )}
     </div>
   );
 }
