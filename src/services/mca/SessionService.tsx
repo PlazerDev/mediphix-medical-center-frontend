@@ -194,4 +194,33 @@ export class SessionService {
       ],
     };
   }
+
+  // REQ :: GET
+  static async getOngoingSessionList(
+    getAccessToken: () => Promise<string>,
+    setResult: React.Dispatch<any>,
+    stopLoading: () => void
+  ) {
+    try {
+      const token = await getAccessToken();
+      const response = await axios.get(
+        `http://localhost:9000/mcs/ongoingClinicSessions`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setResult(response.data);
+      stopLoading();
+    } catch (error: any) {
+      console.error("Error:", error);
+      setResult(null);
+      stopLoading();
+      AlertService.showErrorTimerAlert(
+        "Couldn't find any on going sessions !",
+        ""
+      );
+    }
+  }
 }
