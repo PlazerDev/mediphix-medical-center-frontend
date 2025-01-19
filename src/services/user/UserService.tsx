@@ -95,6 +95,9 @@ export class UserService {
         "Success!",
         "Medical Center Staff Member Added Successfully"
       );
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
     } catch (error: any) {
       stopLoading();
       console.error("Error creating medical center staff profile!", error);
@@ -130,6 +133,9 @@ export class UserService {
         "Success!",
         "Medical Center Receptionist Added Successfully"
       );
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
     } catch (error: any) {
       stopLoading();
       console.error("Error creating medical center reception profile!", error);
@@ -221,6 +227,33 @@ export class UserService {
       setResult(null);
       stopLoading();
       AlertService.showErrorTimerAlert("Couldn't find any staff members", "");
+    }
+  }
+
+  // REQ :: get all MCS users of the center
+  static async getAllMCRmembers(
+    getAccessToken: () => Promise<string>,
+    stopLoading: () => void,
+    setResult: React.Dispatch<any>
+  ) {
+    try {
+      const token = await getAccessToken();
+      const response = await axios.get(`http://localhost:9000/mca/MCRdata`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setResult(response.data);
+      console.log(response.data);
+      stopLoading();
+    } catch (error: any) {
+      console.error("Error:", error);
+      setResult(null);
+      stopLoading();
+      AlertService.showErrorTimerAlert(
+        "Couldn't find any receptionist members",
+        ""
+      );
     }
   }
 }

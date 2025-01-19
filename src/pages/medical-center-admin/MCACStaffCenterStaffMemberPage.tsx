@@ -3,7 +3,6 @@ import Footer from "../../components/Footer";
 import Loading from "../../components/Loading";
 import MCSMainGreeting from "../../components/mcs/MCSMainGreeting";
 import MCSNavBar from "../../components/mcs/MCSNavBar";
-import { StaffService } from "../../services/mca/StaffService";
 import CardTitleAndValue from "../../components/CardTitleAndValue";
 import {
   Button,
@@ -18,7 +17,6 @@ import {
   Upload,
   UploadProps,
 } from "antd";
-import nursesImg from "./../../assets/images/mcs/nurse.png";
 import {
   CheckCircleOutlined,
   ExclamationCircleOutlined,
@@ -84,8 +82,6 @@ function MCACStaffCenterStaffMemberPage() {
       link: "",
     },
   ];
-
-  const data = StaffService.getSampleStaffMemberList(); // change here
 
   function cardBtnHandler() {
     showModal();
