@@ -35,14 +35,18 @@ function MCSQueueCollapseDesc({
   return (
     <div>
       <div className="flex mb-2">
-        <div className="flex-1">
-          <p className="text-mediphix_text_c text-sm">Patient Name</p>
-          <p>{patientName}</p>
-        </div>
-        <div className="flex-1">
-          <p className="text-mediphix_text_c text-sm">Age</p>
-          <p>{age}</p>
-        </div>
+        {patientName != "" && age != "" && (
+          <>
+            <div className="flex-1">
+              <p className="text-mediphix_text_c text-sm">Patient Name</p>
+              <p>{patientName}</p>
+            </div>
+            <div className="flex-1">
+              <p className="text-mediphix_text_c text-sm">Age</p>
+              <p>{age}</p>
+            </div>
+          </>
+        )}
       </div>
       <div className="flex flex-col md:flex-row gap-2">
         <MCSScanQRBtn handler={handler} />

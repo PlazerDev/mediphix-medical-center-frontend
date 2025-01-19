@@ -2,8 +2,10 @@ import MCSQueueCollapseCard from "./MCSQueueCollapseCard";
 
 interface Props {
   handler: () => void;
+  data: any;
+  sessionId: string;
 }
-function MCSQueueDetailsCard({ handler }: Props) {
+function MCSQueueDetailsCard({ handler, data, sessionId }: Props) {
   return (
     <div className="bg-mediphix_card_background p-8 rounded-lg mt-4">
       <p className="font-bold text-mediphix_text_a">Queue Details</p>
@@ -11,33 +13,41 @@ function MCSQueueDetailsCard({ handler }: Props) {
         <div className="flex flex-1">
           <div className="flex-1">
             <p className="text-mediphix_text_c text-sm">
-              Number of Patients in the queue
+              Total Number of Patients in the queue
             </p>
-            <p>08</p>
+            <p>{data.queue.appointments.length}</p>
           </div>
           <div className="flex-1">
             <p className="text-mediphix_text_c text-sm">
-              Number of Completed Patients Sessions
+              Number of Completed Appointments
             </p>
-            <p>03</p>
+            <p>{data.queue.queueOperations.finished.length}</p>
           </div>
         </div>
         <div className="flex flex-1">
           <div className="flex-1">
             <p className="text-mediphix_text_c text-sm">
-              Number of Absent Patient Sessions
+              Number of Absent Appointments
             </p>
-            <p>01</p>
+            <p>{data.queue.queueOperations.absent.length}</p>
           </div>
           <div className="flex-1">
             <p className="text-mediphix_text_c text-sm">
-              Number of Remaining Patient Sessions{" "}
+              Number of Remaining Appointments
             </p>
-            <p>04</p>
+            <p>
+              {data.queue.appointments.length -
+                data.queue.queueOperations.finished.length -
+                data.queue.queueOperations.absent.length}
+            </p>
           </div>
         </div>
       </div>
-      <MCSQueueCollapseCard handler={handler} />
+      <MCSQueueCollapseCard
+        handler={handler}
+        data={data}
+        sessionId={sessionId}
+      />
     </div>
   );
 }

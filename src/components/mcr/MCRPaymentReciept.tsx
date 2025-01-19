@@ -9,8 +9,9 @@ interface Props {
 function MCRPaymentReciept({ data }: Props) {
   const handlePrintClick = () => {
     // Open the URL in a new tab
+    const serializedData = encodeURIComponent(JSON.stringify(data));
     window.open(
-      "http://localhost:5175/medicalCenterReceptionist/appointments/payment/print/45646521",
+      `http://localhost:5175/medicalCenterReceptionist/appointments/payment/print?data=${serializedData}`,
       "_blank"
     );
   };

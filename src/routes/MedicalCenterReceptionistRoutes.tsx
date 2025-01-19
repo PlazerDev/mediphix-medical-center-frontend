@@ -25,7 +25,7 @@ function MedicalCenterReceptionistRoutes() {
         element={<MCRAppointmentsCreateSecondPage />}
       />
       <Route
-        path="/appointments/payment/print/:appointmentNumber"
+        path="/appointments/payment/print"
         element={<MCRPrintRecieptPage />}
       />
       <Route path="/registerPatient" element={<MCRPatientRegisterPage />} />
