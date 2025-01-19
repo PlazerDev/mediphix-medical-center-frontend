@@ -199,4 +199,28 @@ export class UserService {
       AlertService.showErrorTimerAlert("Action Failed!", error);
     }
   }
+
+  // REQ :: get all MCS users of the center
+  static async getAllMCSmembers(
+    getAccessToken: () => Promise<string>,
+    stopLoading: () => void,
+    setResult: React.Dispatch<any>
+  ) {
+    try {
+      const token = await getAccessToken();
+      const response = await axios.get(`http://localhost:9000/mca/MCSdata`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setResult(response.data);
+      console.log(response.data);
+      stopLoading();
+    } catch (error: any) {
+      console.error("Error:", error);
+      setResult(null);
+      stopLoading();
+      AlertService.showErrorTimerAlert("Couldn't find any staff members", "");
+    }
+  }
 }
