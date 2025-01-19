@@ -12,6 +12,7 @@ import {
   Input,
   message,
   Row,
+  Select,
   Space,
   Tag,
   Upload,
@@ -30,24 +31,46 @@ import { useLoading } from "../../contexts/LoadingContext";
 import { UserService } from "../../services/user/UserService";
 import { useAuthContext } from "@asgardeo/auth-react";
 import CustomEmpty from "../../components/CustomEmpty";
+import { TimeService } from "../../services/TimeService";
+import { MdAssignmentInd } from "react-icons/md";
+import { SessionService } from "../../services/mca/SessionService";
 
 function MCACStaffCenterStaffMemberPage() {
   // setting loading
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [open, setOpen] = useState(false);
+  const [open2, setOpen2] = useState(false);
   const { isLoading, startLoading, stopLoading } = useLoading();
   const [email, setEmail] = useState<string>("");
   const [form] = Form.useForm();
   const [usersData, setUsersData] = useState<any | null>(null);
   const [modelIndex, setModelIndex] = useState<number>(0);
   const { getAccessToken } = useAuthContext();
+  const [assignMCSId, setAssignMCSId] = useState<string>(""); // change these
+  const [assignSessionId, setAssignSessionId] = useState<string>(""); // change these
+  const [assignSessionData, setAssignSessionData] = useState<any | null>(null);
 
   const showDrawer = () => {
     setOpen(true);
   };
 
+  const showDrawer2 = () => {
+    // fetch the available session details here - setAssignSessionData
+    startLoading();
+    SessionService.getSessionListToAssign(
+      getAccessToken,
+      setAssignSessionData,
+      stopLoading
+    );
+    setOpen2(true);
+  };
+
   const onClose = () => {
     setOpen(false);
+  };
+
+  const onClose2 = () => {
+    setOpen2(false);
   };
 
   const showModal = () => {
@@ -129,6 +152,30 @@ function MCACStaffCenterStaffMemberPage() {
     },
   };
 
+  // assign session
+  const handleSessionIdChange = (value: string) => {
+    setAssignSessionId(value);
+    console.log(`selected ${value}`);
+  };
+  const handleMcsIdChange = (value: string) => {
+    setAssignMCSId(value);
+    console.log(`selected ${value}`);
+  };
+
+  const assignSessionBtnHandler = () => {
+    if (assignMCSId != "" && assignSessionId != "") {
+      // here perform the assign operation
+      console.log(assignMCSId, assignSessionId);
+      startLoading();
+      SessionService.assignSession(
+        assignSessionId,
+        assignMCSId,
+        getAccessToken,
+        stopLoading
+      );
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       {/* Navigation Bar  */}
@@ -146,7 +193,7 @@ function MCACStaffCenterStaffMemberPage() {
           {/* Main Body div */}
           {usersData != null && (
             <Modal
-              title={usersData[modelIndex].name}
+              title={usersData[modelIndex].userData.name}
               open={isModalOpen}
               onOk={handleOk}
               onCancel={handleCancel}
@@ -155,7 +202,7 @@ function MCACStaffCenterStaffMemberPage() {
                 <div className="flex flex-col  items-center justify-center  gap-4">
                   <div>
                     <img
-                      src={usersData[modelIndex].profileImage}
+                      src={usersData[modelIndex].userData.profileImage}
                       alt="Profile Photo"
                       className="w-32 rounded-full"
                     />
@@ -163,28 +210,62 @@ function MCACStaffCenterStaffMemberPage() {
                   <div className="flex-1  flex flex-col gap-2 w-full ">
                     <CardTitleAndValue
                       title="Employee ID"
-                      value={usersData[modelIndex].empId}
+                      value={usersData[modelIndex].userData.empId}
                     />
                     <CardTitleAndValue
                       title="NIC"
-                      value={usersData[modelIndex].nic}
+                      value={usersData[modelIndex].userData.nic}
                     />
                     <CardTitleAndValue
                       title="Mobile Number"
-                      value={usersData[modelIndex].mobile}
+                      value={usersData[modelIndex].userData.mobile}
                     />
 
-                    {usersData[modelIndex].assignedSessions.length == 0 ? (
-                      <Tag icon={<ExclamationCircleOutlined />} color="warning">
-                        Havan't assigned to a clinic session(s)
-                      </Tag>
+                    {usersData[modelIndex].assignedsessionData.length == 0 ? (
+                      <div>
+                        <Tag
+                          icon={<ExclamationCircleOutlined />}
+                          color="warning"
+                        >
+                          Havan't assigned to a clinic session(s)
+                        </Tag>
+                      </div>
                     ) : (
-                      <Tag icon={<CheckCircleOutlined />} color="success">
-                        Has assigned to a clinic session(s)
-                      </Tag>
+                      <>
+                        <Tag icon={<CheckCircleOutlined />} color="success">
+                          Has assigned to a clinic session(s)
+                        </Tag>
+                        {usersData[modelIndex].assignedsessionData.map(
+                          (data: any) => {
+                            return (
+                              <div className="p-2 border rounded-lg flex justify-between">
+                                <CardTitleAndValue
+                                  title="Start Time - End Time"
+                                  value={
+                                    TimeService.formatTime(
+                                      data.startTimestamp
+                                    ) +
+                                    " - " +
+                                    TimeService.formatTime(data.endTimestamp)
+                                  }
+                                />
+                                <CardTitleAndValue
+                                  title="date"
+                                  value={TimeService.formatDate(
+                                    data.startTimestamp
+                                  )}
+                                />
+                                <CardTitleAndValue
+                                  title="Doctor Name"
+                                  value={data.doctorName}
+                                />
+                              </div>
+                            );
+                          }
+                        )}
+                      </>
                     )}
                     <div className="flex items-center gap-2">
-                      <Button>Assign a Session</Button>
                       <Button>Edit</Button>
                       <Button danger>Delete</Button>
                     </div>
@@ -311,13 +392,74 @@ function MCACStaffCenterStaffMemberPage() {
               </Space>
             </Form>
           </Drawer>
-          <div className="w-96 h-12 mb-4">
+          {/* Drawer :: Assign a MCS member to a session */}
+          <Drawer title="Assign a Session" onClose={onClose2} open={open2}>
+            {assignSessionData && (
+              <>
+                <p>Select the Session</p>
+                <Select
+                  defaultValue=""
+                  style={{ width: 320, height: 60 }}
+                  onChange={handleSessionIdChange}
+                  options={assignSessionData.map((data: any) => ({
+                    value: data.sessionId,
+                    label: (
+                      <p>
+                        {TimeService.formatTime(data.startTimestamp) +
+                          " - " +
+                          TimeService.formatTime(data.endTimestamp) +
+                          " | " +
+                          TimeService.formatDate(data.endTimestamp)}
+                        <br />
+                        {"Dr. " + data.doctorName}
+                      </p>
+                    ),
+                  }))}
+                />
+              </>
+            )}
+
+            {usersData && (
+              <>
+                <p className="mt-8">Select the Medical Center Staff Member</p>
+                <Select
+                  defaultValue=""
+                  style={{ width: 320, height: 60 }}
+                  onChange={handleMcsIdChange}
+                  options={usersData.map((data: any) => ({
+                    value: data.userData.userId,
+                    label: (
+                      <p>
+                        {data.userData.name} <br /> {data.userData.empId}
+                      </p>
+                    ),
+                  }))}
+                />
+                <Button
+                  type="primary"
+                  className="mt-16"
+                  onClick={assignSessionBtnHandler}
+                >
+                  Assign
+                </Button>
+              </>
+            )}
+          </Drawer>
+          <div className="w-96 h-12 mb-4 flex gap-4">
             <button className="w-96 h-12" onClick={showDrawer}>
               <NormalButtonWithIcon
                 buttonIcon={IoIosAddCircle}
                 colorType={2}
                 link=""
                 title="Add a new Medical Center Staff Memeber"
+              />
+            </button>
+            <button className="w-96 h-12" onClick={showDrawer2}>
+              <NormalButtonWithIcon
+                buttonIcon={MdAssignmentInd}
+                colorType={1}
+                link=""
+                title="Assign a session"
               />
             </button>
           </div>
@@ -348,7 +490,7 @@ function MCACStaffCenterStaffMemberPage() {
                 <Col className="gutter-row" span={8}>
                   <div
                     className="bg-mediphix_card_background rounded-lg p-8 mb-4 h-[270px] hover:cursor-pointer hover:shadow-lg"
-                    key={item.userId}
+                    key={item.userData.userId}
                     onClick={() => {
                       setModelIndex(index);
                       cardBtnHandler();
@@ -357,7 +499,7 @@ function MCACStaffCenterStaffMemberPage() {
                     <div className="flex items-center justify-center  gap-4">
                       <div>
                         <img
-                          src={item.profileImage}
+                          src={item.userData.profileImage}
                           alt="Profile Photo"
                           className="w-32 rounded-full"
                         />
@@ -365,15 +507,21 @@ function MCACStaffCenterStaffMemberPage() {
                       <div className="flex-1  flex flex-col gap-2">
                         <CardTitleAndValue
                           title="Employee ID"
-                          value={item.empId}
+                          value={item.userData.empId}
                         />
-                        <CardTitleAndValue title="Name" value={item.name} />
-                        <CardTitleAndValue title="NIC" value={item.nic} />
+                        <CardTitleAndValue
+                          title="Name"
+                          value={item.userData.name}
+                        />
+                        <CardTitleAndValue
+                          title="NIC"
+                          value={item.userData.nic}
+                        />
                         <CardTitleAndValue
                           title="Mobile Number"
-                          value={item.mobile}
+                          value={item.userData.mobile}
                         />
-                        {item.assignedSessions.length == 0 ? (
+                        {item.userData.assignedSessions.length == 0 ? (
                           <Tag
                             icon={<ExclamationCircleOutlined />}
                             color="warning"
@@ -382,7 +530,7 @@ function MCACStaffCenterStaffMemberPage() {
                           </Tag>
                         ) : (
                           <Tag icon={<CheckCircleOutlined />} color="success">
-                            Has assigned to a clinic session(s)
+                            Has assigned to clinic session(s)
                           </Tag>
                         )}
                       </div>

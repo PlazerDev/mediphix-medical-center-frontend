@@ -97,7 +97,7 @@ export class UserService {
       );
       setTimeout(() => {
         window.location.reload();
-      }, 500);
+      }, 1300);
     } catch (error: any) {
       stopLoading();
       console.error("Error creating medical center staff profile!", error);
@@ -135,7 +135,7 @@ export class UserService {
       );
       setTimeout(() => {
         window.location.reload();
-      }, 500);
+      }, 1300);
     } catch (error: any) {
       stopLoading();
       console.error("Error creating medical center reception profile!", error);

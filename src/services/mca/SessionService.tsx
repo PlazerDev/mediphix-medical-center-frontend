@@ -334,4 +334,70 @@ export class SessionService {
       );
     }
   }
+
+  // REQ :: GET
+  static async getSessionListToAssign(
+    getAccessToken: () => Promise<string>,
+    setResult: React.Dispatch<any>,
+    stopLoading: () => void
+  ) {
+    try {
+      const token = await getAccessToken();
+      const response = await axios.get(
+        `http://localhost:9000/mca/activeSessions`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setResult(response.data);
+      console.log(response.data);
+      stopLoading();
+    } catch (error: any) {
+      console.error("Error:", error);
+      setResult(null);
+      stopLoading();
+      AlertService.showErrorTimerAlert(
+        "Couldn't find the session details !",
+        ""
+      );
+    }
+  }
+
+  // REQ :: PUT
+  static async assignSession(
+    sessionId: string,
+    mcsId: string,
+    getAccessToken: () => Promise<string>,
+    stopLoading: () => void
+  ) {
+    try {
+      const token = await getAccessToken();
+      await axios.put(
+        `http://localhost:9000/mca/assign?sessionId=${sessionId}&mcsId=${mcsId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      stopLoading();
+      AlertService.showSuccessTimerAlert(
+        "Success",
+        "The session assigned to the staff member"
+      );
+      setTimeout(() => {
+        window.location.reload();
+      }, 1300);
+    } catch (error: any) {
+      console.error("Error:", error);
+      stopLoading();
+      AlertService.showErrorTimerAlert(
+        "Action Failed",
+        "Couldn't assigned the session" + error
+      );
+    }
+  }
 }
