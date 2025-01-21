@@ -400,4 +400,30 @@ export class SessionService {
       );
     }
   }
+
+  // REQ :: GET
+  static async getVacancyData(
+    getAccessToken: () => Promise<string>,
+    setResult: React.Dispatch<any>,
+    stopLoading: () => void
+  ) {
+    try {
+      const token = await getAccessToken();
+      const response = await axios.get(
+        `http://localhost:9000/mca/getMcaSessionVacancies`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setResult(response.data);
+      console.log(response.data);
+      stopLoading();
+    } catch (error: any) {
+      console.error("Error:", error);
+      setResult(null);
+      stopLoading();
+    }
+  }
 }

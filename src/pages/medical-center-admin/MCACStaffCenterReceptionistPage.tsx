@@ -139,7 +139,7 @@ function MCACStaffCenterReceptionistPage() {
             medicalCenterName={StorageService.getMedicalCenterName() || ""}
           />
           {/* Main Body div */}
-          {usersData != null && (
+          {usersData != null && usersData[modelIndex] && (
             <Modal
               title={usersData[modelIndex].name}
               open={isModalOpen}

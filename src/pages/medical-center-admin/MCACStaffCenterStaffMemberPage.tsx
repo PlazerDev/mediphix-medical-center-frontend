@@ -191,7 +191,7 @@ function MCACStaffCenterStaffMemberPage() {
             medicalCenterName={StorageService.getMedicalCenterName() || ""}
           />
           {/* Main Body div */}
-          {usersData != null && (
+          {usersData != null && usersData[modelIndex] && (
             <Modal
               title={usersData[modelIndex].userData.name}
               open={isModalOpen}
