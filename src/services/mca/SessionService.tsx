@@ -426,4 +426,46 @@ export class SessionService {
       stopLoading();
     }
   }
+
+  // REQ :: PUT
+  static async acceptSession(
+    vacacncyId: string,
+    sessionId: string,
+    resId: string,
+    formData: any,
+    getAccessToken: () => Promise<string>,
+    stopLoading: () => void
+  ) {
+    try {
+      const token = await getAccessToken();
+      await axios.patch(
+        `http://localhost:9000/mca/acceptDoctorResponseApplicationToOpenSession/${vacacncyId}/${resId}/${sessionId}`,
+        {
+          noteFromCenter: formData.note,
+          hallNumber: formData.hallNumber,
+          payment: formData.appointmentPayment,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      stopLoading();
+      AlertService.showSuccessTimerAlert(
+        "Success",
+        "The new session(s) is created for this application"
+      );
+      setTimeout(() => {
+        window.location.reload();
+      }, 1300);
+    } catch (error: any) {
+      console.error("Error:", error);
+      stopLoading();
+      AlertService.showErrorTimerAlert(
+        "Action Failed",
+        "Please try again later"
+      );
+    }
+  }
 }

@@ -33,8 +33,8 @@ function MCATable({ data }: Props) {
   if (data == null) {
     dataRow = [];
   } else {
-    dataRow = data.map((item: any) => ({
-      key: item._id,
+    dataRow = data.map((item: any, index: number) => ({
+      key: index,
       openedDate: TimeService.formatDate(item.vacancyOpenedTimestamp),
       aptCategory: (
         <>
@@ -43,7 +43,7 @@ function MCATable({ data }: Props) {
           ))}
         </>
       ),
-      status: "OPEN",
+      status: item.vacancyStatus,
       noOfResponses: item.responses.length,
     }));
   }
@@ -93,7 +93,12 @@ function MCATable({ data }: Props) {
         <Button
           type="link"
           onClick={() => {
-            navigate(`/medicalCenterAdmin/sessions/vacancies/${record.key}`);
+            const urlData = encodeURIComponent(
+              JSON.stringify(data[Number(record.key)])
+            );
+            navigate(
+              `/medicalCenterAdmin/sessions/vacancies/view?data=${urlData}`
+            );
           }}
         >
           View More
