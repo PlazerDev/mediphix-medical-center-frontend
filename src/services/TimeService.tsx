@@ -46,4 +46,12 @@ export class TimeService {
     const formattedMinutes = minutes.toString().padStart(2, "0");
     return `${formattedHour}.${formattedMinutes}`;
   }
+
+  static addOneHourColonSupport(time: string): string {
+    const [hours, minutes] = time.split(":").map(Number);
+    const newHour = (hours + 1) % 24;
+    const formattedHour = newHour.toString().padStart(2, "0");
+    const formattedMinutes = minutes.toString().padStart(2, "0");
+    return `${formattedHour}:${formattedMinutes}`;
+  }
 }

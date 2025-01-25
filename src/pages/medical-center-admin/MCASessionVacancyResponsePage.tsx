@@ -3,24 +3,49 @@ import Loading from "../../components/Loading";
 import Footer from "../../components/Footer";
 import MCSNavBar from "../../components/mcs/MCSNavBar";
 import MCSMainGreeting from "../../components/mcs/MCSMainGreeting";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import CardTitleAndValue from "../../components/CardTitleAndValue";
-import ResponseService from "../../services/ResponseService";
-import { Button, Checkbox, Input, Tag } from "antd";
-import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { Button, Checkbox, Drawer, Input, Tag } from "antd";
+import {
+  CheckCircleOutlined,
+  ExclamationCircleOutlined,
+} from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
 import NormalButtonWithFunction from "../../components/NormalButtonWithFunction";
+import { StorageService } from "../../services/StorageService";
+import { TimeService } from "../../services/TimeService";
+import { useLoading } from "../../contexts/LoadingContext";
+import { useAuthContext } from "@asgardeo/auth-react";
+import { SessionService } from "../../services/mca/SessionService";
 
 function MCASessionVacancyResponsePage() {
-  const [loading, setLoading] = useState(false);
+  const { startLoading, stopLoading, isLoading } = useLoading();
+  const { getAccessToken } = useAuthContext();
+  const [resIdToSent, setResIdToSent] = useState("");
+  const [sessionIdToSent, setSessionIdToSend] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const showDrawer = () => {
+    setOpen(true);
+  };
+
+  const onClose = () => {
+    setOpen(false);
+  };
   const { vacancyId, responseId } = useParams<{
     vacancyId: string;
     responseId: string;
   }>();
-  const [markedData, setMarkedData] = useState<string[]>([]);
-  const [note, setNote] = useState<string>("");
+  const [formData, setFormData] = useState({
+    hallNumber: "",
+    appointmentPayment: "",
+    note: "",
+  });
 
-  const data = ResponseService.getSampleResponseData();
+  const query = new URLSearchParams(useLocation().search);
+  const data = JSON.parse(decodeURIComponent(query.get("data") || "{}"));
+  const responseData = data.responses[Number(responseId)];
+  const urlData = encodeURIComponent(JSON.stringify(data));
 
   // Breadcrumb items updated dynamically using vacancyId
   const breadcrumbItems = [
@@ -38,7 +63,7 @@ function MCASessionVacancyResponsePage() {
     },
     {
       title: `Vacancy Details`,
-      link: "/medicalCenterAdmin/sessions/vacancies/" + vacancyId,
+      link: "/medicalCenterAdmin/sessions/vacancies/view?data=" + urlData,
     },
     {
       title: `Response Application`,
@@ -46,30 +71,125 @@ function MCASessionVacancyResponsePage() {
     },
   ];
 
-  // chcelbox handler
-  function checkBoxHandler(id: string) {
-    setMarkedData((prevMarkedData) => {
-      if (!prevMarkedData.includes(id)) {
-        return [...prevMarkedData, id];
+  const appliedOpenSessionIdList: number[] =
+    responseData.responseApplications.map((resApplication: any) => {
+      return resApplication.appliedOpenSessionId;
+    });
+
+  console.log("Applied session id list ", appliedOpenSessionIdList);
+
+  // preparing the data to display..................................................
+  const preparedData = data.openSessions.map((sessionData: any) => {
+    let finalResult = {};
+
+    const idx: number = appliedOpenSessionIdList.indexOf(sessionData.sessionId);
+    if (idx == -1) {
+      console.log("not applied");
+      // not applied one
+      finalResult = {
+        sData: sessionData,
+        isApplied: false,
+      };
+      return finalResult;
+    } else {
+      // applied
+      console.log("applied");
+      let tempTime = TimeService.formatTime(sessionData.startTime);
+      const slotStartTimeList: string[] = [tempTime];
+      let i = sessionData.numberOfTimeslots;
+
+      while (i > 1) {
+        tempTime = TimeService.addOneHourColonSupport(tempTime);
+        slotStartTimeList.push(tempTime);
+        i--;
+      }
+      slotStartTimeList.push(TimeService.formatTime(sessionData.endTime));
+      console.log("time list created", slotStartTimeList);
+
+      const slotData = [];
+      i = 0;
+      while (i < slotStartTimeList.length - 1) {
+        slotData.push({
+          startTime: slotStartTimeList[i],
+          stopTime: slotStartTimeList[i + 1],
+          patientCount:
+            responseData.responseApplications[idx].numberOfPatientsPerTimeSlot[
+              i
+            ].maxNumOfPatients,
+        });
+        i += 1;
       }
 
-      return prevMarkedData.filter((item) => item !== id);
-    });
+      finalResult = {
+        sData: sessionData,
+        isApplied: true,
+        slotData: slotData,
+        payment: responseData.responseApplications[idx].expectedPaymentAmount,
+        isAccepted: responseData.responseApplications[idx].isAccepted,
+      };
+      return finalResult;
+    }
+  });
+
+  console.log("Result: ", preparedData);
+
+  function continueBtnhandler(sessionId: string) {
+    console.log(
+      "response id",
+      responseData.responseId,
+      "clicked session id",
+      sessionId,
+      "vacacncy Id",
+      vacancyId
+    );
+    setResIdToSent(responseData.responseId);
+    setSessionIdToSend(sessionId);
+    showDrawer();
   }
+
+  // Handler to update state on input change
+  const handleInputChange = (field: string, value: string) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [field]: value, // Dynamically update the field
+    }));
+  };
+
+  // Submit handler (example purpose)
+  const handleSubmit = () => {
+    console.log("Form Data Submitted:", formData);
+
+    startLoading();
+    const vId = vacancyId == undefined ? "" : vacancyId;
+    SessionService.acceptSession(
+      vId,
+      sessionIdToSent,
+      resIdToSent,
+      formData,
+      getAccessToken,
+      stopLoading
+    );
+    setFormData({
+      hallNumber: "",
+      appointmentPayment: "",
+      note: "",
+    });
+    setOpen(false);
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
       {/* Navigation Bar */}
       <MCSNavBar />
       {/* Body */}
-      {!loading && (
+      {!isLoading && (
         <div className="flex-grow px-8">
           <MCSMainGreeting
-            title="Clinic Sessions Vacancies"
-            titleMemberName=""
+            title={"Response"}
+            titleMemberName={""}
             breadcrumbItems={breadcrumbItems}
             role="Medical Center Admin"
-            medicalCenterName="Nawaloka Hospital"
+            medicalCenterName={StorageService.getMedicalCenterName() || ""}
           />
           {/* Main Body div */}
           <div className="flex flex-col items-start gap-4">
@@ -79,158 +199,186 @@ function MCASessionVacancyResponsePage() {
               <div className="flex items-center justify-between">
                 <CardTitleAndValue
                   title="Submitted Date"
-                  value={data.requestApplicationData.submittedDate}
+                  value={TimeService.formatDate(
+                    responseData.submittedTimestamp
+                  )}
                 />
                 <CardTitleAndValue
                   title="Submitted Time"
-                  value={data.requestApplicationData.submittedTime}
+                  value={TimeService.formatTime(
+                    responseData.submittedTimestamp
+                  )}
+                />
+                <CardTitleAndValue
+                  title="Note for the patients"
+                  value={responseData.noteToPatient}
                 />
               </div>
               {/* Doctor Details */}
               <p className="font-bold mb-2 mt-8">Doctor Details</p>
+              <img
+                src={responseData.doctorDetails.profileImage}
+                className="rounded-full w-32 object-cover my-4"
+                alt="Doctor Profile Image"
+              />
               <div className="flex items-center justify-between">
                 <CardTitleAndValue
                   title="Doctor Name"
-                  value={data.doctorData.name}
+                  value={responseData.doctorDetails.name}
+                />
+                <CardTitleAndValue
+                  title="Email"
+                  value={responseData.doctorDetails.email}
                 />
                 <CardTitleAndValue
                   title="Contact Number"
-                  value={data.doctorData.contactNumber}
+                  value={responseData.doctorDetails.mobile}
                 />
-              </div>
-              <div className="mt-2">
-                <CardTitleAndValue
-                  title="Note for the patients"
-                  value={data.doctorData.noteForPatients}
-                />
-              </div>
-              {/* Date and Time Details */}
-              <p className="font-bold mt-8">Date & Time Details</p>
-              <div className="mt-2 flex flex-col gap-2">
-                {data.dateAndTimeData.map((item) => {
-                  return (
-                    <div className="border-2 p-4 rounded-md">
-                      <div className="flex items-center justify-between">
-                        <CardTitleAndValue
-                          title="Start & End Date"
-                          value={
-                            "From " + item.startDate + " to " + item.endDate
-                          }
-                        />
-                        <CardTitleAndValue
-                          title="Start & End Time"
-                          value={
-                            "From " + item.startTime + " to " + item.endTime
-                          }
-                        />
-                        <CardTitleAndValue
-                          title="Repetition"
-                          value={
-                            item.repetition.length > 0
-                              ? "Repeat weekly on " + item.repetition.join(", ")
-                              : "No repetition, Only " +
-                                item.selectedDate +
-                                " once"
-                          }
-                        />
-                      </div>
-                      {item.hasApplied && (
-                        <div className="mt-2">
-                          <div className="flex items-center justify-start">
-                            <div className="text-mediphix_text_c text-sm w-[200px]">
-                              Time Frame
-                            </div>
-                            <div className="text-mediphix_text_c text-sm w-[200px]">
-                              Number of Patients
-                            </div>
-                          </div>
-                          <div className="flex">
-                            <div>
-                              {item.slotData.map((slotItem) => {
-                                return (
-                                  <div className="flex items-center justify-start">
-                                    <p className="w-[200px]">
-                                      {slotItem.startTime +
-                                        " - " +
-                                        slotItem.endTime}
-                                    </p>
-                                    <p className="w-[200px]">
-                                      {slotItem.noOfPatients}
-                                    </p>
-                                  </div>
-                                );
-                              })}
-                            </div>
-                            <div className="w-full flex items-center justify-end">
-                              <Checkbox
-                                onChange={() => {
-                                  checkBoxHandler(item.id);
-                                }}
-                              >
-                                Mark as Accepted
-                              </Checkbox>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                      {!item.hasApplied && (
-                        <div className="flex items-center justify-end mt-2">
-                          <Tag
-                            icon={<ExclamationCircleOutlined />}
-                            color="warning"
-                          >
-                            Doctor hasn't accepted this time frame
-                          </Tag>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
               </div>
             </div>
             <div className="bg-mediphix_card_background w-full p-8 rounded-lg flex flex-col gap-4">
-              <div>
-                <p>Note for the patients from medical center</p>
-                <TextArea
-                  placeholder="Type the note here"
-                  className="mt-2"
-                  rows={4}
-                  value={note}
-                  onChange={(e) => setNote(e.target.value)}
+              <p className="font-bold">Session Details</p>
+              <div className="flex items-center w-full mt-4 justify-end gap-4">
+                <Button danger>Reject All</Button>
+              </div>
+
+              {preparedData.map((pd: any) => (
+                <div className="border p-4 border-mediphix_text_c rounded-lg">
+                  <div className="flex justify-between items-center ">
+                    <CardTitleAndValue
+                      title="Start Date - End Date"
+                      value={
+                        !pd.sData.repetition.isRepeat
+                          ? "Only in " +
+                            TimeService.formatDate(
+                              pd.sData.repetition.noRepeatDateTimestamp
+                            )
+                          : "From " +
+                            TimeService.formatDate(
+                              pd.sData.rangeStartTimestamp
+                            ) +
+                            " to " +
+                            TimeService.formatDate(pd.sData.rangeEndTimestamp)
+                      }
+                    />
+                    <CardTitleAndValue
+                      title="Start Time - End Time"
+                      value={
+                        TimeService.formatTime(pd.sData.startTime) +
+                        " - " +
+                        TimeService.formatTime(pd.sData.endTime)
+                      }
+                    />
+                    <CardTitleAndValue
+                      title="Repeatition"
+                      value={
+                        !pd.sData.repetition.isRepeat
+                          ? "No Repetition"
+                          : pd.sData.repetition.days.join(", ")
+                      }
+                    />
+                    <div className="flex-1">
+                      <p className="text-mediphix_text_c text-sm">
+                        Expected Payment
+                      </p>
+                      <p className="text-mediphix_accent">
+                        {pd.isApplied ? "Rs. " + pd.payment : "N/A"}
+                      </p>
+                    </div>
+                  </div>
+                  {pd.isApplied ? (
+                    <>
+                      <p className="font-bold mt-4">Time Slot Details</p>
+                      {pd.slotData.map((data: any) => (
+                        <div>
+                          <div className="px-4 py-2 rounded-md mt-2 border bg-[#efefef]">
+                            <div className="flex items-center">
+                              <p className="w-60 font-medium">
+                                Start Time - End Time
+                              </p>
+                              <p>{data.startTime + " - " + data.stopTime}</p>
+                            </div>
+                            <div className="flex items-center">
+                              <p className="w-60 font-medium">
+                                Maxumim Patient Count
+                              </p>
+                              <p>{data.patientCount}</p>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </>
+                  ) : (
+                    ""
+                  )}
+                  {!pd.isApplied && (
+                    <div className="flex items-center justify-end mt-4">
+                      <Tag icon={<ExclamationCircleOutlined />} color="warning">
+                        Doctor hasn't applied for this session
+                      </Tag>
+                    </div>
+                  )}
+                  {pd.isApplied && pd.isAccepted && (
+                    <div className="flex items-center justify-end mt-4">
+                      <Tag icon={<CheckCircleOutlined />} color="success">
+                        Accepted
+                      </Tag>
+                    </div>
+                  )}
+                  {pd.isApplied && !pd.isAccepted && (
+                    <div className="flex justify-end mt-4">
+                      <Button
+                        type="primary"
+                        onClick={() => {
+                          continueBtnhandler(pd.sData.sessionId);
+                        }}
+                      >
+                        Continue
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+            <Drawer title="Fill the details" onClose={onClose} open={open}>
+              <p>Note for the patients from medical center</p>
+              <TextArea
+                placeholder="Type the note here"
+                className="mt-2"
+                rows={4}
+                value={formData.note}
+                onChange={(e) => handleInputChange("note", e.target.value)}
+              />
+              <div className="mt-4">
+                <p>Enter the hall number</p>
+                <Input
+                  placeholder="Please enter the hall number here"
+                  value={formData.hallNumber}
+                  onChange={(e) =>
+                    handleInputChange("hallNumber", e.target.value)
+                  }
                 />
               </div>
-              <div>
-                <p>Enter the hall number</p>
-                <Input placeholder="Please enter the hall number here" />
-              </div>
-              <div>
+              <div className="mt-4">
                 <p>Enter the appointment payment</p>
-                <Input placeholder="Please enter amount here" />
+                <Input
+                  placeholder="Please enter amount here"
+                  value={formData.appointmentPayment}
+                  onChange={(e) =>
+                    handleInputChange("appointmentPayment", e.target.value)
+                  }
+                />
               </div>
-            </div>
-            <div className="bg-mediphix_card_background w-full p-8 rounded-lg">
-              <p className="font-medium">
-                {"You have marked " +
-                  markedData.length +
-                  " time slots as accepted"}
-              </p>
-            </div>
-            <div className="flex items-center w-full justify-end gap-4">
-              <NormalButtonWithFunction
-                colorType={1}
-                title="Reject The Application"
-                handler={() => {}}
-              />
-              <NormalButtonWithFunction
-                colorType={2}
-                title="Appove Marked Time Slots"
-                handler={() => {}}
-              />
-            </div>
+              <div className="flex justify-end mt-4">
+                <Button type="primary" onClick={handleSubmit}>
+                  Accept
+                </Button>
+              </div>
+            </Drawer>
           </div>
         </div>
       )}
-      {loading && <Loading />}
+      {isLoading && <Loading />}
       {/* Footer */}
       <Footer />
     </div>

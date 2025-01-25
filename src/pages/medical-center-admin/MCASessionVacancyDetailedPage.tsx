@@ -1,20 +1,23 @@
 import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import MCSNavBar from "../../components/mcs/MCSNavBar";
 import MCSMainGreeting from "../../components/mcs/MCSMainGreeting";
 import Loading from "../../components/Loading";
 import Footer from "../../components/Footer";
-import VacancyService from "../../services/VacancyService";
 import CardTitleAndValue from "../../components/CardTitleAndValue";
 import { Button } from "antd";
 import { WarningOutlined } from "@ant-design/icons";
+import { TimeService } from "../../services/TimeService";
+import { StorageService } from "../../services/StorageService";
 
 function MCASessionVacancyDetailedPage() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { vacancyId } = useParams<{ vacancyId: string }>();
 
-  const data = VacancyService.getSampleData();
+  const query = new URLSearchParams(useLocation().search);
+  const data = JSON.parse(decodeURIComponent(query.get("data") || "{}"));
+
+  console.log("Received Data:", data);
 
   // Breadcrumb items updated dynamically using vacancyId
   const breadcrumbItems = [
@@ -36,9 +39,12 @@ function MCASessionVacancyDetailedPage() {
     },
   ];
 
-  function responseBtnHandler(id: string) {
+  function responseBtnHandler(id: number) {
     // Navigate to a detailed page with the vacancyId and responseId
-    navigate(`/medicalCenterAdmin/sessions/vacancies/${vacancyId}/${id}`);
+    const urlData = encodeURIComponent(JSON.stringify(data));
+    navigate(
+      `/medicalCenterAdmin/sessions/vacancies/view/${data._id}/${id}?data=${urlData}`
+    );
   }
 
   return (
@@ -49,11 +55,11 @@ function MCASessionVacancyDetailedPage() {
       {!loading && (
         <div className="flex-grow px-8">
           <MCSMainGreeting
-            title="Clinic Sessions Vacancies"
-            titleMemberName=""
+            title={"Vacancy"}
+            titleMemberName={""}
             breadcrumbItems={breadcrumbItems}
             role="Medical Center Admin"
-            medicalCenterName="Nawaloka Hospital"
+            medicalCenterName={StorageService.getMedicalCenterName() || ""}
           />
           {/* Main Body div */}
           <div className="flex flex-col items-start gap-4">
@@ -64,32 +70,32 @@ function MCASessionVacancyDetailedPage() {
                 <div className="flex items-center justify-between">
                   <CardTitleAndValue
                     title="Opened Date"
-                    value={data.additionalData.openedDate}
+                    value={TimeService.formatDate(data.vacancyOpenedTimestamp)}
                   />
                   <CardTitleAndValue
                     title="Opened Time"
-                    value={data.additionalData.openedTime}
+                    value={TimeService.formatTime(data.vacancyOpenedTimestamp)}
                   />
                   <CardTitleAndValue
                     title="Appointment Categories"
-                    value={data.additionalData.appointmentCategories.join(", ")}
+                    value={data.aptCategories.join(", ")}
                   />
                 </div>
                 <div className="flex items-center justify-between">
                   <CardTitleAndValue
                     title="Contact Numbers"
-                    value={data.additionalData.contactNumber}
+                    value={data.mobile}
                   />
                   <div className="flex-1">
                     <p className="text-mediphix_text_c text-sm">Status</p>
                     <p
                       className={
-                        data.additionalData.status === 1
+                        data.vacancyStatus === "OPEN"
                           ? "text-green-500"
                           : "bg-red-500"
                       }
                     >
-                      {data.additionalData.status === 1 ? "OPEN" : "CLOSED"}
+                      {data.vacancyStatus === "OPEN" ? "OPEN" : "CLOSED"}
                     </p>
                   </div>
                   <div className="flex-1">
@@ -106,7 +112,7 @@ function MCASessionVacancyDetailedPage() {
                 <div>
                   <CardTitleAndValue
                     title="Note for doctors about the vacancy"
-                    value={data.additionalData.noteForDoctor}
+                    value={data.vacancyNoteToDoctors}
                   />
                 </div>
               </div>
@@ -115,25 +121,39 @@ function MCASessionVacancyDetailedPage() {
             <div className="bg-mediphix_card_background w-full p-8 rounded-lg">
               <p className="font-bold">Date & Time Details</p>
               <div className="flex flex-col gap-4 mt-4">
-                {data.dateAndTimeData.map((item, key) => (
+                {data.openSessions.map((item: any, index: number) => (
                   <div
-                    key={key}
+                    key={index}
                     className="flex items-center justify-between border-2 p-4 rounded-lg"
                   >
                     <CardTitleAndValue
                       title="Start Time & End time"
-                      value={`From ${item.startTime} to ${item.endTime}`}
+                      value={`From ${TimeService.formatTime(
+                        item.startTime
+                      )} to ${TimeService.formatTime(item.endTime)}`}
                     />
                     <CardTitleAndValue
                       title="Start Date & End Date"
-                      value={`From ${item.startDate} to ${item.endDate}`}
+                      value={
+                        item.repetition.isRepeat
+                          ? `From ${TimeService.formatDate(
+                              item.rangeStartTimestamp
+                            )} to ${TimeService.formatDate(
+                              item.rangeEndTimestamp
+                            )}`
+                          : `Only in ${TimeService.formatDate(
+                              item.repetition.noRepeatDateTimestamp
+                            )}`
+                      }
                     />
                     <CardTitleAndValue
                       title="Repetition"
                       value={
-                        item.repetition.length > 0
-                          ? `Weekly on ${item.repetition.join(", ")}`
-                          : `No Repetition, only ${item.selectedDate} once`
+                        item.repetition.isRepeat
+                          ? `Weekly on ${item.repetition.days.join(", ")}`
+                          : `No Repetition, only ${TimeService.formatDate(
+                              item.repetition.noRepeatDateTimestamp
+                            )} once`
                       }
                     />
                   </div>
@@ -145,37 +165,51 @@ function MCASessionVacancyDetailedPage() {
               <p className="font-bold mb-4">
                 Responses{" "}
                 <span className="bg-mediphix_accent px-2 py-1 rounded-lg text-white">
-                  {data.responseData.length}
+                  {data.responses.length}
                 </span>
               </p>
               <div className="flex flex-wrap items-center justify-between gap-4">
-                {data.responseData.map((item) => (
+                {data.responses.map((item: any, index: number) => (
                   <button
-                    key={item.id}
-                    onClick={() => responseBtnHandler(item.id)}
-                    className="border-2 border-mediphix_text_d px-4 py-2 rounded-lg w-[440px] hover:cursor-pointer hover:bg-mediphix_text_d"
+                    key={index}
+                    onClick={() => responseBtnHandler(index)}
+                    className="border-2 border-mediphix_text_d p-4 rounded-lg w-[440px] hover:cursor-pointer hover:bg-mediphix_text_d"
                   >
-                    <p className="text-left">{item.doctorName}</p>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <p>{item.dateSent}</p>
-                        <p>{item.timeSent}</p>
+                    <div className="flex items-center gap-8">
+                      <div>
+                        <img
+                          src={item.doctorDetails.profileImage}
+                          alt="Doctor Profile Image"
+                          className="w-16 rounded-full"
+                        />
                       </div>
-                      <p
-                        className={
-                          item.status === 0
-                            ? "text-mediphix_text_c"
-                            : item.status === 1
-                            ? "text-mediphix_accent"
-                            : "text-green-500"
-                        }
-                      >
-                        {item.status === 0
-                          ? "Rejected"
-                          : item.status === 1
-                          ? "Pending"
-                          : "Approved"}
-                      </p>
+                      <div>
+                        <p className="text-left">
+                          {"Dr. " + item.doctorDetails.name}
+                        </p>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <p>
+                              {TimeService.formatDate(item.submittedTimestamp)}
+                            </p>
+
+                            <p>
+                              {TimeService.formatTime(item.submittedTimestamp)}
+                            </p>
+                          </div>
+                          <p
+                            className={
+                              item.isCompletelyRejected
+                                ? "text-red-500"
+                                : "text-mediphix_text_c ml-4"
+                            }
+                          >
+                            {item.isCompletelyRejected
+                              ? "Application Rejected"
+                              : ""}
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   </button>
                 ))}
