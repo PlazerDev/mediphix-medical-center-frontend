@@ -1,9 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Footer from "../../components/Footer";
 import Loading from "../../components/Loading";
 import MCSMainGreeting from "../../components/mcs/MCSMainGreeting";
 import MCSNavBar from "../../components/mcs/MCSNavBar";
-import { StaffService } from "../../services/mca/StaffService";
 import CardTitleAndValue from "../../components/CardTitleAndValue";
 import {
   Button,
@@ -14,18 +13,18 @@ import {
   message,
   Row,
   Space,
-  Tag,
   Upload,
   UploadProps,
 } from "antd";
-import nursesImg from "./../../assets/images/mcs/nurse.png";
-import { ExclamationCircleOutlined, UploadOutlined } from "@ant-design/icons";
+import { UploadOutlined } from "@ant-design/icons";
 import { Modal } from "antd";
 import NormalButtonWithIcon from "../../components/NormalButtonWithIcon";
 import { IoIosAddCircle } from "react-icons/io";
 import { StorageService } from "../../services/StorageService";
 import { useLoading } from "../../contexts/LoadingContext";
 import { UserService } from "../../services/user/UserService";
+import { useAuthContext } from "@asgardeo/auth-react";
+import CustomEmpty from "../../components/CustomEmpty";
 
 function MCACStaffCenterReceptionistPage() {
   // setting loading
@@ -34,6 +33,9 @@ function MCACStaffCenterReceptionistPage() {
   const { isLoading, startLoading, stopLoading } = useLoading();
   const [email, setEmail] = useState<string>("");
   const [form] = Form.useForm();
+  const [usersData, setUsersData] = useState<any | null>(null);
+  const [modelIndex, setModelIndex] = useState<number>(0);
+  const { getAccessToken } = useAuthContext();
 
   const showDrawer = () => {
     setOpen(true);
@@ -55,6 +57,11 @@ function MCACStaffCenterReceptionistPage() {
     setIsModalOpen(false);
   };
 
+  useEffect(() => {
+    startLoading();
+    UserService.getAllMCRmembers(getAccessToken, stopLoading, setUsersData);
+  }, []);
+
   // setting breadcrumb
   const breadcrumbItems = [
     {
@@ -70,8 +77,6 @@ function MCACStaffCenterReceptionistPage() {
       link: "",
     },
   ];
-
-  const data = StaffService.getSampleStaffMemberList();
 
   function cardBtnHandler() {
     showModal();
@@ -134,33 +139,45 @@ function MCACStaffCenterReceptionistPage() {
             medicalCenterName={StorageService.getMedicalCenterName() || ""}
           />
           {/* Main Body div */}
-          <Modal
-            title="Ajith Perera"
-            open={isModalOpen}
-            onOk={handleOk}
-            onCancel={handleCancel}
-          >
-            <div>
-              <div className="flex flex-col  items-center justify-center  gap-4">
-                <div>
-                  <img src={nursesImg} alt="Profile Photo" />
-                </div>
-                <div className="flex-1  flex flex-col gap-2 w-full ">
-                  <CardTitleAndValue title="Employee ID" value="EMP004" />
-                  <CardTitleAndValue
-                    title="Email"
-                    value="nuwan.fernando@example.com"
-                  />
-                  <CardTitleAndValue title="Mobile Number" value="0769876543" />
+          {usersData != null && usersData[modelIndex] && (
+            <Modal
+              title={usersData[modelIndex].name}
+              open={isModalOpen}
+              onOk={handleOk}
+              onCancel={handleCancel}
+            >
+              <div>
+                <div className="flex flex-col  items-center justify-center  gap-4">
+                  <div>
+                    <img
+                      src={usersData[modelIndex].profileImage}
+                      alt="Profile Photo"
+                      className="w-32 rounded-full"
+                    />
+                  </div>
+                  <div className="flex-1  flex flex-col gap-2 w-full ">
+                    <CardTitleAndValue
+                      title="Employee ID"
+                      value={usersData[modelIndex].empId}
+                    />
+                    <CardTitleAndValue
+                      title="NIC"
+                      value={usersData[modelIndex].nic}
+                    />
+                    <CardTitleAndValue
+                      title="Mobile Number"
+                      value={usersData[modelIndex].mobile}
+                    />
 
-                  <div className="flex items-center gap-2">
-                    <Button>Edit</Button>
-                    <Button danger>Delete</Button>
+                    <div className="flex items-center gap-2">
+                      <Button>Edit</Button>
+                      <Button danger>Delete</Button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </Modal>
+            </Modal>
+          )}
           {/* Drawer :: Add a new MCR Member */}
           <Drawer
             title="Add a new Medical Center Reception Member"
@@ -302,34 +319,49 @@ function MCACStaffCenterReceptionistPage() {
             </div>
           </div>
           <Row gutter={16}>
-            {data.map((item) => (
-              <Col className="gutter-row" span={8}>
-                <div
-                  className="bg-mediphix_card_background rounded-lg p-8 mb-4 h-[270px] hover:cursor-pointer hover:shadow-lg"
-                  onClick={() => {
-                    cardBtnHandler();
-                  }}
-                >
-                  <div className="flex items-center justify-center  gap-4">
-                    <div>
-                      <img src={nursesImg} alt="Profile Photo" />
-                    </div>
-                    <div className="flex-1  flex flex-col gap-2">
-                      <CardTitleAndValue
-                        title="Employee ID"
-                        value={item.empID}
-                      />
-                      <CardTitleAndValue title="Name" value={item.name} />
-                      <CardTitleAndValue title="Email" value={item.email} />
-                      <CardTitleAndValue
-                        title="Mobile Number"
-                        value={item.mobileNumber}
-                      />
+            {usersData == null && (
+              <div className="w-full">
+                <CustomEmpty
+                  title="No Medical Center Reception Members Found"
+                  msg="Please add by clicking the 'Add a new Medical Center Receptionist'"
+                />
+              </div>
+            )}
+            {usersData != null &&
+              usersData.map((item: any, index: number) => (
+                <Col className="gutter-row" span={8}>
+                  <div
+                    className="bg-mediphix_card_background rounded-lg p-8 mb-4 h-[270px] hover:cursor-pointer hover:shadow-lg"
+                    key={item.userId}
+                    onClick={() => {
+                      setModelIndex(index);
+                      cardBtnHandler();
+                    }}
+                  >
+                    <div className="flex items-center justify-center  gap-4">
+                      <div>
+                        <img
+                          src={item.profileImage}
+                          alt="Profile Photo"
+                          className="w-32 rounded-full"
+                        />
+                      </div>
+                      <div className="flex-1  flex flex-col gap-2">
+                        <CardTitleAndValue
+                          title="Employee ID"
+                          value={item.empId}
+                        />
+                        <CardTitleAndValue title="Name" value={item.name} />
+                        <CardTitleAndValue title="NIC" value={item.nic} />
+                        <CardTitleAndValue
+                          title="Mobile Number"
+                          value={item.mobile}
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Col>
-            ))}
+                </Col>
+              ))}
           </Row>
         </div>
       )}

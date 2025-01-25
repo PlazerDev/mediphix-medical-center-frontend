@@ -2,6 +2,7 @@ import React from "react";
 import { Table, Tag, Button } from "antd";
 import type { TableColumnsType, TableProps } from "antd";
 import { useNavigate } from "react-router-dom";
+import { TimeService } from "../../services/TimeService";
 
 interface DataType {
   key: React.Key;
@@ -10,54 +11,6 @@ interface DataType {
   status: string;
   noOfResponses: number;
 }
-
-const data = [
-  {
-    key: "1",
-    openedDate: "2024/06/13",
-    aptCategory: (
-      <>
-        <Tag color="default">OPD</Tag>
-      </>
-    ),
-    status: "OPEN",
-    noOfResponses: 6,
-  },
-  {
-    key: "2",
-    openedDate: "2024/05/13",
-    aptCategory: (
-      <>
-        <Tag color="default">Mental Health</Tag>
-      </>
-    ),
-    status: "CLOSED",
-    noOfResponses: 8,
-  },
-  {
-    key: "3",
-    openedDate: "2024/06/13",
-    aptCategory: (
-      <>
-        <Tag color="default">OPD</Tag>
-        <Tag color="default">Heart Health</Tag>
-      </>
-    ),
-    status: "OPEN",
-    noOfResponses: 10,
-  },
-  {
-    key: "4",
-    openedDate: "2024/04/13",
-    aptCategory: (
-      <>
-        <Tag color="default">Neurology </Tag>
-      </>
-    ),
-    status: "CLOSED",
-    noOfResponses: 0,
-  },
-];
 
 const onChange: TableProps<DataType>["onChange"] = (
   pagination,
@@ -69,8 +22,31 @@ const onChange: TableProps<DataType>["onChange"] = (
   // navigate to /medicalCenterAdmin/sessions/vacancies/keyValue
 };
 
-function MCATable() {
+interface Props {
+  data: any | null;
+}
+
+function MCATable({ data }: Props) {
   const navigate = useNavigate();
+
+  let dataRow;
+  if (data == null) {
+    dataRow = [];
+  } else {
+    dataRow = data.map((item: any, index: number) => ({
+      key: index,
+      openedDate: TimeService.formatDate(item.vacancyOpenedTimestamp),
+      aptCategory: (
+        <>
+          {item.aptCategories.map((c: string) => (
+            <Tag color="default">{c}</Tag>
+          ))}
+        </>
+      ),
+      status: item.vacancyStatus,
+      noOfResponses: item.responses.length,
+    }));
+  }
 
   const columns: TableColumnsType<DataType> = [
     {
@@ -117,7 +93,12 @@ function MCATable() {
         <Button
           type="link"
           onClick={() => {
-            navigate(`/medicalCenterAdmin/sessions/vacancies/${record.key}`);
+            const urlData = encodeURIComponent(
+              JSON.stringify(data[Number(record.key)])
+            );
+            navigate(
+              `/medicalCenterAdmin/sessions/vacancies/view?data=${urlData}`
+            );
           }}
         >
           View More
@@ -130,7 +111,7 @@ function MCATable() {
     <Table<DataType>
       className="w-full"
       columns={columns}
-      dataSource={data}
+      dataSource={dataRow}
       onChange={onChange}
       showSorterTooltip={{ target: "sorter-icon" }}
     />

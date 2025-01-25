@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MCSNavBar from "../../components/mcs/MCSNavBar";
 import MCSMainGreeting from "../../components/mcs/MCSMainGreeting";
 import Loading from "../../components/Loading";
@@ -8,9 +8,20 @@ import { FaPlusCircle } from "react-icons/fa";
 import MCATable from "../../components/mca/MCATable";
 import { TimeService } from "../../services/TimeService";
 import { StorageService } from "../../services/StorageService";
+import { SessionService } from "../../services/mca/SessionService";
+import { useAuthContext } from "@asgardeo/auth-react";
+import { useLoading } from "../../contexts/LoadingContext";
 
 function MCASessionVacancyMainPage() {
-  const [loading, setLoading] = useState(false);
+  const { startLoading, stopLoading, isLoading } = useLoading();
+  const { getAccessToken } = useAuthContext();
+  const [data, setData] = useState<any | null>(null);
+
+  useEffect(() => {
+    startLoading();
+    SessionService.getVacancyData(getAccessToken, setData, stopLoading);
+  }, []);
+
   // setting breadcrumb
   const breadcrumbItems = [
     {
@@ -32,7 +43,7 @@ function MCASessionVacancyMainPage() {
       {/* Navigation Bar  */}
       <MCSNavBar />
       {/* Body */}
-      {!loading && (
+      {!isLoading && (
         <div className="flex-grow px-8">
           <MCSMainGreeting
             title={TimeService.getGreeting()}
@@ -51,11 +62,15 @@ function MCASessionVacancyMainPage() {
                 title="Create a new vacancy"
               />
             </div>
-            <MCATable />
+            <MCATable data={data} />
           </div>
         </div>
       )}
-      {loading && <Loading />}
+      {isLoading && (
+        <div className="flex-grow flex justify-center items-center">
+          <Loading />
+        </div>
+      )}
       {/* Footer */}
       <Footer />
     </div>
