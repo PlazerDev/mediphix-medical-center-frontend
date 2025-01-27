@@ -443,7 +443,7 @@ export class SessionService {
         {
           noteFromCenter: formData.note,
           hallNumber: formData.hallNumber,
-          payment: formData.appointmentPayment,
+          payment: Number(formData.appointmentPayment),
         },
         {
           headers: {
@@ -456,6 +456,68 @@ export class SessionService {
         "Success",
         "The new session(s) is created for this application"
       );
+      setTimeout(() => {
+        window.location.reload();
+      }, 1300);
+    } catch (error: any) {
+      console.error("Error:", error);
+      stopLoading();
+      AlertService.showErrorTimerAlert(
+        "Action Failed",
+        "Please try again later"
+      );
+    }
+  }
+
+  // REQ :: GET
+  static async getJoinReq(
+    getAccessToken: () => Promise<string>,
+    setResult: React.Dispatch<any>,
+    stopLoading: () => void
+  ) {
+    try {
+      const token = await getAccessToken();
+      const response = await axios.get(
+        `http://localhost:9000/mca/joinRequests`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.data.length == 0) {
+        setResult(null);
+      } else {
+        setResult(response.data);
+      }
+      console.log(response.data);
+      stopLoading();
+    } catch (error: any) {
+      console.error("Error:", error);
+      setResult(null);
+      stopLoading();
+    }
+  }
+
+  // REQ :: PUT
+  static async acceptJoinReq(
+    reqId: string,
+    getAccessToken: () => Promise<string>,
+    stopLoading: () => void
+  ) {
+    try {
+      const token = await getAccessToken();
+      await axios.put(
+        `http://localhost:9000/mca/acceptRequest?reqId=${reqId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      stopLoading();
+      AlertService.showSuccessTimerAlert("Success", "Join request is accepted");
       setTimeout(() => {
         window.location.reload();
       }, 1300);
