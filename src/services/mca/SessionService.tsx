@@ -443,7 +443,7 @@ export class SessionService {
         {
           noteFromCenter: formData.note,
           hallNumber: formData.hallNumber,
-          payment: formData.appointmentPayment,
+          payment: parseInt(formData.appointmentPayment,10),
         },
         {
           headers: {
