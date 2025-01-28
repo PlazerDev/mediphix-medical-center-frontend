@@ -84,47 +84,45 @@ function MCAVacancyNavigatorAdditionalDetails({
                 suffixIcon={suffix}
                 placeholder="Please select one or more categories"
                 options={[
-                  { value: "opd", label: "OPD" },
-                  { value: "dental", label: "Dental" },
-                  { value: "mental_health", label: "Mental Health" },
-                  { value: "general_medicine", label: "General Medicine" },
-                  { value: "cardiology", label: "Cardiology" },
-                  { value: "orthopedics", label: "Orthopedics" },
-                  { value: "pediatrics", label: "Pediatrics" },
+                  { value: "OPD", label: "OPD" },
+                  { value: "GENERAL_MEDICINE", label: "General Medicine" },
+                  { value: "CARDIOLOGY", label: "Cardiology" },
+                  { value: "ORTHOPEDICS", label: "Orthopedics" },
+                  { value: "PEDIATRICS", label: "Pediatrics" },
                   {
-                    value: "gynecology_obstetrics",
+                    value: "GYNECOLOGY_OBSTETRICS",
                     label: "Gynecology & Obstetrics",
                   },
-                  { value: "dermatology", label: "Dermatology" },
-                  { value: "ent", label: "ENT (Ear, Nose, Throat)" },
-                  { value: "neurology", label: "Neurology" },
-                  { value: "gastroenterology", label: "Gastroenterology" },
-                  { value: "pulmonology", label: "Pulmonology" },
-                  { value: "oncology", label: "Oncology" },
-                  { value: "endocrinology", label: "Endocrinology" },
-                  { value: "nephrology", label: "Nephrology" },
-                  { value: "urology", label: "Urology" },
+                  { value: "DERMATOLOGY", label: "Dermatology" },
+                  { value: "ENT", label: "ENT" },
+                  { value: "NEUROLOGY", label: "Neurology" },
+                  { value: "GASTROENTEROLOGY", label: "Gastroenterology" },
+                  { value: "PULMONOLOGY", label: "Pulmonology" },
+                  { value: "ONCOLOGY", label: "Oncology" },
+                  { value: "ENDOCRINOLOGY", label: "Endocrinology" },
+                  { value: "NEPHROLOGY", label: "Nephrology" },
+                  { value: "UROLOGY", label: "Urology" },
                   {
-                    value: "psychiatry_mental_health",
+                    value: "PSYCHIATRY_MENTAL_HEALTH",
                     label: "Psychiatry & Mental Health",
                   },
-                  { value: "ophthalmology", label: "Ophthalmology" },
-                  { value: "dentistry", label: "Dentistry" },
+                  { value: "OPHTHALMOLOGY", label: "Ophthalmology" },
+                  { value: "DENTISTRY", label: "Dentistry" },
                   {
-                    value: "physical_therapy_rehabilitation",
+                    value: "PHYSICAL_THERAPY_REHABILITATION",
                     label: "Physical Therapy & Rehabilitation",
                   },
                   {
-                    value: "allergy_immunology",
+                    value: "ALLERGY_IMMUNOLOGY",
                     label: "Allergy & Immunology",
                   },
-                  { value: "radiology", label: "Radiology" },
-                  { value: "geriatrics", label: "Geriatrics" },
-                  { value: "emergency_medicine", label: "Emergency Medicine" },
+                  { value: "RADIOLOGY", label: "Radiology" },
+                  { value: "GERIATRICS", label: "Geriatrics" },
+                  { value: "EMERGENCY_MEDICINE", label: "Emergency Medicine" },
                   {
-                    value: "occupational_health",
-                    label: "Occupational Health",
-                  },
+                    value: "OCCUPATIONAL_HEALTH",
+                    label: "Occupational Health"
+                  }
                 ]}
               />
             </div>

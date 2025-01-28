@@ -23,7 +23,7 @@ function MCSQueueCurrentQueue({ handler, data }: Props) {
     ) {
       // Nothing needed inside here for now, or you can add some logic if necessary
     } else {
-      currentQ.push(index); // Push the index into currentQ
+      currentQ.push(index + 1); // Push the index into currentQ
     }
   });
 

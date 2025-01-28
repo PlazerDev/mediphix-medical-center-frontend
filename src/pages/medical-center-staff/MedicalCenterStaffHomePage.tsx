@@ -18,11 +18,6 @@ interface MCSMemeberData {
 }
 
 function MedicalCenterStaffHomePage() {
-  const [mcsMemeberData, setMCSMemberData] = useState<MCSMemeberData>({
-    first_name: "Vishwa",
-    medical_center_id: "1231",
-    medical_center_name: "Nawaloka",
-  });
   const [loading, setLoading] = useState(false);
 
   // setting breadcrumb
@@ -50,9 +45,7 @@ function MedicalCenterStaffHomePage() {
           <div className="px-8 bg-mediphix_card_background py-8 rounded-lg">
             <div className="flex flex-col md:flex-row items-center md:items-center md:justify-between">
               <p className="text-xl md:text-2xl font-bold">
-                Hi{" "}
-                {mcsMemeberData ? mcsMemeberData.first_name : "mcs member name"}
-                !
+                Hi !
                 <br /> Manage your assigned clinic sessions here
               </p>
               <img
