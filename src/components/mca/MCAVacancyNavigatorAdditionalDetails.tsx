@@ -87,6 +87,44 @@ function MCAVacancyNavigatorAdditionalDetails({
                   { value: "opd", label: "OPD" },
                   { value: "dental", label: "Dental" },
                   { value: "mental_health", label: "Mental Health" },
+                  { value: "general_medicine", label: "General Medicine" },
+                  { value: "cardiology", label: "Cardiology" },
+                  { value: "orthopedics", label: "Orthopedics" },
+                  { value: "pediatrics", label: "Pediatrics" },
+                  {
+                    value: "gynecology_obstetrics",
+                    label: "Gynecology & Obstetrics",
+                  },
+                  { value: "dermatology", label: "Dermatology" },
+                  { value: "ent", label: "ENT (Ear, Nose, Throat)" },
+                  { value: "neurology", label: "Neurology" },
+                  { value: "gastroenterology", label: "Gastroenterology" },
+                  { value: "pulmonology", label: "Pulmonology" },
+                  { value: "oncology", label: "Oncology" },
+                  { value: "endocrinology", label: "Endocrinology" },
+                  { value: "nephrology", label: "Nephrology" },
+                  { value: "urology", label: "Urology" },
+                  {
+                    value: "psychiatry_mental_health",
+                    label: "Psychiatry & Mental Health",
+                  },
+                  { value: "ophthalmology", label: "Ophthalmology" },
+                  { value: "dentistry", label: "Dentistry" },
+                  {
+                    value: "physical_therapy_rehabilitation",
+                    label: "Physical Therapy & Rehabilitation",
+                  },
+                  {
+                    value: "allergy_immunology",
+                    label: "Allergy & Immunology",
+                  },
+                  { value: "radiology", label: "Radiology" },
+                  { value: "geriatrics", label: "Geriatrics" },
+                  { value: "emergency_medicine", label: "Emergency Medicine" },
+                  {
+                    value: "occupational_health",
+                    label: "Occupational Health",
+                  },
                 ]}
               />
             </div>
