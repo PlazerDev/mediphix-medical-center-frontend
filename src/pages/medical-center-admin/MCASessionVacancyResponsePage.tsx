@@ -218,7 +218,7 @@ function MCASessionVacancyResponsePage() {
               <p className="font-bold mb-2 mt-8">Doctor Details</p>
               <img
                 src={responseData.doctorDetails.profileImage}
-                className="rounded-full w-32 object-cover my-4"
+                className="rounded-full w-32 h-32 object-cover my-4"
                 alt="Doctor Profile Image"
               />
               <div className="flex items-center justify-between">

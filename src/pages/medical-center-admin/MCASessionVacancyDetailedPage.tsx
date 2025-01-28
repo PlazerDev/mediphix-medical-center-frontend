@@ -180,7 +180,7 @@ function MCASessionVacancyDetailedPage() {
                         <img
                           src={item.doctorDetails.profileImage}
                           alt="Doctor Profile Image"
-                          className="w-16 rounded-full"
+                          className="w-16 h-16 rounded-full object-cover"
                         />
                       </div>
                       <div>

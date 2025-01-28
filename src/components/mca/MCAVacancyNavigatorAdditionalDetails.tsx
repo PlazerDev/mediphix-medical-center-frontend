@@ -84,9 +84,45 @@ function MCAVacancyNavigatorAdditionalDetails({
                 suffixIcon={suffix}
                 placeholder="Please select one or more categories"
                 options={[
-                  { value: "opd", label: "OPD" },
-                  { value: "dental", label: "Dental" },
-                  { value: "mental_health", label: "Mental Health" },
+                  { value: "OPD", label: "OPD" },
+                  { value: "GENERAL_MEDICINE", label: "General Medicine" },
+                  { value: "CARDIOLOGY", label: "Cardiology" },
+                  { value: "ORTHOPEDICS", label: "Orthopedics" },
+                  { value: "PEDIATRICS", label: "Pediatrics" },
+                  {
+                    value: "GYNECOLOGY_OBSTETRICS",
+                    label: "Gynecology & Obstetrics",
+                  },
+                  { value: "DERMATOLOGY", label: "Dermatology" },
+                  { value: "ENT", label: "ENT" },
+                  { value: "NEUROLOGY", label: "Neurology" },
+                  { value: "GASTROENTEROLOGY", label: "Gastroenterology" },
+                  { value: "PULMONOLOGY", label: "Pulmonology" },
+                  { value: "ONCOLOGY", label: "Oncology" },
+                  { value: "ENDOCRINOLOGY", label: "Endocrinology" },
+                  { value: "NEPHROLOGY", label: "Nephrology" },
+                  { value: "UROLOGY", label: "Urology" },
+                  {
+                    value: "PSYCHIATRY_MENTAL_HEALTH",
+                    label: "Psychiatry & Mental Health",
+                  },
+                  { value: "OPHTHALMOLOGY", label: "Ophthalmology" },
+                  { value: "DENTISTRY", label: "Dentistry" },
+                  {
+                    value: "PHYSICAL_THERAPY_REHABILITATION",
+                    label: "Physical Therapy & Rehabilitation",
+                  },
+                  {
+                    value: "ALLERGY_IMMUNOLOGY",
+                    label: "Allergy & Immunology",
+                  },
+                  { value: "RADIOLOGY", label: "Radiology" },
+                  { value: "GERIATRICS", label: "Geriatrics" },
+                  { value: "EMERGENCY_MEDICINE", label: "Emergency Medicine" },
+                  {
+                    value: "OCCUPATIONAL_HEALTH",
+                    label: "Occupational Health",
+                  },
                 ]}
               />
             </div>

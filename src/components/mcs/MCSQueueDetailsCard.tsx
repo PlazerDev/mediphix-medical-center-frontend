@@ -6,6 +6,7 @@ interface Props {
   sessionId: string;
 }
 function MCSQueueDetailsCard({ handler, data, sessionId }: Props) {
+  console.log("DEBUG DATA:", data);
   return (
     <div className="bg-mediphix_card_background p-8 rounded-lg mt-4">
       <p className="font-bold text-mediphix_text_a">Queue Details</p>

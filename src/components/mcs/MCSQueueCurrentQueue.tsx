@@ -11,9 +11,10 @@ interface Props {
 function MCSQueueCurrentQueue({ handler, data }: Props) {
   const apts: number[] = data.queue.appointments;
   const currentQ: number[] = [];
-
+  console.log(data.queue.queueOperations.finished.includes(1));
   apts.forEach((q, index) => {
     // 'index' is now accessible in each iteration
+    console.log(index);
     if (
       data.queue.queueOperations.ongoing === index + 1 ||
       data.queue.queueOperations.finished.includes(index + 1) ||
@@ -21,11 +22,15 @@ function MCSQueueCurrentQueue({ handler, data }: Props) {
       data.queue.queueOperations.nextPatient1 === index + 1 ||
       data.queue.queueOperations.nextPatient2 === index + 1
     ) {
+      console.log("In IF");
       // Nothing needed inside here for now, or you can add some logic if necessary
     } else {
-      currentQ.push(index); // Push the index into currentQ
+      console.log("In Else");
+      currentQ.push(index + 1); // Push the index into currentQ
     }
   });
+
+  console.log("DEBUG: Current Q: ", currentQ);
 
   let currentQueue: CollapseProps["items"] = currentQ.map(
     (q, index: number) => ({
