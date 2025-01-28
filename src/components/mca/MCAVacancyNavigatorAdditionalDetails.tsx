@@ -121,8 +121,8 @@ function MCAVacancyNavigatorAdditionalDetails({
                   { value: "EMERGENCY_MEDICINE", label: "Emergency Medicine" },
                   {
                     value: "OCCUPATIONAL_HEALTH",
-                    label: "Occupational Health",
-                  },
+                    label: "Occupational Health"
+                  }
                 ]}
               />
             </div>
